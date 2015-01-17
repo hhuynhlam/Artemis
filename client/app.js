@@ -2,8 +2,8 @@
 
 define(function (require) {
 	var $ = require('jquery');
-	var ko = require('knockout');
 	var mustache = require('sammy-mustache');
+	var templateRenderer = require('templateRenderer');
 	var sammy = require('sammy');
 
 	// define a new Sammy.Application bound to the #view DOM
@@ -12,19 +12,11 @@ define(function (require) {
 		// load mustache templating engine
 		this.use(mustache, 'mustache');
 
+		// routes
 		this.get('/', function (context) {
-			
-			require(['pages/home/home.viewmodel'], function (ViewModel) {
-				var viewModel = new ViewModel();
 
-				// render mustache template with viewmodel
-				context.partial('pages/home/home.mustache', viewModel, function () {
-
-					// clean ko bindings from current context
-					ko.cleanNode(context.$element()[0]);
-					ko.applyBindings(viewModel, context.$element()[0]);
-				});
-			});
+			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
+			templateRenderer.renderAfter(context, 'pages/home/home.viewmodel', 'pages/home/home.mustache', '#home');
 		
 		});
 

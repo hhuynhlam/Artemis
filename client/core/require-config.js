@@ -1,6 +1,8 @@
 require.config({
     baseUrl: '',
     paths: {
+        // Core
+        'templateRenderer' : 'core/templateRenderer', 
 
         // Vendor
         'bootstrap': 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
