@@ -1,6 +1,6 @@
 <?php
 
-$app->get('/term', function () use ($app) {
+$app->get('/signup', function () use ($app) {
     
     // authenticate before do anything
     if ( !authenticate($app->request->params('apiKey')) ) {
@@ -19,7 +19,7 @@ $app->get('/term', function () use ($app) {
     if (count($params) == 0)
     {
         
-        $results = $db->query( 'SELECT * FROM term_info' );
+        $results = $db->query( 'SELECT * FROM signups' );
         echo parseJsonFromSQL($results);
 
     } 
@@ -36,7 +36,7 @@ $app->get('/term', function () use ($app) {
         $where = stripslashes($where);
         $where = str_replace('"', '', $where);
 
-        $results = $db->query( 'SELECT * FROM term_info WHERE ' . $where );
+        $results = $db->query( 'SELECT * FROM signups WHERE ' . $where );
         echo parseJsonFromSQL($results);
     } 
 });

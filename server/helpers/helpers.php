@@ -1,12 +1,12 @@
 <?php
 
 function authenticate($apiKey) {
-	if(!empty($_COOKIE['com.aphiorhorho.authenticated']) ) {
+	if(isset($_COOKIE['aphiorhorhoAuthenticated']) ) {
 		return true;
 	}
 
 	else if ($apiKey == 'RI$1h7Kztf2]%"qmI%5S9CphFZJ35t') {
-		setcookie('com.aphiorhorho.authenticated', true, time() + (86400));
+		setcookie('aphiorhorhoAuthenticated', 'wakawaka', time() + (86400), '/');
 		return true;
 	}
 
