@@ -2,11 +2,14 @@ require.config({
     baseUrl: '',
     paths: {
         // Core
-        'templateRenderer' : 'core/templateRenderer', 
+        'customBindings' : 'core/customBindings',
+        'templateRenderer' : 'core/templateRenderer',
+        'utils' : 'core/utils', 
 
         // Vendor
         'bootstrap': 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
         'jquery': 'vendor/bower_components/jquery/dist/jquery.min',
+        'jquery-cookie': 'vendor/bower_components/jquery.cookie/jquery.cookie',
         'knockout': 'vendor/bower_components/knockout/dist/knockout',
         'lodash': 'vendor/bower_components/lodash/dist/lodash.min',
         'mustache' : 'vendor/bower_components/mustache.js/mustache.min',

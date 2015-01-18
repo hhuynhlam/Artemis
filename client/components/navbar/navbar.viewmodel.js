@@ -1,12 +1,14 @@
 'use strict';
 
 define(function (require) {
-	var ko = require('knockout');
+	//var ko = require('knockout');
+	var utils = require('utils');
+	// require('customBindings');
 
 	var navbarViewModel = function () {
 
-		console.log('navbar viewmodel loaded');
-
+		this.loggedIn = utils.isAuthenticated();
+		
 	};
 
 	return navbarViewModel;

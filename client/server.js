@@ -13,6 +13,11 @@ app.route('/').get(function(req, res) {
 	res.sendFile(path.resolve(__dirname + '/index.html'));
 });
 
+// Error routes
+app.get('*', function(req, res) {
+ 	res.redirect('/');
+});
+
 // Start server
 var server = app.listen( (process.env.PORT || 9000), function () {
 

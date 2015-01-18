@@ -52,7 +52,7 @@
     // },
 
     jshint: {
-      files: ['Gruntfile.js', '**/*.js', '!dist/**/*.js', '!bower_components/**/*.js', '!node_modules/**/*.js'],
+      files: ['Gruntfile.js', '**/*.js', '!dist/**/*.js', '!vendor/bower_components/**/*.js', '!node_modules/**/*.js'],
       options: {
           jshintrc: '.jshintrc'
       }
