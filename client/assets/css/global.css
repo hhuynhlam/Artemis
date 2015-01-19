@@ -1,0 +1,32 @@
+.content {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+#loader i {
+	font-size: 7em;
+}
+
+.panel {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.panel-heading {
+	font-size: 2em;
+	padding-left: 60px;
+	padding-right: 60px;
+}
+
+.panel-body {
+	background-color: #4E5D6C;
+}
+
+#rushinfo table>tbody>tr>td {
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.vert-mid-view {
+	margin-top: 40vh;
+}

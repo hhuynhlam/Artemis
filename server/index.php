@@ -14,6 +14,7 @@ require_once('helpers/helpers.php');
 // Define API routes
 require_once('routes/root.php');
 require_once('routes/event.php');
+require_once('routes/login.php');
 require_once('routes/member.php');
 require_once('routes/shift.php');
 require_once('routes/signup.php');

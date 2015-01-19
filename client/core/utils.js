@@ -6,26 +6,55 @@ define(function (require) {
 
 	var utils = {
 
-		// Cookies Utils
+		// Cookies
 		createCookie: function (name, value, expires, path) {
 			return $.cookie(name, value, { expires: expires, path: path });
 		},
 
-		createLoggedInCookie: function () {
-			return this.createCookie('aphiorhorhoLoggedIn', 'wakawaka', 1, '/');
+		deleteCookie: function (name) {
+			return $.removeCookie(name); 
+		},
+
+		// Auth
+		login: function (username, password) {
+			var _data = {
+				username: username,
+				password: password
+			};
+
+			return $.get('http://localhost/server/index.php/login', _data);
+		},
+
+		logout: function () {
+			return this.deleteCookie('aphiorhorhoLoggedIn');
+		},
+
+		createUser: function (data) {
+			return this.createCookie('aphiorhorhoLoggedIn', JSON.stringify(data), 1, '/');
 		},
 
 		isAuthenticated: function () {
 			return $.cookie('aphiorhorhoLoggedIn') ? true : false;
 		},
 
+		serverAuthenticate: function () {
+			$.get('http://localhost/server/index.php/?apiKey=RI$1h7Kztf2]%%22qmI%5S9CphFZJ35t');
+		},
+
 		isServerAuthenticated: function () {
 			return $.cookie('aphiorhorhoAuthenticated') ? true : false;
 		},
 
-		serverAuthenticate: function () {
-			$.get('http://localhost/server/index.php/?apiKey=RI$1h7Kztf2]%%22qmI%5S9CphFZJ35t');
+		// Page
+		pageRendering: function () {
+			$('#loader').show();
+			$('#view').hide();
 		},
+
+		pageReady: function () {
+			$('#loader').hide();
+			$('#view').fadeIn(500);
+		}
 
 	};
 
