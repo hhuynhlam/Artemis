@@ -7,8 +7,8 @@ define(function (require) {
 	var loginViewModel = function () {
 
 		var self = this;
+		self.errorMessage = ko.observable('');
 		self.password = ko.observable('');
-		self.showError = ko.observable(false);
 		self.submitting = ko.observable(false);		
 		self.username = ko.observable('');
 
@@ -16,19 +16,27 @@ define(function (require) {
 
 			self.submitting = ko.observable(true);	
 
-			utils.login( self.username(), self.password() ).done(function (data) {
+			utils.login( self.username(), self.password() )
 				
-				if (data && data.length === 1) {
-					utils.createUser(data[0]);
-					window.location.replace('/#/');
-				}
-				else {
-					self.showError(true);
-				}
+				.success(function (data) {
+				
+					if (data && data.length === 1) {
+						utils.createUser(data[0]);
+						window.location.replace('/#/');
+					}
+					else {
+						self.errorMessage('Username and/or Password does not match.');
+					}
 
-				self.submitting = ko.observable(false);	
+					self.submitting = ko.observable(false);	
+					
+				})
 				
-			});
+				.fail(function () {
+
+					self.errorMessage('Cannot connect to host. Please try again later.');
+
+				});
 
 		};
 		

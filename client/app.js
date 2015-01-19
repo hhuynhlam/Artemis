@@ -10,7 +10,6 @@ define(function (require) {
 
 	// define a new Sammy.Application bound to the #view DOM
 	var app = sammy('#view', function() {
-		var _this = this;
 
 		// load mustache templating engine
 		this.use(mustache, 'mustache');
@@ -92,10 +91,9 @@ define(function (require) {
 		
 		});
 
-		this.get('/#/logout', function (context) {
+		this.get('/#/logout', function () {
 
 			utils.logout();
-			console.log('logged out...');
 			this.redirect('/#/');
 		
 		});

@@ -8,7 +8,7 @@ define(function (require) {
 	ko.bindingHandlers.smoothScroll = {
 	    init: function(element, valueAccessor) {
 			$(element).click(function (event) {
-				event.preventDefault
+				event.preventDefault();
 				var targetHash = valueAccessor(),
 				targetTop = (!targetHash) ? 0 : $(targetHash)[0].offsetTop;
 

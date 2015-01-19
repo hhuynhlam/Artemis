@@ -33,6 +33,11 @@ define(function (require) {
 			return this.createCookie('aphiorhorhoLoggedIn', JSON.stringify(data), 1, '/');
 		},
 
+		getCurrentUser: function () {
+			var user = $.cookie('aphiorhorhoLoggedIn');
+			return (user) ? JSON.parse($.cookie('aphiorhorhoLoggedIn')) : false;
+		},
+
 		isAuthenticated: function () {
 			return $.cookie('aphiorhorhoLoggedIn') ? true : false;
 		},

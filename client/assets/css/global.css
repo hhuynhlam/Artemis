@@ -22,6 +22,11 @@
 	background-color: #4E5D6C;
 }
 
+.pop-notice {
+	position:absolute;
+    right: 0;
+}
+
 #rushinfo table>tbody>tr>td {
 	padding-left: 50px;
 	padding-right: 50px;
