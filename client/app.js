@@ -29,6 +29,7 @@ define(function (require) {
 
 		// About
 		this.get('/#/about', function (context) {
+			
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
@@ -38,6 +39,7 @@ define(function (require) {
 		});
 
 		this.get('/#/about/rushinfo', function (context) {
+			
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
@@ -47,6 +49,7 @@ define(function (require) {
 		});
 
 		this.get('/#/about/rushhistory', function (context) {
+			
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
@@ -56,6 +59,7 @@ define(function (require) {
 		});
 
 		this.get('/#/about/links', function (context) {
+			
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
@@ -65,6 +69,7 @@ define(function (require) {
 		});
 
 		this.get('/#/about/contact', function (context) {
+			
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
@@ -73,12 +78,23 @@ define(function (require) {
 			utils.pageReady();
 		});
 
-		// this.get('/#/event', function () {
-		// 	if(!utils.isAuthenticated()) {
-		// 		this.redirect('#/login');
-		// 	}
-		// });
+		// Profile
+		this.get('/#/profile', function (context) {
+			
+			if(!utils.isAuthenticated()) {
+				this.redirect('#/login');
+			}
+
+			utils.pageRendering();
+
+			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
+			templateRenderer.renderAfter(context, 'pages/profile/profile.viewmodel', 'pages/profile/profile.mustache', '#profile');
+
+			utils.pageReady();
+
+		});
 		
+
 		// Auth
 		this.get('/#/login', function (context) {
 

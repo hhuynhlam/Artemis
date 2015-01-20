@@ -21,4 +21,12 @@ define(function (require) {
 			});
 	    }
 	};
+
+	// placeholder binding
+	ko.bindingHandlers.placeholder = {
+	    init: function(element, valueAccessor) {
+	    	var value = ko.unwrap(valueAccessor());
+			$(element).attr('placeholder', value);
+	    }
+	};
 });
