@@ -5,7 +5,7 @@ function authenticate($apiKey) {
 		return true;
 	}
 
-	else if ($apiKey == 'RI$1h7Kztf2]%"qmI%5S9CphFZJ35t') {
+	else if ($apiKey == 'A197638E4B52E74DCA5A2E58A8172') {
 		setcookie('aphiorhorhoAuthenticated', 'wakawaka', time() + (86400), '/');
 		return true;
 	}

@@ -29,7 +29,12 @@ define(function (require) {
 			return this.deleteCookie('aphiorhorhoLoggedIn');
 		},
 
-		createUser: function (data) {
+		appendApiKey: function (data) {
+			data.apiKey = 'A197638E4B52E74DCA5A2E58A8172';
+			return data;
+		},
+
+		createUserCookie: function (data) {
 			return this.createCookie('aphiorhorhoLoggedIn', JSON.stringify(data), 1, '/');
 		},
 
@@ -42,14 +47,6 @@ define(function (require) {
 			return $.cookie('aphiorhorhoLoggedIn') ? true : false;
 		},
 
-		serverAuthenticate: function () {
-			$.get('http://localhost/server/index.php/?apiKey=RI$1h7Kztf2]%%22qmI%5S9CphFZJ35t');
-		},
-
-		isServerAuthenticated: function () {
-			return $.cookie('aphiorhorhoAuthenticated') ? true : false;
-		},
-
 		// Page
 		pageRendering: function () {
 			$('#loader').show();
@@ -59,6 +56,12 @@ define(function (require) {
 		pageReady: function () {
 			$('#loader').hide();
 			$('#view').fadeIn(500);
+		},
+
+		// Profile
+		updateUser: function (userData) {
+			userData = this.appendApiKey(userData);
+			return $.post('http://localhost/server/index.php/member/update', userData);
 		}
 
 	};

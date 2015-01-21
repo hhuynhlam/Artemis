@@ -21,7 +21,7 @@ define(function (require) {
 				.success(function (data) {
 				
 					if (data && data.length === 1) {
-						utils.createUser(data[0]);
+						utils.createUserCookie(data[0]);
 						window.location.replace('/#/');
 					}
 					else {

@@ -41,4 +41,23 @@ $app->get('/member', function () use ($app) {
     } 
 });
 
+$app->post('/member/update', function () use ($app) {
+    
+    // authenticate before do anything
+    if ( !authenticate($app->request->post('apiKey')) ) {
+        $app->status(403);
+        echo json_encode('You are not allowed to see this page.');
+        return;
+    }
+
+    // connect to db
+    require_once('_db.php');
+
+    // get request body
+    $params = $app->request->post();
+
+
+    var_dump($params);
+});
+
 ?>
