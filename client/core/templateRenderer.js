@@ -29,8 +29,10 @@ define(function () {
 					.then(function () {
 
 						// clean ko bindings from home
-						ko.cleanNode($(domID)[0]);
-						ko.applyBindings(_viewModel, $(domID)[0]);
+						if ($(domID)[0]) {
+							ko.cleanNode($(domID)[0]);
+							ko.applyBindings(_viewModel, $(domID)[0]);
+						}
 
 					});
 			});	
