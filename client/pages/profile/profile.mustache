@@ -4,9 +4,19 @@
 
 		<h2></h2>
 
-		<form class="form-horizontal well" data-bind="submit: save, event: { reset: clean }">
+		<form id="editProfile" class="form-horizontal well">
 			<fieldset>
 				<legend>Edit Profile</legend>
+				
+				<div class="alert alert-success" role="alert" data-bind="visible: successMessage">
+					<span data-bind="text: successMessage"></span>
+				</div>
+
+				<div class="alert alert-danger" role="alert" data-bind="visible: errorMessage">
+					<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					<span data-bind="text: errorMessage"></span>
+				</div>
 				
 				<div class="form-group">
 					<label class="col-lg-3 control-label">Username</label>
@@ -61,8 +71,11 @@
 
 				<div class="form-group">
 					<div class="col-lg-12 text-center">
-						<button type="reset" class="btn btn-default">Cancel</button>
-						<button type="submit" class="btn btn-primary" data-bind="enable: submitEnabled"> Submit </button>
+						<button type="reset" class="btn btn-default" data-bind="click: clean">Cancel</button>
+						<button class="btn btn-primary" style="width: 78px" data-bind="visible: submitting">
+							<i class="fa fa-spinner fa-spin"></i>
+						</button>
+						<button class="btn btn-primary" data-bind="visible: !submitting(), click: save, enable: submitEnabled"> Submit </button>
 					</div>
 				</div>
 

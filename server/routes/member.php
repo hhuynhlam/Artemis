@@ -55,9 +55,11 @@ $app->post('/member/update', function () use ($app) {
 
     // get request body
     $params = $app->request->post();
+    $where = array("id" => $app->request->post('_id'));
 
+    $result = $db->query( db_update("members", $params, $where) );
+    echo json_encode($result); 
 
-    var_dump($params);
 });
 
 ?>

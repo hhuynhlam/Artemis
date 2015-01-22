@@ -16,10 +16,11 @@ define(function (require) {
 		},
 
 		// Auth
-		login: function (username, password) {
+		login: function (username, password, md5Password) {
 			var _data = {
 				username: username,
-				password: password
+				password: password,
+				md5_password: md5Password
 			};
 
 			return $.get('http://localhost/server/index.php/login', _data);
@@ -27,6 +28,14 @@ define(function (require) {
 
 		logout: function () {
 			return this.deleteCookie('aphiorhorhoLoggedIn');
+		},
+
+		resetCurrentUser: function () {
+			var currentUser = this.getCurrentUser();
+			var user = currentUser.username;
+			var pass = currentUser.password; 
+			utils.logout();
+			return utils.login(user, null, pass);
 		},
 
 		appendApiKey: function (data) {

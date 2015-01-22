@@ -31,4 +31,51 @@ function parseJsonFromSQL($results) {
     return;
 }
 
+// SQL helpers
+function db_update($table, $values, $where) {
+	$query = "UPDATE " . $table . " SET ";
+
+	// construct values to update
+	$first = true;
+	foreach($values as $key => $value) {
+		if($key == "_id" || $key == "apiKey") {
+			continue;	
+		}
+
+		if($first == true) {
+			$query .= $key . " ='" . $value . "'";
+			$first = false;
+		}
+		else {
+			$query .= ", " . $key . "='" . $value . "'";
+		}
+	}
+
+	// construct where clause
+	if( !is_null($where) ) {
+		$query .= " WHERE ";
+
+		$first = true;
+		foreach($where as $key => $value) {
+			if($first == true) {
+				$query .= $key . " ='" . $value . "'";
+				$first = false;
+			}
+			else {
+				$query .= ", " . $key . "='" . $value . "'";
+			}
+		}
+	}
+
+	return $query;
+}
+
+// function db_select($table, $values, $where) {
+
+// }
+
+// function db_insert($table, $values, $where) {
+
+// }
+
 ?>

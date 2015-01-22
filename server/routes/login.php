@@ -22,8 +22,13 @@ $app->get('/login', function () use ($app) {
     {
         $username = $app->request->params('username');
         $password = $app->request->params('password');
+        $md5_password = $app->request->params('md5_password');
 
-        $results = $db->query( 'SELECT * FROM members WHERE username=\'' . $username . '\' AND password=MD5(\'' . $password . '\')');
+        if (!is_null($md5_password)) {
+            $results = $db->query( 'SELECT * FROM members WHERE username=\'' . $username . '\' AND password=\'' . $md5_password . '\'');
+        } else {
+            $results = $db->query( 'SELECT * FROM members WHERE username=\'' . $username . '\' AND password=MD5(\'' . $password . '\')');
+        }
         echo parseJsonFromSQL($results);
     } 
 });
