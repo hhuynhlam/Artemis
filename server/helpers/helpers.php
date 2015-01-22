@@ -38,16 +38,26 @@ function db_update($table, $values, $where) {
 	// construct values to update
 	$first = true;
 	foreach($values as $key => $value) {
+		
+		// ignore _id and apiKey params
 		if($key == "_id" || $key == "apiKey") {
 			continue;	
 		}
 
 		if($first == true) {
-			$query .= $key . " ='" . $value . "'";
-			$first = false;
+			if ($key == "password") {
+				$query .= $key . "=MD5('" . $value . "')";
+			} else {
+				$query .= $key . " ='" . $value . "'";
+				$first = false;
+			}
 		}
 		else {
-			$query .= ", " . $key . "='" . $value . "'";
+			if($key == "password") {
+				$query .= ", " . $key . "=MD5('" . $value . "')";
+			} else {
+				$query .= ", " . $key . "='" . $value . "'";
+			}
 		}
 	}
 

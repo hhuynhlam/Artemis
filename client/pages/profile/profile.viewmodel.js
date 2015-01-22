@@ -14,12 +14,12 @@ define(function (require) {
 		var self = this;
 
 		// Input Observables
-		self.username = ko.computed(function () { return currentUser().username; });
 		self.phone = ko.computed(function () { return currentUser().phone; });
 		self.email = ko.computed(function () { return currentUser().email; });
 		self.shirtSize = ko.computed(function () { return currentUser().shirt_size; });
 		self.schoolAddress = ko.computed(function () { return currentUser().temp_address; });
 		self.permanentAddress = ko.computed(function () { return currentUser().perm_address; });
+		self.password = ko.observable('');
 
 		// Display Observables
 		self.submitEnabled = ko.observable(false);
@@ -67,7 +67,7 @@ define(function (require) {
 				.done(function () {
 					
 					// remove cookie and re-login
-					utils.resetCurrentUser().done(function (data) {
+					utils.resetCurrentUser(self.password()).done(function (data) {
 						
 						utils.createUserCookie(data[0]);
 						currentUser(utils.getCurrentUser());
