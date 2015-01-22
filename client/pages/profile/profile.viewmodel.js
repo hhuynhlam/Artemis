@@ -51,16 +51,17 @@ define(function (require) {
 			self.errorMessage('');
 			self.submitEnabled(false);
 			self.submitting(false);
-			
+
+			changedInputs = {};
+
 			$('#editProfile')[0].reset();
 			$('select[name=shirt_size]').val(self.shirtSize());
 		};
 
 		self.save = function () {
-			
 			self.submitting(true);
 
-			changedInputs._id = currentUser().id; // append user.id
+			changedInputs._id = currentUser().id; // append id
 			
 			utils.updateUser(changedInputs)
 				.done(function () {

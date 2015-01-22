@@ -123,6 +123,9 @@ define(function (require) {
 
 	// run app
 	$(function() {
+
+        // Override this function so that Sammy doesn't mess with forms
+	    app._checkFormSubmission = function() { return (false); };
         app.run();
     });
 });
