@@ -12,7 +12,11 @@ define(function (require) {
 		self.submitting = ko.observable(false);		
 		self.username = ko.observable('');
 
-		this.submit = function () {
+		self.cancel = function () {
+			window.location.href = '/#/';
+		};
+
+		self.submit = function () {
 
 			self.submitting = ko.observable(true);	
 

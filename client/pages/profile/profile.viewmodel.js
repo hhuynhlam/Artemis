@@ -98,12 +98,12 @@ define(function (require) {
 
 							self.clean();
 							self.successMessage('You have successfully updated your profile.');
-							self.submitting(false);
 						});
 					})
 
 					.fail(function () {
 						self.errorMessage('There was an error attempting to save your profile. Please try again later.');
+						self.successMessage('');
 						self.submitting(false);
 					});
 			}
