@@ -1,6 +1,13 @@
+/* Global CSS Overrides */
+
 .content {
 	padding-left: 50px;
 	padding-right: 50px;
+}
+
+.has-error .form-control {
+	border-color: #D9534F;
+	border-width: 3px;
 }
 
 #loader i {

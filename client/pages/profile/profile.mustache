@@ -4,15 +4,15 @@
 
 		<h2></h2>
 
-		<form id="editProfile" class="form-horizontal well" data-bind="submit: save">
+		<form id="editProfile" class="form-horizontal well" data-bind="submit: showConfirm">
 			<fieldset>
 				<legend>Edit Profile</legend>
 				
-				<div class="alert alert-success" role="alert" data-bind="visible: successMessage">
+				<div class="alert alert-success" role="alert" data-bind="visible: successMessage" style="display: none;">
 					<span data-bind="text: successMessage"></span>
 				</div>
 
-				<div class="alert alert-danger" role="alert" data-bind="visible: errorMessage">
+				<div class="alert alert-danger" role="alert" data-bind="visible: errorMessage" style="display: none;">
 					<span class="fa fa-exclamation-circle" aria-hidden="true"></span>
 					<span class="sr-only">Error:</span>
 					<span data-bind="text: errorMessage"></span>
@@ -68,13 +68,23 @@
 					</div>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group" data-bind="visible: !confirmEnabled()">
 					<div class="col-lg-12 text-center">
 						<button type="reset" class="btn btn-default" data-bind="click: clean">Cancel</button>
 						<button class="btn btn-primary" style="width: 78px" data-bind="visible: submitting">
 							<i class="fa fa-spinner fa-spin"></i>
 						</button>
 						<button type="submit" class="btn btn-primary" data-bind="visible: !submitting(), enable: submitEnabled"> Submit </button>
+					</div>
+				</div>
+
+				<div class="alert alert-warning row" role="alert" data-bind="visible: confirmEnabled" style="display: none;">
+					<div class="col-lg-8 control-label form-group" data-bind="css: { 'has-error': confirmError }">
+						<input type="password" placeholder="Enter Current Password" class="form-control" data-bind="value: confirmPassword">
+					</div>
+					<div class="col-lg-4 control-label">
+						<button type="button" class="col-lg-6 btn btn-warning" data-bind="click: cancelConfirm">Cancel</button>
+						<button type="button" class="col-lg-6 btn btn-primary" data-bind="click: save">Confirm</button>
 					</div>
 				</div>
 
