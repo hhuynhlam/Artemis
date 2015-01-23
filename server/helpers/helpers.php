@@ -54,7 +54,7 @@ function db_update($table, $values, $where) {
 	}
 
 	// construct where clause
-	if( !is_null($where) ) {
+	if( !is_null($where) && count($where) != 0 ) {
 		$query .= " WHERE ";
 
 		$first = true;
@@ -72,9 +72,55 @@ function db_update($table, $values, $where) {
 	return $query;
 }
 
-// function db_select($table, $values, $where) {
+function db_select($table, $where, $order, $limit, $offset) {
+	$query = "SELECT * FROM " . $table;
 
-// }
+	// construct where clause
+	if( !is_null($where) && count($where) != 0 ) {
+		$query .= " WHERE ";
+
+		$first = true;
+		foreach($where as $key => $value) {
+			if($first == true) {
+				
+				// bitwise AND to filter events
+				if($key == 'event_code') {
+					$query .= $key . " & '" . $value . "' != 0";
+				} else {
+					$query .= $key . " ='" . $value . "'";
+				}
+
+				$first = false;
+			}
+			else {
+
+				// bitwise AND to filter events
+				if($key == 'event_code') {
+					$query .= ", " . $key . " & '" . $value . "' != 0";
+				} else {
+					$query .= ", " . $key . "='" . $value . "'";
+				}
+			}
+		}
+	}
+
+	// add ordering for events
+	if ( !is_null($order) ) {
+		$query .= ' ORDER BY ' . $order;
+	}
+
+	// add limit for events
+	if ( !is_null($limit) ) {
+		$query .= ' LIMIT ' . $limit;
+	}
+
+	// add offset for events
+	if ( !is_null($order) ) {
+		$query .= ' OFFSET ' . $offset;
+	}
+
+	return $query;
+}
 
 // function db_insert($table, $values, $where) {
 

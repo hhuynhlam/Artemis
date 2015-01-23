@@ -21,7 +21,7 @@ define(function () {
 
 		renderAfter : function (context, viewModel, viewTemplate, domID) {
 			require([viewModel, 'jquery', 'knockout'], function (ViewModel, $, ko) {
-				var _viewModel = new ViewModel();
+				var _viewModel = (ViewModel instanceof Function) ? new ViewModel() : ViewModel;
 
 				// render mustache template with viewmodel
 				context.render(viewTemplate, _viewModel)

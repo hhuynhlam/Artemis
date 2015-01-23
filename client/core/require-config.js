@@ -2,6 +2,7 @@ require.config({
     baseUrl: '',
     paths: {
         // Core
+        'constant': 'core/constant',
         'customBindings' : 'core/customBindings',
         'templateRenderer' : 'core/templateRenderer',
         'utils' : 'core/utils', 
@@ -13,6 +14,7 @@ require.config({
         'knockout': 'vendor/bower_components/knockout/dist/knockout',
         'lodash': 'vendor/bower_components/lodash/dist/lodash.min',
         'md5': 'vendor/bower_components/blueimp-md5/js/md5.min',
+        'moment': 'vendor/bower_components/moment/min/moment.min',
         'mustache' : 'vendor/bower_components/mustache.js/mustache.min',
         'sammy': 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
         'sammy-mustache': 'vendor/bower_components/sammy/lib/min/plugins/sammy.mustache-0.7.6.min'

@@ -23,6 +23,7 @@
 
     "globals"       : {       // Extra globals.
         "define"  : true,
+        "document" :true,
         "require"  : true,
         "window"  : true
     },        

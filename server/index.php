@@ -21,6 +21,13 @@ require_once('routes/signup.php');
 require_once('routes/term.php');
 require_once('routes/waitlist.php');
 
+// PHP Sandbox
+$app->get('/test', function () use ($app) {
+    
+    echo date("n/j/y", 1267516800);
+     
+});
+
 // Run application
 $app->run();
 

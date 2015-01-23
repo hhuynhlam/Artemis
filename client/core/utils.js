@@ -30,6 +30,11 @@ define(function (require) {
 			return this.deleteCookie('aphiorhorhoLoggedIn');
 		},
 
+		isAuthenticated: function () {
+			return $.cookie('aphiorhorhoLoggedIn') ? true : false;
+		},
+		
+		// User
 		resetCurrentUser: function (newPassword) {
 			var currentUser = this.getCurrentUser();
 			utils.logout();
@@ -51,19 +56,28 @@ define(function (require) {
 			return (user) ? JSON.parse($.cookie('aphiorhorhoLoggedIn')) : false;
 		},
 
-		isAuthenticated: function () {
-			return $.cookie('aphiorhorhoLoggedIn') ? true : false;
-		},
-
 		// Page
 		pageRendering: function () {
-			$('#loader').show();
+			$('.loader').show();
 			$('#view').hide();
 		},
 
 		pageReady: function () {
-			$('#loader').hide();
+			$('.loader').hide();
 			$('#view').fadeIn(500);
+		},
+
+		// Event
+		getEvents: function (type, limit, offset) {
+			var _data = {
+				event_code: type,
+				limit: limit,
+				offset: offset
+			};
+
+			_data = this.appendApiKey(_data);
+			
+			return $.get('http://localhost/server/index.php/event', _data);
 		},
 
 		// Profile

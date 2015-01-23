@@ -78,6 +78,23 @@ define(function (require) {
 			utils.pageReady();
 		});
 
+		// Event
+		this.get('/#/event', function (context) {
+			
+			if(!utils.isAuthenticated()) {
+				this.redirect('#/login');
+			}
+			else {
+				utils.pageRendering();
+
+				templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
+				templateRenderer.renderAfter(context, 'pages/event/event.viewmodel', 'pages/event/event.mustache', '#event');
+
+				utils.pageReady();
+			}
+
+		});
+
 		// Profile
 		this.get('/#/profile', function (context) {
 			
