@@ -16,7 +16,7 @@ define(function (require) {
 
 			self.submitting = ko.observable(true);	
 
-			utils.login( self.username(), self.password() )
+			utils.login( self.username(), self.password(), true )
 				
 				.success(function (data) {
 				

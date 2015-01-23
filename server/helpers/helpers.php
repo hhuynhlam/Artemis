@@ -45,19 +45,11 @@ function db_update($table, $values, $where) {
 		}
 
 		if($first == true) {
-			if ($key == "password") {
-				$query .= $key . "=MD5('" . $value . "')";
-			} else {
-				$query .= $key . " ='" . $value . "'";
-				$first = false;
-			}
+			$query .= $key . " ='" . $value . "'";
+			$first = false;
 		}
 		else {
-			if($key == "password") {
-				$query .= ", " . $key . "=MD5('" . $value . "')";
-			} else {
-				$query .= ", " . $key . "='" . $value . "'";
-			}
+			$query .= ", " . $key . "='" . $value . "'";
 		}
 	}
 

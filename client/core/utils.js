@@ -2,6 +2,7 @@
 
 define(function (require) {
 	var $ = require('jquery');
+	var md5 = require('md5');
 	require('jquery-cookie');
 
 	var utils = {
@@ -16,13 +17,11 @@ define(function (require) {
 		},
 
 		// Auth
-		login: function (username, password, md5Password) {
+		login: function (username, password, md5Enabled) {
 			var _data = {
-				username: username
+				username: username,
+				password: (md5Enabled) ? md5(password) : password
 			};
-
-			if (password) { _data.password = password; }
-			if (md5Password) { _data.md5_password = md5Password; }
 
 			return $.get('http://localhost/server/index.php/login', _data);
 		},
@@ -31,13 +30,11 @@ define(function (require) {
 			return this.deleteCookie('aphiorhorhoLoggedIn');
 		},
 
-		resetCurrentUser: function (password) {
+		resetCurrentUser: function (newPassword) {
 			var currentUser = this.getCurrentUser();
-			var user = currentUser.username;
-			var md5_pass = currentUser.password; 
 			utils.logout();
 
-			return (password) ? utils.login(user, password, null) : utils.login(user, null, md5_pass);
+			return (newPassword) ? utils.login(currentUser.username, newPassword, true) : utils.login(currentUser.username, currentUser.password, false);
 		},
 
 		appendApiKey: function (data) {
@@ -72,6 +69,11 @@ define(function (require) {
 		// Profile
 		updateUser: function (userData) {
 			userData = this.appendApiKey(userData);
+
+			if (userData && userData.password) {
+				userData.password = md5(userData.password);
+			}
+			
 			return $.post('http://localhost/server/index.php/member/update', userData);
 		}
 
