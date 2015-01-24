@@ -30,7 +30,7 @@ define(function (require) {
 	    }
 	};
 
-	// toggle active
+	// toggle active and disable conflicting li
 	ko.bindingHandlers.eventFilter = {
 		init: function(element, valueAccessor) {
 			$(element).click(function () {

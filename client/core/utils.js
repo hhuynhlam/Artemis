@@ -70,10 +70,13 @@ define(function (require) {
 		// Event
 		getEvents: function (type, limit, offset) {
 			var _data = {
-				event_code: type,
 				limit: limit,
 				offset: offset
 			};
+
+			if (type) {
+				_data.event_code = type;
+			}
 
 			_data = this.appendApiKey(_data);
 			

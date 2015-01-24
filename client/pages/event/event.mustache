@@ -12,19 +12,19 @@
 			
 			<ul class="nav nav-pills nav-stacked hidden-xs-override filter-collapse">
 			  	
-			  	<li id="general" data-bind="eventFilter: { conflicts: [ services, fellowships, interchapters ] }">
+			  	<li id="general" data-bind="eventFilter: { conflicts: [ services, fellowships, interchapters ] }, click: filterEvents">
 			  		<a><strong>General</strong></a></li>
 			  	<hr>
 
-			  	<li id="service" data-bind="eventFilter: { conflicts: [ general, fellowships, interchapters ] }">
+			  	<li id="service" data-bind="eventFilter: { conflicts: [ general, fellowships, interchapters ] }, click: filterEvents">
 			  		<a><strong>Services</strong></a></li>
 				<hr>
 
-				<li id="fellowship" data-bind="eventFilter: { conflicts: [ general, services, interchapters ] }">
+				<li id="fellowship" data-bind="eventFilter: { conflicts: [ general, services, interchapters ] }, click: filterEvents">
 					<a><strong>Fellowships</strong></a></li>
 				<hr>
 
-				<li id="interchapter" data-bind="eventFilter: { conflicts: [ general, services, fellowships ] }">
+				<li id="interchapter" data-bind="eventFilter: { conflicts: [ general, services, fellowships ] }, click: filterEvents">
 					<a><strong>Interchapters</strong></a></li>
 				<hr>
 

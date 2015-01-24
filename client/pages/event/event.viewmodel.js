@@ -17,6 +17,7 @@ define(function (require) {
 
 		events: ko.observableArray([]),
 		eventLoading: ko.observable(true),
+		filter: ko.observable(0),
 		pageLoading: ko.observable(true),
 		title: ko.observable('Events'),
 		
@@ -25,10 +26,55 @@ define(function (require) {
 		fellowships: ['fellowship', 'crazy', 'cool', 'sexy'],
 		interchapters: ['interchapter', 'interchapter_home', 'interchapter_away'],
 
+		// Filter Events
+		filterEvents: function (viewmodel, event) {
+			var self, filterArray, selectedFilters;
+			
+			// only if the thing being clicked is not disabled
+			if( !$('#' + event.currentTarget.id).hasClass('disabled') ) {
+				self = this;
+				filterArray = [];
+				selectedFilters = $('.active');
+				
+				// reset filters and offset
+				self.filter(0);
+				_offset = 0;
+
+				// select all active filters
+				selectedFilters.each(function () {
+					filterArray.push(this.id);
+				});
+
+				// add to filter for each active filter
+				filterArray.forEach(function (f) {
+					switch(f) {
+						case 'general':
+							self.filter( self.filter() + constant.OTHER + constant.MEETING );
+							break;
+						case 'fellowship':
+							self.filter( self.filter() + constant.FELLOWSHIP );
+							break;
+						case 'service':
+							self.filter( self.filter() + constant.SERVICE );
+							break;
+						case 'interchapter':
+							self.filter( self.filter() + constant.INTERCHAPTER_AWAY + constant.INTERCHAPTER_HOME );
+							break;
+					}
+				});
+
+				// clear events
+				self.events([]);
+				self.loadEvents( self.filter() );
+
+			}
+
+		},
+
 		// Loading events
 		loadEvents: function (type) {
 			var self = this;
-			var getEvents = utils.getEvents(type, _limit, _offset);
+			var getEvents = (type) ? utils.getEvents(type, _limit, _offset) : utils.getEvents(null, _limit, _offset);
 			
 			self.eventLoading(true);
 
@@ -74,7 +120,7 @@ define(function (require) {
 			
 			// scroll is pass document height
 			if (scrollPosition > (scrollHeight + 40) ) {
-				eventViewModel.loadEvents();
+				eventViewModel.loadEvents( eventViewModel.filter() );
 			}
 		});
 	})();
