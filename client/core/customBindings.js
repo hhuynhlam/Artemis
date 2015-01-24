@@ -30,25 +30,42 @@ define(function (require) {
 	    }
 	};
 
-	// toggle active and disable conflicting li
+	// toggle active and disable conflicting list-item
 	ko.bindingHandlers.eventFilter = {
 		init: function(element, valueAccessor) {
 			$(element).click(function () {
 				
-				var conflicts;
+				var conflicts = valueAccessor().conflicts;
 				
+				// if element is not disabled
 				if ( !$(element).hasClass('disabled') ) {
 
-					conflicts = valueAccessor().conflicts;
-
+					// toggle to active
 					$(element).toggleClass('active');
+					
 					conflicts.forEach(function (c) {
 						c.forEach(function (i) {
-							$('#' + i).toggleClass('disabled');
+							
+							if ($(element).hasClass('active')) {
+								$('#' + i).addClass('disabled');
+							}
+
 						});
 					});
 
-				} 
+				}
+
+				if ( $('.filter-collapse .active').length === 0 ) {
+
+					conflicts.forEach(function (c) {
+						c.forEach(function (i) {
+							
+							$('#' + i).removeClass('disabled');
+
+						});
+					});
+
+				}
 			
 			});
 		}

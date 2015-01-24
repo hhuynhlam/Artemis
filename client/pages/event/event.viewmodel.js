@@ -51,14 +51,50 @@ define(function (require) {
 						case 'general':
 							self.filter( self.filter() + constant.OTHER + constant.MEETING );
 							break;
-						case 'fellowship':
-							self.filter( self.filter() + constant.FELLOWSHIP );
-							break;
+
 						case 'service':
 							self.filter( self.filter() + constant.SERVICE );
 							break;
+						case 'community':
+							self.filter( self.filter() + constant.COMMUNITY );
+							break;
+						case 'campus':
+							self.filter( self.filter() + constant.CAMPUS );
+							break;
+						case 'fraternity':
+							self.filter( self.filter() + constant.FRATERNITY );
+							break;
+						case 'nation':
+							self.filter( self.filter() + constant.NATION );
+							break;
+						case 'fundraiser':
+							self.filter( self.filter() + constant.FUNDRAISER );
+							break;
+						case 'general_service':
+							self.filter( self.filter() + constant.GENERAL );
+							break;
+
+						case 'fellowship':
+							self.filter( self.filter() + constant.FELLOWSHIP );
+							break;
+						case 'cool':
+							self.filter( self.filter() + constant.COOL_FELLOWSHIP );
+							break;
+						case 'crazy':
+							self.filter( self.filter() + constant.CRAZY_FELLOWSHIP );
+							break;
+						case 'sexy':
+							self.filter( self.filter() + constant.SEXY_FELLOWSHIP );
+							break;
+
 						case 'interchapter':
 							self.filter( self.filter() + constant.INTERCHAPTER_AWAY + constant.INTERCHAPTER_HOME );
+							break;
+						case 'interchapter_away':
+							self.filter( self.filter() + constant.INTERCHAPTER_AWAY );
+							break;
+						case 'interchapter_home':
+							self.filter( self.filter() + constant.INTERCHAPTER_HOME );
 							break;
 					}
 				});
