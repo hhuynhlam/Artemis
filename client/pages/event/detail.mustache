@@ -1,0 +1,21 @@
+<section id="detail">
+
+	<div class="container">
+		
+		<h2 data-bind="html: eventDetail().name"></h2>
+
+		<div class="well col-sm-8">
+			<p><strong>Date: </strong>
+			<span data-bind="text: eventDetail().date"></span></p>
+
+			<p><strong>Event Location: </strong>
+			<span data-bind="text: eventDetail().location"></span></p>
+
+			<br/>
+			<h5><strong>Description: </strong></h5>
+			<span data-bind="html: eventDetail().description"></span></p>
+		</div>
+
+	</div>
+
+</section>

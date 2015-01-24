@@ -68,6 +68,16 @@ define(function (require) {
 		},
 
 		// Event
+		getEvent: function (id) {
+			var _data = {
+				id: id,
+			};
+
+			_data = this.appendApiKey(_data);
+			
+			return $.get('http://localhost/server/index.php/event', _data);
+		},
+
 		getEvents: function (type, limit, offset) {
 			var _data = {
 				limit: limit,

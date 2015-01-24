@@ -2,6 +2,7 @@
 
 define(function (require) {
 	var $ = require('jquery');
+	var _ = require('lodash');
 	var constant = require('constant');
 	var ko = require('knockout');
 	var moment = require('moment');
@@ -9,13 +10,14 @@ define(function (require) {
 	require('customBindings');
 
 	// Locals
-	var _increment = 40;
-	var _limit = 40;
+	var _increment = 30;
+	var _limit = 30;
 	var _offset = 0;
 
 	var eventViewModel = {
 
 		events: ko.observableArray([]),
+		eventDetail: ko.observable({}),
 		eventLoading: ko.observable(true),
 		filter: ko.observable(0),
 		pageLoading: ko.observable(true),
@@ -138,6 +140,39 @@ define(function (require) {
 			$('.filter-collapse').toggle();
 		},
 
+		// Event Details
+		initDetails: function (code) {
+			var self = this;
+			var eventIndex = _.findIndex(self.events(), { id: code });
+			var promise = $.Deferred();
+
+			// if the event is already loaded in event list
+			if( eventIndex && eventIndex !== -1 ) {
+				self.eventDetail( self.events()[eventIndex] );
+				console.log('Found');
+				promise.resolve(true);
+			}
+
+			// else, we will look it up
+			else {
+				utils.getEvent(code)
+					.done(function (data) {
+						
+						if (data[0] && data[0].date) {
+							data[0].date = moment.unix(data[0].date).format('dddd, MMMM Do YYYY');
+						}
+
+						self.eventDetail(data[0]);
+						promise.resolve(true);
+					})
+					.fail(function () {
+						promise.resolve(false);
+					});
+			}
+
+			return promise;
+		},
+
 	};
 
 	// Computed Observables
@@ -155,7 +190,7 @@ define(function (require) {
 			var scrollPosition = $(window).height() + $(window).scrollTop();
 			
 			// scroll is pass document height
-			if (scrollPosition > (scrollHeight + 40) ) {
+			if (scrollPosition > (scrollHeight + 50) ) {
 				eventViewModel.loadEvents( eventViewModel.filter() );
 			}
 		});

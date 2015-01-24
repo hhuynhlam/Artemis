@@ -115,7 +115,7 @@ function db_select($table, $where, $order, $limit, $offset) {
 	}
 
 	// add offset for events
-	if ( !is_null($order) ) {
+	if ( !is_null($offset) ) {
 		$query .= ' OFFSET ' . $offset;
 	}
 

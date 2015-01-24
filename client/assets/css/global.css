@@ -39,6 +39,10 @@
 	padding-right: 50px;
 }
 
+table a:not(.btn), .table a:not(.btn) {
+	text-decoration: none;
+}
+
 .vert-mid-view {
 	margin-top: 40vh;
 }

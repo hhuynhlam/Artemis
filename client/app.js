@@ -21,10 +21,10 @@ define(function (require) {
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-			templateRenderer.renderAfter(context, 'pages/home/home.viewmodel', 'pages/home/home.mustache', '#home');
-			
-			utils.pageReady();
-		
+			templateRenderer.renderAfter(context, 'pages/home/home.viewmodel', 'pages/home/home.mustache', '#home')
+				.done(function () {
+					utils.pageReady();
+				});
 		});
 
 		// About
@@ -33,9 +33,10 @@ define(function (require) {
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/about.mustache', '#about');
-
-			utils.pageReady();
+			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/about.mustache', '#about')
+				.done(function () {
+					utils.pageReady();
+				});
 		});
 
 		this.get('/#/about/rushinfo', function (context) {
@@ -43,9 +44,10 @@ define(function (require) {
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/information.mustache', '#rush-info');
-
-			utils.pageReady();
+			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/information.mustache', '#rush-info')
+				.done(function () {
+					utils.pageReady();
+				});
 		});
 
 		this.get('/#/about/rushhistory', function (context) {
@@ -53,9 +55,10 @@ define(function (require) {
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/history.mustache', '#rush-history');
-
-			utils.pageReady();
+			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/history.mustache', '#rush-history')
+				.done(function () {
+					utils.pageReady();
+				});
 		});
 
 		this.get('/#/about/links', function (context) {
@@ -63,9 +66,10 @@ define(function (require) {
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/links.mustache', '#affiliate-links');
-
-			utils.pageReady();
+			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/links.mustache', '#affiliate-links')
+				.done(function () {
+					utils.pageReady();
+				});
 		});
 
 		this.get('/#/about/contact', function (context) {
@@ -73,9 +77,10 @@ define(function (require) {
 			utils.pageRendering();
 
 			templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/contact.mustache', '#contact');
-
-			utils.pageReady();
+			templateRenderer.renderAfter(context, 'pages/about/about.viewmodel', 'pages/about/contact.mustache', '#contact')
+				.done(function () {
+					utils.pageReady();
+				});
 		});
 
 		// Event
@@ -88,9 +93,53 @@ define(function (require) {
 				utils.pageRendering();
 
 				templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-				templateRenderer.renderAfter(context, 'pages/event/event.viewmodel', 'pages/event/event.mustache', '#event');
+				templateRenderer.renderAfter(context, 'pages/event/event.viewmodel', 'pages/event/list.mustache', '#event')
+					.done(function () {
+						utils.pageReady();
+					});
+			}
 
-				utils.pageReady();
+		});
+
+		this.get('/#/event/calendar', function (context) {
+			
+			if(!utils.isAuthenticated()) {
+				this.redirect('#/login');
+			}
+			else {
+				utils.pageRendering();
+
+				templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
+				templateRenderer.renderAfter(context, 'pages/event/event.viewmodel', 'pages/event/calendar.mustache', '#calendar')
+					.done(function () {
+						utils.pageReady();
+					});
+			}
+
+		});
+
+		this.get('/#/event/:id', function (context) {
+			var self = this;
+
+			if(!utils.isAuthenticated()) {
+				this.redirect('#/login');
+			}
+			else {
+				utils.pageRendering();
+
+				templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
+				templateRenderer.renderAfter(context, 'pages/event/event.viewmodel', 'pages/event/detail.mustache', '#detail')
+					.done(function (viewModel) {
+
+						viewModel.initDetails(self.params.id)
+							.done(function () {
+								utils.pageReady();
+							})
+							.fail(function () {
+								console.error('Error initializing event viewmodel');
+							});
+
+					});				
 			}
 
 		});
@@ -105,9 +154,10 @@ define(function (require) {
 				utils.pageRendering();
 
 				templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-				templateRenderer.renderAfter(context, 'pages/profile/profile.viewmodel', 'pages/profile/profile.mustache', '#profile');
-
-				utils.pageReady();
+				templateRenderer.renderAfter(context, 'pages/profile/profile.viewmodel', 'pages/profile/profile.mustache', '#profile')
+					.done(function () {
+						utils.pageReady();
+					});
 			}
 
 		});
@@ -123,9 +173,10 @@ define(function (require) {
 				utils.pageRendering();
 
 				templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-				templateRenderer.renderAfter(context, 'pages/login/login.viewmodel', 'pages/login/login.mustache', '#login');
-
-				utils.pageReady();
+				templateRenderer.renderAfter(context, 'pages/login/login.viewmodel', 'pages/login/login.mustache', '#login')
+					.done(function () {
+						utils.pageReady();
+					});
 			}
 		
 		});

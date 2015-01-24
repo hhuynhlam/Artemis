@@ -1,6 +1,7 @@
 'use strict';
 
 define(function () {
+	var $ = require('jquery');
 
 	var templateRenderer = {
 		
@@ -20,6 +21,8 @@ define(function () {
 		},
 
 		renderAfter : function (context, viewModel, viewTemplate, domID) {
+			var promise = $.Deferred();
+
 			require([viewModel, 'jquery', 'knockout'], function (ViewModel, $, ko) {
 				var _viewModel = (ViewModel instanceof Function) ? new ViewModel() : ViewModel;
 
@@ -28,14 +31,21 @@ define(function () {
 					.appendTo(context.$element())
 					.then(function () {
 
-						// clean ko bindings from home
-						if ($(domID)[0]) {
-							ko.cleanNode($(domID)[0]);
-							ko.applyBindings(_viewModel, $(domID)[0]);
+						// FIXME: Hack for domID not existing
+						if (!$(domID)[0]) {
+							window.location.reload();
 						}
+
+						// clean ko bindings
+						ko.cleanNode($(domID)[0]);
+						ko.applyBindings(_viewModel, $(domID)[0]);
+
+						promise.resolve(_viewModel);
 
 					});
 			});	
+
+			return promise;
 		}
 	};
 	

@@ -79,12 +79,17 @@
 							<i class="fa fa-refresh fa-spin"></i>
 						</div></td>
 					</tr>
+					<tr>
+						<td colspan="2"><div class="text-center" style="display: block;" data-bind="visible: !loaderEnabled()">
+							<span class="text-muted">Scroll Down to Load More Events</span>
+						</div></td>
+					</tr>
 				</tfoot>
 				
 				<tbody style="display: none;" data-bind="visible: !pageLoading(), foreach: events">
 					<tr>
 						<td data-bind="text: date"></td>
-						<td data-bind="html: name"></td>
+						<td><a data-bind="html: name, attr: { href:'/#/event/' + id  }"></a></td>
 					</tr>
 				</tbody>
 			</table>
