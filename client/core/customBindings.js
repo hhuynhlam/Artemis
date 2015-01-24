@@ -29,4 +29,28 @@ define(function (require) {
 			$(element).attr('placeholder', value);
 	    }
 	};
+
+	// toggle active
+	ko.bindingHandlers.eventFilter = {
+		init: function(element, valueAccessor) {
+			$(element).click(function () {
+				
+				var conflicts;
+				
+				if ( !$(element).hasClass('disabled') ) {
+
+					conflicts = valueAccessor().conflicts;
+
+					$(element).toggleClass('active');
+					conflicts.forEach(function (c) {
+						c.forEach(function (i) {
+							$('#' + i).toggleClass('disabled');
+						});
+					});
+
+				} 
+			
+			});
+		}
+	};
 });

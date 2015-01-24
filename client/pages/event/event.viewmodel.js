@@ -6,10 +6,11 @@ define(function (require) {
 	var ko = require('knockout');
 	var moment = require('moment');
 	var utils = require('utils');
+	require('customBindings');
 
 	// Locals
-	var _increment = 20;
-	var _limit = 20;
+	var _increment = 40;
+	var _limit = 40;
 	var _offset = 0;
 
 	var eventViewModel = {
@@ -17,10 +18,17 @@ define(function (require) {
 		events: ko.observableArray([]),
 		eventLoading: ko.observable(true),
 		pageLoading: ko.observable(true),
+		title: ko.observable('Events'),
+		
+		general: ['general'],
+		services: ['service', 'community', 'campus', 'fraternity', 'nation', 'fundraiser', 'general_service'],
+		fellowships: ['fellowship', 'crazy', 'cool', 'sexy'],
+		interchapters: ['interchapter', 'interchapter_home', 'interchapter_away'],
 
-		loadFellowships: function () {
+		// Loading events
+		loadEvents: function (type) {
 			var self = this;
-			var getEvents = utils.getEvents(constant.FELLOWSHIP, _limit, _offset);
+			var getEvents = utils.getEvents(type, _limit, _offset);
 			
 			self.eventLoading(true);
 
@@ -42,7 +50,11 @@ define(function (require) {
 				self.pageLoading(false);
 				console.error('error: ' + error);
 			});
-		}
+		},
+
+		showFilters: function () {
+			$('.filter-collapse').toggle();
+		},
 
 	};
 
@@ -53,7 +65,7 @@ define(function (require) {
 	
 	// Init
 	(function init() {
-		eventViewModel.loadFellowships();
+		eventViewModel.loadEvents();
 		
 		// lazy load events
 		$(window).on("scroll", function() {
@@ -62,7 +74,7 @@ define(function (require) {
 			
 			// scroll is pass document height
 			if (scrollPosition > (scrollHeight + 40) ) {
-				eventViewModel.loadFellowships();
+				eventViewModel.loadEvents();
 			}
 		});
 	})();

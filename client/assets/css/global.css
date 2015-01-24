@@ -42,3 +42,18 @@
 .vert-mid-view {
 	margin-top: 40vh;
 }
+
+/* XS */
+@media (max-width: 767px) {
+	.filter-collapse {
+		z-index: 100;
+	}
+
+	.filtered-table {
+		z-index: -100;
+	}
+
+	.hidden-xs-override { 
+		display: none; 
+	}
+}
