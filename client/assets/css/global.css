@@ -47,6 +47,75 @@ table a:not(.btn), .table a:not(.btn) {
 	margin-top: 40vh;
 }
 
+/* Full Calendar Overrides */
+.fc-button.fc-state-default {
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	white-space: nowrap;
+	padding: 8px 16px;
+	font-size: 15px;
+	line-height: 1.42857143;
+	border-radius: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	color: #ffffff;
+	background-color: #4e5d6c;
+	text-shadow: none;
+	box-shadow: none;
+	height: auto;
+}
+
+.fc-button.fc-state-default:hover {
+	background-color: #485563;
+}
+
+.fc-day-grid .fc-row.fc-week.fc-widget-content:nth-child(odd) .fc-bg td:nth-child(odd) {
+	background-color: #4E5D6C;
+}
+
+.fc-day-grid .fc-row.fc-week.fc-widget-content:nth-child(odd) .fc-bg td:nth-child(even) {
+	background-color: #485563;
+}
+
+.fc-day-grid .fc-row.fc-week.fc-widget-content:nth-child(even) .fc-bg td:nth-child(odd) {
+	background-color: #485563;
+}
+
+.fc-day-grid .fc-row.fc-week.fc-widget-content:nth-child(even) .fc-bg td:nth-child(even) {
+	background-color: #4E5D6C;
+}
+
+.fc-time {
+	display: none;
+}
+
+.fc-unthemed .fc-popover, .fc-unthemed .fc-row, .fc-unthemed hr, .fc-unthemed tbody, .fc-unthemed td, .fc-unthemed th, .fc-unthemed thead {
+	border-color: #4E5D6C;
+}
+
+.fc-view-container {
+	background-color: #4E5D6C;
+	margin-bottom: 50px;
+}
+
+.fc-widget-header .fc-day-header.fc-widget-header:nth-child(odd) {
+	background-color: #4E5D6C;
+}
+
+.fc-widget-header .fc-day-header.fc-widget-header:nth-child(even) {
+	background-color: #485563;
+}
+
 /* XS */
 @media (max-width: 767px) {
 	.filter-collapse {

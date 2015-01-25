@@ -9,6 +9,7 @@ require.config({
 
         // Vendor
         'bootstrap': 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
+        'fullcalendar': 'vendor/bower_components/fullcalendar/dist/fullcalendar.min',
         'jquery': 'vendor/bower_components/jquery/dist/jquery.min',
         'jquery-cookie': 'vendor/bower_components/jquery.cookie/jquery.cookie',
         'knockout': 'vendor/bower_components/knockout/dist/knockout',
@@ -22,6 +23,7 @@ require.config({
     },
     shim: {
         'bootstrap': { deps: ['jquery'] },
+        'fullcalendar': { deps: ['jquery', 'moment'] },
         'mustache': { deps: ['jquery'] },
         'sammy': { deps: ['jquery'] },
         'sammy-mustache': { deps: ['sammy', 'mustache'] }

@@ -111,8 +111,11 @@ define(function (require) {
 
 				templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
 				templateRenderer.renderAfter(context, 'pages/event/event.viewmodel', 'pages/event/calendar.mustache', '#calendar')
-					.done(function () {
+					.done(function (viewModel) {
+
 						utils.pageReady();
+						viewModel.initCalendar(); // can only init calendar on visible DOM
+
 					});
 			}
 
@@ -136,7 +139,7 @@ define(function (require) {
 								utils.pageReady();
 							})
 							.fail(function () {
-								console.error('Error initializing event viewmodel');
+								console.error('Error initializing event details');
 							});
 
 					});				
