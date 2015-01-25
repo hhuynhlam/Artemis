@@ -149,8 +149,14 @@ define(function (require) {
 
 			// if the event is already loaded in event list
 			if( eventIndex && eventIndex !== -1 ) {
-				self.eventDetail( self.events()[eventIndex] );
-				console.log('Found');
+				var selectedEvent = self.events()[eventIndex];
+
+				if(selectedEvent && selectedEvent.description) {
+					selectedEvent.description = utils.nl2br(selectedEvent.description);
+				}
+
+				self.eventDetail( selectedEvent );
+
 				promise.resolve(true);
 			}
 
@@ -163,12 +169,23 @@ define(function (require) {
 							data[0].date = moment.unix(data[0].date).format('dddd, MMMM Do YYYY');
 						}
 
+						if (data[0] && data[0].description) {
+							data[0].description = utils.nl2br(data[0].description);
+						}
+
 						self.eventDetail(data[0]);
 						promise.resolve(true);
 					})
 					.fail(function () {
 						promise.resolve(false);
 					});
+			}
+
+			// set default description
+			if(!self.eventDetail().description) {
+				var _event = self.eventDetail();
+				_.assign( _event, { description: 'No event description.' } );
+				self.eventDetail(_event);
 			}
 
 			return promise;
