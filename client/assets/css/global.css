@@ -5,6 +5,22 @@
 	padding-right: 50px;
 }
 
+.event_other {
+	background-color: #485563;
+}
+
+.event_service {
+	background-color: #D9534F;
+}
+
+.event_fellowship {
+	background-color: #5CB85C;
+}
+
+.event_interchapter {
+	background-color: #F0AD4E;
+}
+
 .has-error .form-control {
 	border-color: #D9534F;
 	border-width: 3px;

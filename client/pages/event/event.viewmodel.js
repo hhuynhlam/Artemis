@@ -179,10 +179,28 @@ define(function (require) {
 			var self = this;
 			var _events = [];
 			
+			var _getEventType = function (eventCode) {
+
+				if (parseInt(eventCode) & constant.MEETING & constant.OTHER) {
+					return 'event_other';
+				}
+				else if (parseInt(eventCode) & constant.FELLOWSHIP) {
+					return 'event_fellowship';
+				}
+				else if (parseInt(eventCode) & constant.SERVICE) {
+					return 'event_service';
+				}
+				else if (parseInt(eventCode) & constant.INTERCHAPTER_HOME & constant.INTERCHAPTER_AWAY) {
+					return 'event_interchapter';
+				}
+
+			};
+
 			// load events
 			self.events().forEach(function (e) {
 				_events.push({
 					id: e.id,
+					className: _getEventType(e.event_code),
 					title: e.name,
 					start: e.date
 				});
