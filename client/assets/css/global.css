@@ -28,6 +28,7 @@
 .pop-notice {
 	position:absolute;
     right: 0;
+    z-index: 100;
 }
 
 table a:not(.btn), .table a:not(.btn) {
