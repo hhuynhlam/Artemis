@@ -78,7 +78,7 @@ define(function (require) {
 			return $.get('http://localhost/server/index.php/event', _data);
 		},
 
-		getEvents: function (type, limit, offset) {
+		getEvents: function (type, startDate, endDate, limit, offset) {
 			var _data = {
 				limit: limit,
 				offset: offset
@@ -86,6 +86,14 @@ define(function (require) {
 
 			if (type) {
 				_data.event_code = type;
+			}
+
+			if (startDate) {
+				_data.startDate = startDate.unix();
+			}
+
+			if (endDate) {
+				_data.endDate = endDate.unix();
 			}
 
 			_data = this.appendApiKey(_data);

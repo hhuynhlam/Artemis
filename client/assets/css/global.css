@@ -1,10 +1,5 @@
 /* Global CSS Overrides */
 
-.content {
-	padding-left: 50px;
-	padding-right: 50px;
-}
-
 .event_other {
 	background-color: #485563;
 }
@@ -30,29 +25,9 @@
 	font-size: 7em;
 }
 
-.panel {
-	padding-left: 0px;
-	padding-right: 0px;
-}
-
-.panel-heading {
-	font-size: 2em;
-	padding-left: 60px;
-	padding-right: 60px;
-}
-
-.panel-body {
-	background-color: #4E5D6C;
-}
-
 .pop-notice {
 	position:absolute;
     right: 0;
-}
-
-#rushinfo table>tbody>tr>td {
-	padding-left: 50px;
-	padding-right: 50px;
 }
 
 table a:not(.btn), .table a:not(.btn) {

@@ -72,7 +72,7 @@ function db_update($table, $values, $where) {
 	return $query;
 }
 
-function db_select($table, $where, $order, $limit, $offset) {
+function db_select($table, $where, $between, $order, $limit, $offset) {
 	$query = "SELECT * FROM " . $table;
 
 	// construct where clause
@@ -101,6 +101,17 @@ function db_select($table, $where, $order, $limit, $offset) {
 					$query .= ", " . $key . "='" . $value . "'";
 				}
 			}
+		}
+
+		if (strlen($between) != 0) {
+			$query .= ' AND ' . $between;	
+		}
+		
+	} else {
+
+		// between conditions
+		if (strlen($between) != 0) {
+			$query .= ' WHERE ' . $between;	
 		}
 	}
 

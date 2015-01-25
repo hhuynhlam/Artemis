@@ -8,7 +8,6 @@ define(function (require) {
 	var moment = require('moment');
 	var utils = require('utils');
 	require('customBindings');
-	require('fullcalendar');
 
 	// Locals
 	var _increment = 30;
@@ -22,7 +21,6 @@ define(function (require) {
 		eventLoading: ko.observable(true),
 		filter: ko.observable(0),
 		pageLoading: ko.observable(true),
-		title: ko.observable('Events'),
 		
 		general: ['general'],
 		services: ['service', 'community', 'campus', 'fraternity', 'nation', 'fundraiser', 'general_service'],
@@ -111,9 +109,9 @@ define(function (require) {
 		},
 
 		// Loading events
-		loadEvents: function (type) {
+		loadEvents: function (type, startDate, endDate) {
 			var self = this;
-			var getEvents = (type) ? utils.getEvents(type, _limit, _offset) : utils.getEvents(null, _limit, _offset);
+			var getEvents = (type) ? utils.getEvents(type, startDate, endDate, _limit, _offset) : utils.getEvents(null, startDate, endDate, _limit, _offset);
 			
 			self.eventLoading(true);
 
@@ -135,6 +133,8 @@ define(function (require) {
 				self.pageLoading(false);
 				console.error('error: ' + error);
 			});
+
+			return getEvents;
 		},
 
 		showFilters: function () {
@@ -172,53 +172,6 @@ define(function (require) {
 			}
 
 			return promise;
-		},
-
-		// Calendar
-		initCalendar: function () {
-			var self = this;
-			var _events = [];
-			
-			var _getEventType = function (eventCode) {
-
-				if (parseInt(eventCode) & constant.MEETING & constant.OTHER) {
-					return 'event_other';
-				}
-				else if (parseInt(eventCode) & constant.FELLOWSHIP) {
-					return 'event_fellowship';
-				}
-				else if (parseInt(eventCode) & constant.SERVICE) {
-					return 'event_service';
-				}
-				else if (parseInt(eventCode) & constant.INTERCHAPTER_HOME & constant.INTERCHAPTER_AWAY) {
-					return 'event_interchapter';
-				}
-
-			};
-
-			// load events
-			self.events().forEach(function (e) {
-				_events.push({
-					id: e.id,
-					className: _getEventType(e.event_code),
-					title: e.name,
-					start: e.date
-				});
-			});
-
-			// init calendar
-			$('#eventCalendar').fullCalendar({
-				defaultDate: moment('2010-06-01'), //testing
-				editable: false,
-				eventClick: function (e) {
-					window.location.href = '/#/event/' + e.id;
-				},
-				events: _events,
-		        header:{
-		          right: 'prev,next'
-		        }
-			});
-
 		},
 
 	};

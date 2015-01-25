@@ -110,7 +110,7 @@ define(function (require) {
 				utils.pageRendering();
 
 				templateRenderer.renderClean(context, 'components/navbar/navbar.viewmodel', 'components/navbar/navbar.mustache', '#navbar');
-				templateRenderer.renderAfter(context, 'pages/event/event.viewmodel', 'pages/event/calendar.mustache', '#calendar')
+				templateRenderer.renderAfter(context, 'pages/event/calendar.viewmodel', 'pages/event/calendar.mustache', '#calendar')
 					.done(function (viewModel) {
 
 						utils.pageReady();
