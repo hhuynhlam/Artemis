@@ -16,6 +16,21 @@
 			<span data-bind="html: eventDetail().description"></span></p>
 		</div>
 
+		<div class="col-sm-4">
+			<div class="panel panel-default" data-bind="foreach: shifts">
+				<div class="panel-heading">
+					<h4 data-bind="text: description"></h4> 
+					<small data-bind="text: start_time"></small>-<small data-bind="text: end_time"></small></div>
+				
+				<div class="panel-body">
+					<ul data-bind="foreach: signups">
+						<li><span data-bind="text: first_name"></span> <span data-bind="text: last_name"></span></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+
 	</div>
 
 </section>

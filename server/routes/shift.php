@@ -13,32 +13,56 @@ $app->get('/shift', function () use ($app) {
     require_once('_db.php');
 
     // get request parameters
-    $params = $app->request->params();
+    $params = $app->request->get();
+    $between = '';
+    $where = array();
 
-    // if there are no parameters, query all
-    if (count($params) == 0)
-    {
-        
-        $results = $db->query( 'SELECT * FROM shifts' );
-        echo parseJsonFromSQL($results);
+    foreach($params as $key => $value) {
+        if ($key == 'apiKey' || $key == 'offset' || $key == 'limit' || $key == 'startDate' || $key == 'endDate') {
+            continue;
+        }
 
-    } 
+        $where[$key] = $value;
+    }
 
-    // if there are parameters
-    else 
-    {
-        // implode request parameters into query where clause
-        $where = implode(' AND ', array_map(function ($v, $k) { 
-            return sprintf('%s="%s"', $k, $v); 
-        }, $params, array_keys($params)));
-
-        // replace double quotes with single quotes (mySQL friendly-syntax)
-        $where = stripslashes($where);
-        $where = str_replace('"', '', $where);
-
-        $results = $db->query( 'SELECT * FROM shifts WHERE ' . $where );
-        echo parseJsonFromSQL($results);
-    } 
+    if ( !is_null($app->request->get('startDate')) && !is_null($app->request->get('endDate')) ) {
+        $between = 'date BETWEEN ' . $app->request->get('startDate') . ' AND ' . $app->request->get('endDate');
+    }
+    
+    $results = $db->query( db_select('shifts', $where, null, 'start_time DESC', null, null ) );
+    echo parseJsonFromSQL($results);
+    //echo db_select('shifts', $where, null, 'start_time DESC', null, null );
 });
 
+$app->get('/shift/signups', function () use ($app) {
+    
+    // authenticate before do anything
+    if ( !authenticate($app->request->params('apiKey')) ) {
+        $app->status(403);
+        echo json_encode('You are not allowed to see this page.');
+        return;
+    }
+
+    // connect to db
+    require_once('_db.php');
+
+    // get request parameters
+    $shift = $app->request->get("shift");
+    
+    $table = [
+        "name" => "members",
+        "alias" => "m"
+    ];
+
+    $join = [
+        ["table" => "signups", "alias" => "su", "on" => "m.id = su.user"],
+        ["table" => "shifts", "alias" => "sh", "on" => "su.shift = sh.id"]
+    ];
+
+    $where = "sh.id = " . $shift . " ORDER BY m.first_name ASC, m.last_name ASC ";
+
+    $results = $db->query( db_select_join( $table, $join, $where ) );
+    echo parseJsonFromSQL($results);
+    //echo db_select_join( $table, $join, $where );
+});
 ?>

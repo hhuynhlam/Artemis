@@ -133,6 +133,27 @@ function db_select($table, $where, $between, $order, $limit, $offset) {
 	return $query;
 }
 
+function db_select_join($table, $join, $where) {
+	$query = "SELECT * FROM ";
+
+	foreach ($table as $key => $value) {
+		if ($key == "name") {
+			$query .= $value;
+		} else {
+			$query .= " as " . $value;
+		}
+	}
+	
+	foreach ($join as $j) {
+		$query .= " JOIN " . $j["table"];
+		$query .= " as " . $j["alias"];
+		$query .= " on " . $j["on"];
+	}
+
+	$query .= " WHERE " . $where;
+	return $query;
+}
+
 // function db_insert($table, $values, $where) {
 
 // }

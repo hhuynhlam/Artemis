@@ -21,6 +21,7 @@ define(function (require) {
 		eventLoading: ko.observable(true),
 		filter: ko.observable(0),
 		pageLoading: ko.observable(true),
+		shifts : ko.observableArray([]),
 		
 		general: ['general'],
 		services: ['service', 'community', 'campus', 'fraternity', 'nation', 'fundraiser', 'general_service'],
@@ -190,6 +191,44 @@ define(function (require) {
 
 			return promise;
 		},
+
+		// Shifts
+		initShifts: function (eventId) {
+			var self = this;
+			var getShifts = utils.getShifts(eventId);
+			var promise = $.Deferred();
+
+			getShifts.done(function (data) {		
+				if (data) {
+					self.shifts([]);
+					data.forEach(function (s) {
+						var getSignups = utils.getSignups(s.id);
+						s.start_time = moment.unix(s.start_time).format('h:mm a');
+						s.end_time = moment.unix(s.end_time).format('h:mm a');
+						
+						getSignups.done(function (signups) {
+							s.signups = signups;
+							self.shifts.push(s);
+							promise.resolve();
+						});
+
+						getSignups.fail(function () {
+							promise.reject();
+						});
+						
+					});
+				}
+				else {
+					promise.reject();
+				}
+			});
+
+			getShifts.fail(function () {
+				promise.reject();
+			});
+
+			return promise;
+		}
 
 	};
 

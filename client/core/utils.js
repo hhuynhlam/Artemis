@@ -107,6 +107,27 @@ define(function (require) {
 			return $.get('http://localhost/server/index.php/event', _data);
 		},
 
+		// Shifts
+		getShifts: function (eventId) {
+			var _data = {
+				event: eventId,
+			};
+
+			_data = this.appendApiKey(_data);
+			
+			return $.get('http://localhost/server/index.php/shift', _data);
+		},
+
+		getSignups: function (shiftId) {
+			var _data = {
+				shift: shiftId,
+			};
+
+			_data = this.appendApiKey(_data);
+			
+			return $.get('http://localhost/server/index.php/shift/signups', _data);
+		},
+
 		// Profile
 		updateUser: function (userData) {
 			userData = this.appendApiKey(userData);

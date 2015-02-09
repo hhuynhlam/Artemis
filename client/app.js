@@ -134,7 +134,7 @@ define(function (require) {
 				templateRenderer.renderAfter(context, 'pages/event/event.viewmodel', 'pages/event/detail.mustache', '#detail')
 					.done(function (viewModel) {
 
-						viewModel.initDetails(self.params.id)
+						$.when( viewModel.initDetails(self.params.id), viewModel.initShifts(self.params.id) )
 							.done(function () {
 								utils.pageReady();
 							})
