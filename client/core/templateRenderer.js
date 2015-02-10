@@ -28,21 +28,14 @@ define(function () {
 
 				// render mustache template with viewmodel
 				context.render(viewTemplate, _viewModel)
-					.appendTo(context.$element())
-					.then(function () {
-
-						// FIXME: Hack for domID not existing, probably race condition
-						while (!$(domID)[0]) {
-							setTimeout(1000);
-							//window.location.reload();
-						}
+					.then(function (renderedContent) {
+						$('#view').append(renderedContent);
 
 						// clean ko bindings
 						ko.cleanNode($(domID)[0]);
 						ko.applyBindings(_viewModel, $(domID)[0]);
 
 						promise.resolve(_viewModel);
-
 					});
 			});	
 
