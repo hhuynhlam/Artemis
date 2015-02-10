@@ -31,7 +31,7 @@ define(function () {
 					.appendTo(context.$element())
 					.then(function () {
 
-						// FIXME: Hack for domID not existing
+						// FIXME: Hack for domID not existing, probably race condition
 						while (!$(domID)[0]) {
 							setTimeout(1000);
 							//window.location.reload();

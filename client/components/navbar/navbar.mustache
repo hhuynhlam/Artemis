@@ -22,7 +22,7 @@
 		<!-- Main Links -->
 		<ul class="nav navbar-nav">
 			
-			<li class="dropdown">
+			{{! <li class="dropdown">
 				<a href="#/about" class="dropdown-toggle" data-toggle="dropdown">About<b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="#/about/links">Affiliates</a></li>
@@ -31,7 +31,7 @@
 					<li><a href="#/about/rushhistory">History </a></li>
 					<li><a href="#/about/rushinfo">Rushing</a></li>
 				</ul>
-			</li>
+			</li> }}
 
 			<li class="dropdown" data-bind="visible: loggedIn">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Events <b class="caret"></b></a>
@@ -41,15 +41,15 @@
 				</ul>
 			</li>
 
-			<li class="dropdown" data-bind="visible: loggedIn">
+			{{! <li class="dropdown" data-bind="visible: loggedIn">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Media <b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="#">Newsletters</a></li>
 					<li><a href="#">Videos</a></li>
 				</ul>
-			</li>
+			</li> }}
 
-			<li class="dropdown" data-bind="visible: loggedIn">
+			{{! <li class="dropdown" data-bind="visible: loggedIn">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Members <b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="#">Documents</a></li>
@@ -58,7 +58,7 @@
 					<li><a href="#">Finance</a></li>
 					<li><a href="#">Roster</a></li>
 				</ul>
-			</li>
+			</li> }}
 
 		</ul>
 
@@ -83,7 +83,7 @@
 					<span  data-bind="text: currentUser.first_name"></span><b class="caret"></b></a>
 				<ul class="dropdown-menu">
 					<li><a href="#/profile">Profile</a></li>
-					<li><a href="#">Send Email</a></li>
+					{{! <li><a href="#">Send Email</a></li> }}
 					<li data-bind="visible: loggedIn, click: toggleLogout"><a href="#">Logout</a></li>
 				</ul>
 			</li>

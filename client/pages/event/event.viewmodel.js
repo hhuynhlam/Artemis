@@ -140,6 +140,10 @@ define(function (require) {
 			return getEvents;
 		},
 
+		scrollClick: function () {
+			this.loadEvents( this.filter() );
+		},
+
 		showFilters: function () {
 			$('.filter-collapse').toggle();
 		},
@@ -253,6 +257,7 @@ define(function (require) {
 				eventViewModel.loadEvents( eventViewModel.filter() );
 			}
 		});
+
 	})();
 
 	return eventViewModel;
