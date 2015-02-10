@@ -1,6 +1,7 @@
 'use strict';
 
 define(function (require) {
+	var env = require('env');
 	var ko = require('knockout');
 	var utils = require('utils');
 
@@ -13,7 +14,7 @@ define(function (require) {
 		self.showLogout = ko.observable(false);
 
 		self.logout = function () {
-			window.location.replace('/#/logout');
+			window.location.replace(env.CLIENT_ROOT + '/#/logout');
 		};
 
 		self.toggleLogout = function (data, event) {

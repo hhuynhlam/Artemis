@@ -52,7 +52,6 @@ define(function (require) {
 
 			// init calendar
 			$('#eventCalendar').fullCalendar({
-				defaultDate: moment('2010-06-01'), //testing
 				editable: false,
 				eventClick: function (e) {
 					window.location.href = '/#/event/' + e.id;

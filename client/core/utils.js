@@ -1,6 +1,7 @@
 'use strict';
 
 define(function (require) {
+	var env = require('env');
 	var $ = require('jquery');
 	var md5 = require('md5');
 	require('jquery-cookie');
@@ -29,7 +30,7 @@ define(function (require) {
 				password: (md5Enabled) ? md5(password) : password
 			};
 
-			return $.get('http://localhost/server/index.php/login', _data);
+			return $.get(env.SERVER_ROOT + '/login', _data);
 		},
 
 		logout: function () {
@@ -81,7 +82,7 @@ define(function (require) {
 
 			_data = this.appendApiKey(_data);
 			
-			return $.get('http://localhost/server/index.php/event', _data);
+			return $.get(env.SERVER_ROOT + '/event', _data);
 		},
 
 		getEvents: function (type, startDate, endDate, limit, offset) {
@@ -104,7 +105,7 @@ define(function (require) {
 
 			_data = this.appendApiKey(_data);
 			
-			return $.get('http://localhost/server/index.php/event', _data);
+			return $.get(env.SERVER_ROOT + '/event', _data);
 		},
 
 		// Shifts
@@ -115,7 +116,7 @@ define(function (require) {
 
 			_data = this.appendApiKey(_data);
 			
-			return $.get('http://localhost/server/index.php/shift', _data);
+			return $.get(env.SERVER_ROOT + '/shift', _data);
 		},
 
 		getSignups: function (shiftId) {
@@ -125,7 +126,7 @@ define(function (require) {
 
 			_data = this.appendApiKey(_data);
 			
-			return $.get('http://localhost/server/index.php/shift/signups', _data);
+			return $.get(env.SERVER_ROOT + '/shift/signups', _data);
 		},
 
 		// Profile
@@ -136,7 +137,7 @@ define(function (require) {
 				userData.password = md5(userData.password);
 			}
 			
-			return $.post('http://localhost/server/index.php/member/update', userData);
+			return $.post(env.SERVER_ROOT + '/member/update', userData);
 		}
 
 	};

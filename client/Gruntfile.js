@@ -4,14 +4,9 @@
 
   // Setup Grunt
   grunt.initConfig({
-    
-    // grunt variable
-    _config: {
-      today: new Date().toString()
-    },
-
+  
     clean: {
-      dist: ['dist/*','!dist/.git*', '!dist/Procfile']
+      dist: ['dist/*', '!dist/_env.js']
     },
 
     copy: {
@@ -33,23 +28,30 @@
           src: ['pages/**'], 
           dest: 'dist/',
         }, {
+        expand: true, 
+          src: ['vendor/**'], 
+          dest: 'dist/',
+        }, {
           expand: true, 
-          src: ['.bowerrc', 'app.js', 'bower.json', 'index.html', 'package.json', 'server.js'], 
+          src: ['app.js', 'index.html'], 
           dest: 'dist/',
         }]
       }
     },
-    
-    // less: {
-    //   defaults: {
-    //     options: {
-    //       paths: ["assets/css"]
-    //     },
-    //     files: {
-    //       "assets/css/**/*.css": "assets/css/**/*.less"
-    //     }
-    //   }
-    // },
+
+    ftpush: {
+      dist: {
+        auth: {
+          host: 'clubs.uci.edu',
+          port: 21,
+          authKey: 'key'
+        },
+        src: 'dist',
+        dest: 'Sites/beta/client',
+        simple: false,
+        useList: false
+      }
+    },
 
     jshint: {
       files: ['Gruntfile.js', '**/*.js', '!dist/**/*.js', '!vendor/bower_components/**/*.js', '!node_modules/**/*.js'],
@@ -58,18 +60,7 @@
       }
     },
     
-    shell: {
-      deploy: {
-        command: [
-          // 'cd ~/Git/Chiron/dist',
-          // 'git add --all',
-          // 'git commit -m \' BUILD: <%= _config.today %>\'',
-          // 'git push origin master',
-          // 'heroku logs'
-          'echo \' BUILD: <%= _config.today %>\''
-        ].join('&&')
-      },
-      
+    shell: {      
       serve: {
         command: [
           'cd ~/Git/Artemis/client',
@@ -84,13 +75,13 @@
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-ftpush');
   grunt.loadNpmTasks('grunt-shell');
 
   // Register Grunt tasks
   grunt.registerTask('default', ['jshint']);
   grunt.registerTask('build', ['jshint', 'clean:dist', 'copy:dist']);
-  grunt.registerTask('deploy', ['shell:deploy']);
+  grunt.registerTask('deploy', ['jshint', 'clean:dist', 'copy:dist', 'ftpush:dist']);
   grunt.registerTask('serve', ['jshint', 'shell:serve']);  
 
 };

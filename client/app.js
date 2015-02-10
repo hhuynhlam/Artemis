@@ -2,6 +2,7 @@
 
 define(function (require) {
 	var $ = require('jquery');
+	var env = require('env');
 	var mustache = require('sammy-mustache');
 	var templateRenderer = require('templateRenderer');
 	var sammy = require('sammy');
@@ -87,7 +88,7 @@ define(function (require) {
 		this.get('/#/event', function (context) {
 			
 			if(!utils.isAuthenticated()) {
-				this.redirect('#/login');
+				this.redirect(env.CLIENT_ROOT + '#/login');
 			}
 			else {
 				utils.pageRendering();
@@ -104,7 +105,7 @@ define(function (require) {
 		this.get('/#/event/calendar', function (context) {
 			
 			if(!utils.isAuthenticated()) {
-				this.redirect('#/login');
+				this.redirect(env.CLIENT_ROOT + '#/login');
 			}
 			else {
 				utils.pageRendering();
@@ -125,7 +126,7 @@ define(function (require) {
 			var self = this;
 
 			if(!utils.isAuthenticated()) {
-				this.redirect('#/login');
+				this.redirect(env.CLIENT_ROOT + '#/login');
 			}
 			else {
 				utils.pageRendering();
@@ -151,7 +152,7 @@ define(function (require) {
 		this.get('/#/profile', function (context) {
 			
 			if(!utils.isAuthenticated()) {
-				this.redirect('#/login');
+				this.redirect(env.CLIENT_ROOT + '#/login');
 			}
 			else {
 				utils.pageRendering();
@@ -170,7 +171,7 @@ define(function (require) {
 		this.get('/#/login', function (context) {
 			
 			if(utils.isAuthenticated()) {
-				this.redirect('/#/');
+				this.redirect(env.CLIENT_ROOT + '/#/');
 			}
 			else {
 				utils.pageRendering();
@@ -187,13 +188,13 @@ define(function (require) {
 		this.get('/#/logout', function () {
 
 			utils.logout();
-			this.redirect('/#/');
+			this.redirect(env.CLIENT_ROOT + '/#/');
 		
 		});
 
 		// 404 Error
 		this.notFound = function () {
-			window.location.replace('/#/');
+			window.location.replace(env.CLIENT_ROOT + '/#/');
 		};
 
 	});

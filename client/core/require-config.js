@@ -1,6 +1,9 @@
 require.config({
     baseUrl: '',
     paths: {
+        // Env
+        'env': '_env',
+
         // Core
         'constant': 'core/constant',
         'customBindings' : 'core/customBindings',

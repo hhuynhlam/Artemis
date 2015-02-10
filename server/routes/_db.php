@@ -2,9 +2,9 @@
 
 function connect_db() {
 	$server = 'localhost'; // this may be an ip address instead
-	$user = 'root';
-	$pass = 'root';
-	$database = 'apo_rho';
+	$user = 'aphio';
+	$pass = 'Horton1925';
+	$database = 'aphio';
 	$connection = new mysqli($server, $user, $pass, $database);
 
 	return $connection;
