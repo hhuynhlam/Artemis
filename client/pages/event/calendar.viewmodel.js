@@ -3,6 +3,7 @@
 define(function (require) {
 	var $ = require('jquery');
 	var constant = require('constant');
+	var env = require('env');
 	var moment = require('moment');
 	var utils = require('utils');
 	require('fullcalendar');
@@ -54,7 +55,7 @@ define(function (require) {
 			$('#eventCalendar').fullCalendar({
 				editable: false,
 				eventClick: function (e) {
-					window.location.href = '/#/event/' + e.id;
+					window.location.href = env.CLIENT_ROOT + '/#/event/' + e.id;
 				},
 				events: renderEvents,
 				fixedWeekCount: false,
