@@ -89,7 +89,7 @@
 				<tbody style="display: none;" data-bind="visible: !pageLoading(), foreach: events">
 					<tr>
 						<td data-bind="text: date"></td>
-						<td><a data-bind="html: name, attr: { href:'/#/event/' + id  }"></a></td>
+						<td><a data-bind="html: name, attr: { href: $parent._clientRoot + '/#/event/' + id  }"></a></td>
 					</tr>
 				</tbody>
 			</table>

@@ -48,7 +48,7 @@
         },
         src: 'dist',
         dest: 'Sites/beta/client',
-        simple: false,
+        simple: true,
         useList: false
       }
     },

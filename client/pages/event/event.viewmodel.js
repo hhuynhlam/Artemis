@@ -4,6 +4,7 @@ define(function (require) {
 	var $ = require('jquery');
 	var _ = require('lodash');
 	var constant = require('constant');
+	var env = require('env');
 	var ko = require('knockout');
 	var moment = require('moment');
 	var utils = require('utils');
@@ -16,6 +17,7 @@ define(function (require) {
 
 	var eventViewModel = {
 
+		_clientRoot: env.CLIENT_ROOT,
 		events: ko.observableArray([]),
 		eventDetail: ko.observable({}),
 		eventLoading: ko.observable(true),
