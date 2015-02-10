@@ -1,5 +1,6 @@
 .ftppass
 .git
+.grunt
 bower_components
 node_modules
 dist

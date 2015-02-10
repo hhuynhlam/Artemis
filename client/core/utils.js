@@ -19,8 +19,8 @@ define(function (require) {
 			return $.cookie(name, value, { expires: expires, path: path });
 		},
 
-		deleteCookie: function (name) {
-			return $.removeCookie(name); 
+		deleteCookie: function (name, path) {
+			return $.removeCookie(name, { path: path }); 
 		},
 
 		// Auth
@@ -34,7 +34,7 @@ define(function (require) {
 		},
 
 		logout: function () {
-			return this.deleteCookie('aphiorhorhoLoggedIn');
+			return this.deleteCookie('aphiorhorhoLoggedIn', env.CLIENT_ROOT + '/');
 		},
 
 		isAuthenticated: function () {
@@ -55,7 +55,7 @@ define(function (require) {
 		},
 
 		createUserCookie: function (data) {
-			return this.createCookie('aphiorhorhoLoggedIn', JSON.stringify(data), 1, '/');
+			return this.createCookie('aphiorhorhoLoggedIn', JSON.stringify(data), 1, env.CLIENT_ROOT + '/');
 		},
 
 		getCurrentUser: function () {

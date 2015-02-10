@@ -32,8 +32,9 @@ define(function () {
 					.then(function () {
 
 						// FIXME: Hack for domID not existing
-						if (!$(domID)[0]) {
-							window.location.reload();
+						while (!$(domID)[0]) {
+							setTimeout(1000);
+							//window.location.reload();
 						}
 
 						// clean ko bindings
