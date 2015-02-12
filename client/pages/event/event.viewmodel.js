@@ -23,7 +23,7 @@ define(function (require) {
 		eventLoading: ko.observable(true),
 		filter: ko.observable(0),
 		pageLoading: ko.observable(true),
-		shifts : ko.observableArray([]),
+		shifts: ko.observableArray([]),
 		
 		general: ['general'],
 		services: ['service', 'community', 'campus', 'fraternity', 'nation', 'fundraiser', 'general_service'],
@@ -230,7 +230,12 @@ define(function (require) {
 			});
 
 			return promise;
-		}
+		},
+
+		addUserShift: function(userid, eventid, shiftid) {},
+		removeUserShift: function() {},
+		addUserWaitlist: function () {},
+		removeUserWaitlist: function () {}
 
 	};
 

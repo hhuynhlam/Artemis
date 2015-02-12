@@ -1,4 +1,7 @@
 /* Global CSS Overrides */
+.button-signup {
+	margin-top: 20px;
+}
 
 .event_other {
 	background-color: #485563;
@@ -49,6 +52,10 @@
 .panel-shifts .panel-body > ul {
 	margin-bottom: 0;
 	list-style-type: none;
+}
+
+.panel-shifts .panel-body > ul > li {
+	margin-bottom: 7px;
 }
 
 .pop-notice {
