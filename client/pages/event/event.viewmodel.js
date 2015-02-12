@@ -30,7 +30,9 @@ define(function (require) {
 		fellowships: ['fellowship', 'crazy', 'cool', 'sexy'],
 		interchapters: ['interchapter', 'interchapter_home', 'interchapter_away'],
 
-		// Filter Events
+		/**
+		 * Filtering
+		 */
 		filterEvents: function (viewmodel, event) {
 			var self, filterArray, selectedFilters;
 			
@@ -111,7 +113,13 @@ define(function (require) {
 
 		},
 
-		// Loading events
+		showFilters: function () {
+			$('.filter-collapse').toggle();
+		},
+
+		/**
+		 * Events
+		 */
 		loadEvents: function (type, startDate, endDate) {
 			var self = this;
 			var getEvents = (type) ? utils.getEvents(type, startDate, endDate, _limit, _offset) : utils.getEvents(null, startDate, endDate, _limit, _offset);
@@ -140,12 +148,7 @@ define(function (require) {
 			return getEvents;
 		},
 
-		showFilters: function () {
-			$('.filter-collapse').toggle();
-		},
-
-		// Event Details
-		initDetails: function (code) {
+		loadEventDetails: function (code) {
 			var self = this;
 			var eventIndex = _.findIndex(self.events(), { id: code });
 			var promise = $.Deferred();
@@ -194,30 +197,59 @@ define(function (require) {
 			return promise;
 		},
 
-		// Shifts
-		initShifts: function (eventId) {
+		loadEventShifts: function (eventId) {
 			var self = this;
 			var getShifts = utils.getShifts(eventId);
+			var getSignups = [];
 			var promise = $.Deferred();
 
 			getShifts.done(function (data) {		
+				var resolveSignups;
+
 				if (data) {
+
+					// reset shifts
 					self.shifts([]);
+					
+					// format start and end time for each shift
 					data.forEach(function (s) {
-						var getSignups = utils.getSignups(s.id);
 						s.start_time = moment.unix(s.start_time).format('h:mm a');
 						s.end_time = moment.unix(s.end_time).format('h:mm a');
-						
-						getSignups.done(function (signups) {
-							s.signups = signups;
-							self.shifts.push(s);
-							promise.resolve();
-						});
+						s.signups = ko.observableArray([]);
+						self.shifts.push(s);
+					});
 
-						getSignups.fail(function () {
-							promise.reject();
-						});
+					// get signups for each shift
+					self.shifts().forEach(function(s) {
+						getSignups.push(utils.getSignups(s.id));
+					});
+
+					// resolve signups to shifts
+					// convert array to list of parameters for $.when
+					resolveSignups = $.when.apply(self, getSignups);
+					
+					resolveSignups.done(function () {
+
+						// store array of unknown amount of success arguments
+						var _signups = Array.prototype.slice.call(arguments);
 						
+						// if there's more than one shift
+						if (_signups[1] instanceof Array) {
+							
+							// map shifts to returned signups
+							for (var i = 0; i < _signups.length; i++) {
+								self.shifts()[i].signups(_signups[i][0]);
+							}
+						}
+						else {
+							self.shifts()[0].signups(_signups[0]);
+						}
+						
+						promise.resolve();
+					});
+
+					resolveSignups.fail(function () {
+						promise.reject();
 					});
 				}
 				else {
@@ -232,10 +264,23 @@ define(function (require) {
 			return promise;
 		},
 
-		addUserShift: function(userid, eventid, shiftid) {},
-		removeUserShift: function() {},
-		addUserWaitlist: function () {},
-		removeUserWaitlist: function () {}
+		/**
+		 * Helpers
+		 */
+		_isForActivesOnly: function(permissions) {
+			var _perm = parseInt(permissions);
+			return ( _perm & constant.OPEN_ACTIVE() ) && !( _perm & constant.PLEDGE );
+		},
+
+		_isForPledgesOnly: function(permissions) {
+			var _perm = parseInt(permissions);
+			return ( _perm & constant.PLEDGE ) && !( _perm & constant.OPEN_ACTIVE() );
+		},
+
+		// addUserShift: function(userid, eventid, shiftid) {},
+		// removeUserShift: function() {},
+		// addUserWaitlist: function () {},
+		// removeUserWaitlist: function () {}
 
 	};
 

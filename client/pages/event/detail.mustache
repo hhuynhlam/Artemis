@@ -17,32 +17,48 @@
 		</div>
 
 		<div class="col-sm-4">
-			<div class="panel panel-primary panel-shifts" data-bind="foreach: shifts">
+			<!-- ko foreach: shifts -->
+			<div class="panel panel-shifts" data-bind="css: { 'panel-primary': !$parent._isForPledgesOnly(open_to), 'panel-warning': $parent._isForPledgesOnly(open_to) }">
 				<div class="panel-heading" data-bind="slideToggle: { id: 'shift_' + id }">
 					<h4 data-bind="text: description"></h4> 
+					<div data-bind="visible: $parent._isForActivesOnly(open_to)"><strong>No Pledges</strong></div>
+					<div data-bind="visible: $parent._isForPledgesOnly(open_to)"><strong>Pledges Only</strong></div>
 					<small data-bind="text: start_time"></small>-<small data-bind="text: end_time"></small><br/>
-					<div data-bind="visible: cap > 0"><small data-bind="text: signups.length"></small> of <small data-bind="text: cap"></small> spaces filled.</div>
+					<div data-bind="visible: cap > 0"><small data-bind="text: signups().length"></small> of <small data-bind="text: cap"></small> spaces filled.</div>
 					<div data-bind="visible: cap <= 0"><small>There is no cap for this shift.</small></div>
 				</div>
 				
 				<div class="panel-body" data-bind="attr: { id: 'shift_' + id }" style="display: none;">
-					<ul class="col-xs-6 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: signups.slice(0, signups.length / 2 + 1)">
+					<!-- ko if: signups().length % 2 === 0 -->
+						<ul class="col-xs-6 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: signups().slice(0, signups().length/2)">
+							<li><span data-bind="text: first_name"></span> <span data-bind="text: last_name"></span></li>
+						</ul>
+
+						<ul class="col-xs-6 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: signups().slice(signups().length/2)">
+							<li><span data-bind="text: first_name"></span> <span data-bind="text: last_name"></span></li>
+						</ul>
+					<!-- /ko -->
+
+					<!-- ko if: signups().length % 2 !== 0 -->
+					<ul class="col-xs-6 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: signups().slice(0, signups().length/2 + 1)">
 						<li><span data-bind="text: first_name"></span> <span data-bind="text: last_name"></span></li>
 					</ul>
 
-					<ul class="col-xs-6 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: signups.slice(signups.length / 2 + 1)">
+					<ul class="col-xs-6 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: signups().slice(signups().length/2 + 1)">
 						<li><span data-bind="text: first_name"></span> <span data-bind="text: last_name"></span></li>
 					</ul>
+					<!-- /ko -->
 					
-					<div class="text-center" data-bind="visible: !signups.length">There is no signups for this shift yet.</div>
+					<div class="text-center" data-bind="visible: !signups().length">There is no signups for this shift yet.</div>
 
-					<div class="col-xs-12 col-md-12 text-right button-signup">
-						<a href="#" class="btn btn-success" data-bind=" visible: signups.length < cap || cap <= 0 ">Sign Up</a>
-						<a href="#" class="btn btn-warning" data-bind=" visible: signups.length >= cap && cap > 0 ">Waitlist</a>
-					</div>
+					{{! <div class="col-xs-12 col-md-12 text-right button-signup">
+						<a href="#" class="btn btn-success" data-bind=" visible: signups().length < cap || cap <= 0 ">Sign Up</a>
+						<a href="#" class="btn btn-warning" data-bind=" visible: signups().length >= cap && cap > 0 ">Waitlist</a>
+					</div> }}
 				</div>
 
 			</div>
+			<!-- /ko -->
 		</div>
 
 	</div>

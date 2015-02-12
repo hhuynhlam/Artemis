@@ -126,12 +126,7 @@ define(function (require) {
 
 			_data = this.appendApiKey(_data);
 			
-			return $.ajax({
-				type: 'GET',
-				async: false,
-				url: env.SERVER_ROOT + '/shift/signups',
-				data: _data
-			});
+			return $.get(env.SERVER_ROOT + '/shift/signups', _data);
 		},
 
 		// Profile
