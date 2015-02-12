@@ -17,15 +17,19 @@
 		</div>
 
 		<div class="col-sm-4">
-			<div class="panel panel-default" data-bind="foreach: shifts">
-				<div class="panel-heading">
+			<div class="panel panel-primary panel-shifts" data-bind="foreach: shifts">
+				<div class="panel-heading" data-bind="slideToggle: { id: 'shift_' + id }">
 					<h4 data-bind="text: description"></h4> 
-					<small data-bind="text: start_time"></small>-<small data-bind="text: end_time"></small></div>
+					<small data-bind="text: start_time"></small>-<small data-bind="text: end_time"></small><br/>
+					<div data-bind="visible: cap !== '-1' && cap !== '0'"><small data-bind="text: signups.length"></small> of <small data-bind="text: cap"></small> spaces filled.</div>
+					<div data-bind="visible: cap === '-1' || cap === '0'"><small>There is no cap for this shift.</small></div>
+				</div>
 				
-				<div class="panel-body">
+				<div class="panel-body" data-bind="attr: { id: 'shift_' + id }" style="display: none;">
 					<ul data-bind="foreach: signups">
 						<li><span data-bind="text: first_name"></span> <span data-bind="text: last_name"></span></li>
 					</ul>
+					<span data-bind="visible: !signups.length">There is no signups for this shift yet.</span>
 				</div>
 
 			</div>

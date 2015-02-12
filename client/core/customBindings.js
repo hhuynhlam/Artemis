@@ -70,4 +70,20 @@ define(function (require) {
 			});
 		}
 	};
+
+	// slideToggle on domID
+	ko.bindingHandlers.slideToggle = {
+		init: function(element, valueAccessor) {
+			var options = valueAccessor();
+
+			$(element).click(function () {
+				if (options.id) {
+					$('#' + options.id).slideToggle();
+				}
+				else if (options.class) {
+					$('.' + options.class).slideToggle();
+				}
+			});
+		}
+	};
 });

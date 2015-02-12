@@ -29,9 +29,9 @@ $app->get('/shift', function () use ($app) {
         $between = 'date BETWEEN ' . $app->request->get('startDate') . ' AND ' . $app->request->get('endDate');
     }
     
-    $results = $db->query( db_select('shifts', $where, null, 'start_time DESC', null, null ) );
+    $results = $db->query( db_select('shifts', $where, null, 'start_time ASC, open_to ASC', null, null ) );
     echo parseJsonFromSQL($results);
-    //echo db_select('shifts', $where, null, 'start_time DESC', null, null );
+    //echo db_select('shifts', $where, null, 'start_time ASC, open_to ASC', null, null );
 });
 
 $app->get('/shift/signups', function () use ($app) {

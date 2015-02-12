@@ -140,10 +140,6 @@ define(function (require) {
 			return getEvents;
 		},
 
-		scrollClick: function () {
-			this.loadEvents( this.filter() );
-		},
-
 		showFilters: function () {
 			$('.filter-collapse').toggle();
 		},
@@ -253,7 +249,7 @@ define(function (require) {
 			var scrollPosition = $(window).height() + $(window).scrollTop();
 			
 			// scroll is pass document height
-			if (scrollPosition > (scrollHeight + 50) ) {
+			if (scrollPosition >= scrollHeight) {
 				eventViewModel.loadEvents( eventViewModel.filter() );
 			}
 		});
