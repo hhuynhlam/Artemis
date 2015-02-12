@@ -129,6 +129,17 @@ define(function (require) {
 			return $.get(env.SERVER_ROOT + '/shift/signups', _data);
 		},
 
+		getUserSignups: function (userId, eventId) {
+			var _data = {
+				event: eventId,
+				user: userId
+			};
+
+			_data = this.appendApiKey(_data);
+			
+			return $.get(env.SERVER_ROOT + '/shift/user/signups', _data);
+		},
+
 		// Profile
 		updateUser: function (userData) {
 			userData = this.appendApiKey(userData);

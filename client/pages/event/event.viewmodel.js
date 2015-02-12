@@ -24,6 +24,7 @@ define(function (require) {
 		filter: ko.observable(0),
 		pageLoading: ko.observable(true),
 		shifts: ko.observableArray([]),
+		userSignups: ko.observableArray([]),
 		
 		general: ['general'],
 		services: ['service', 'community', 'campus', 'fraternity', 'nation', 'fundraiser', 'general_service'],
@@ -197,6 +198,9 @@ define(function (require) {
 			return promise;
 		},
 
+		/**
+		 * Shifts
+		 */
 		loadEventShifts: function (eventId) {
 			var self = this;
 			var getShifts = utils.getShifts(eventId);
@@ -264,6 +268,29 @@ define(function (require) {
 			return promise;
 		},
 
+		loadUserSignups: function (eventId) {
+			var self = this;
+			var currentUser = utils.getCurrentUser();
+			var getUserSignups = utils.getUserSignups(currentUser.id, eventId);
+			var promise = $.Deferred();
+			
+			getUserSignups.done(function (su) {
+				self.userSignups.push(su);
+				promise.resolve();
+			});
+
+			getUserSignups.fail(function (su) {
+				promise.reject();
+			});
+
+			return promise;
+		},
+
+		// addUserShift: function(userid, eventid, shiftid) {},
+		// removeUserShift: function() {},
+		// addUserWaitlist: function () {},
+		// removeUserWaitlist: function () {},
+		
 		/**
 		 * Helpers
 		 */
@@ -276,11 +303,6 @@ define(function (require) {
 			var _perm = parseInt(permissions);
 			return ( _perm & constant.PLEDGE ) && !( _perm & constant.OPEN_ACTIVE() );
 		},
-
-		// addUserShift: function(userid, eventid, shiftid) {},
-		// removeUserShift: function() {},
-		// addUserWaitlist: function () {},
-		// removeUserWaitlist: function () {}
 
 	};
 

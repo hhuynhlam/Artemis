@@ -27,7 +27,7 @@
 					<div data-bind="visible: cap > 0"><small data-bind="text: signups().length"></small> of <small data-bind="text: cap"></small> spaces filled.</div>
 					<div data-bind="visible: cap <= 0"><small>There is no cap for this shift.</small></div>
 				</div>
-				
+
 				<div class="panel-body" data-bind="attr: { id: 'shift_' + id }" style="display: none;">
 					<!-- ko if: signups().length % 2 === 0 -->
 						<ul class="col-xs-6 col-sm-12 col-md-12 col-lg-6" data-bind="foreach: signups().slice(0, signups().length/2)">
@@ -51,10 +51,10 @@
 					
 					<div class="text-center" data-bind="visible: !signups().length">There is no signups for this shift yet.</div>
 
-					{{! <div class="col-xs-12 col-md-12 text-right button-signup">
-						<a href="#" class="btn btn-success" data-bind=" visible: signups().length < cap || cap <= 0 ">Sign Up</a>
-						<a href="#" class="btn btn-warning" data-bind=" visible: signups().length >= cap && cap > 0 ">Waitlist</a>
-					</div> }}
+					<div class="col-xs-12 col-md-12 text-center button-signup">
+						<button class="btn btn-success" data-bind=" visible: signups().length < cap || cap <= 0, attr: { 'data-shift-id': id }">Sign Up</button>
+						<button class="btn btn-warning" data-bind=" visible: signups().length >= cap && cap > 0, attr: { 'data-shift-id': id }">Waitlist</button>
+					</div>
 				</div>
 
 			</div>

@@ -29,7 +29,7 @@ $app->get('/event', function () use ($app) {
         $between = 'date BETWEEN ' . $app->request->get('startDate') . ' AND ' . $app->request->get('endDate');
     }
     
-    $results = $db->query( db_select('events', $where, $between, 'date DESC', $app->request->get('limit'), $app->request->get('offset')) );
+    $results = $db->query( db_select('events', '*', $where, $between, 'date DESC', $app->request->get('limit'), $app->request->get('offset')) );
     echo parseJsonFromSQL($results);
     //echo db_select('events', $where, $between, 'date DESC', $app->request->get('limit'), $app->request->get('offset'));
      

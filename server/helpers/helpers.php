@@ -49,7 +49,7 @@ function db_update($table, $values, $where) {
 			$first = false;
 		}
 		else {
-			$query .= ", " . $key . "='" . $value . "'";
+			$query .= "AND " . $key . "='" . $value . "'";
 		}
 	}
 
@@ -64,7 +64,7 @@ function db_update($table, $values, $where) {
 				$first = false;
 			}
 			else {
-				$query .= ", " . $key . "='" . $value . "'";
+				$query .= "AND " . $key . "='" . $value . "'";
 			}
 		}
 	}
@@ -72,8 +72,8 @@ function db_update($table, $values, $where) {
 	return $query;
 }
 
-function db_select($table, $where, $between, $order, $limit, $offset) {
-	$query = "SELECT * FROM " . $table;
+function db_select($table, $columns, $where, $between, $order, $limit, $offset) {
+	$query = "SELECT " . $columns . " FROM " . $table;
 
 	// construct where clause
 	if( !is_null($where) && count($where) != 0 ) {
@@ -96,9 +96,9 @@ function db_select($table, $where, $between, $order, $limit, $offset) {
 
 				// bitwise AND to filter events
 				if($key == 'event_code') {
-					$query .= ", " . $key . " & '" . $value . "' != 0";
+					$query .= "AND " . $key . " & '" . $value . "' != 0";
 				} else {
-					$query .= ", " . $key . "='" . $value . "'";
+					$query .= "AND " . $key . "='" . $value . "'";
 				}
 			}
 		}
@@ -133,8 +133,8 @@ function db_select($table, $where, $between, $order, $limit, $offset) {
 	return $query;
 }
 
-function db_select_join($table, $join, $where) {
-	$query = "SELECT * FROM ";
+function db_select_join($table, $columns, $join, $where) {
+	$query = "SELECT " . $columns . " FROM ";
 
 	foreach ($table as $key => $value) {
 		if ($key == "name") {
