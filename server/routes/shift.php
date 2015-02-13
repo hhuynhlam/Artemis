@@ -90,8 +90,42 @@ $app->get('/shift/user/signups', function () use ($app) {
         $where[$key] = $value;
     }
     
-    //$results = $db->query( db_select('signups', $where, null, null, null, null ) );
-    //echo parseJsonFromSQL($results);
-    echo db_select('signups', '*', $where, null, null, null, null );
+    $results = $db->query( db_select('signups', 'shift', $where, null, null, null, null ) );
+    echo parseJsonFromSQL($results);
+    //echo db_select('signups', '*', $where, null, null, null, null );
+});
+
+$app->post('/shift/user/signups/add', function () use ($app) {
+    
+    // authenticate before do anything
+    if ( !authenticate($app->request->params('apiKey')) ) {
+        $app->status(403);
+        echo json_encode('You are not allowed to see this page.');
+        return;
+    }
+
+    // connect to db
+    require_once('_db.php');
+
+    $user = $app->request->params('user');
+    $shift = $app->request->params('shift');
+    $event = $app->request->params('event');
+    $driver = $app->request->params('driver');
+    $timestamp = $app->request->params('timestamp');
+
+    // get request parameters
+    $columns = ['user', 'shift', 'event', 'driver', 'chair', 'credit', 'timestamp'];
+    $values= [$user, $shift, $event, $driver, 0, 0, $timestamp];
+
+    $results = $db->query( db_insert('signups', $columns, $values) );
+    
+    if ($results == 1) {
+        echo json_encode('0');
+    } else {
+        $app->status(500);
+        echo json_encode('1');
+    }
+
+    //echo db_insert('signups', $columns, $values);
 });
 ?>

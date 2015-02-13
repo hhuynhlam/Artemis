@@ -279,14 +279,32 @@ define(function (require) {
 				promise.resolve();
 			});
 
-			getUserSignups.fail(function (su) {
+			getUserSignups.fail(function () {
 				promise.reject();
 			});
 
 			return promise;
 		},
 
-		// addUserShift: function(userid, eventid, shiftid) {},
+		addUserSignup: function(shift) {
+			var _user = utils.getCurrentUser().id;
+			var _driving = 0;
+			var _timestamp = 0;
+			
+			var addSignup = utils.addUserSignups(_user, shift.event, shift.id, _driving, _timestamp);
+			
+			addSignup.done(function () {
+				utils.getSignups(shift.id)
+					.done(function (data) {
+						shift.signups(data);
+					});
+				
+			});
+
+			addSignup.fail(function () {
+				console.error('Error adding signup.');
+			});
+		},
 		// removeUserShift: function() {},
 		// addUserWaitlist: function () {},
 		// removeUserWaitlist: function () {},
@@ -303,6 +321,21 @@ define(function (require) {
 			var _perm = parseInt(permissions);
 			return ( _perm & constant.PLEDGE ) && !( _perm & constant.OPEN_ACTIVE() );
 		},
+
+		_isUserActive: function() {
+			var _user = utils.getCurrentUser();
+			return _user.position & constant.OPEN_ACTIVE();
+		},
+
+		_isUserPledge: function() {
+			var _user = utils.getCurrentUser();
+			return _user.position & constant.PLEDGE;
+		},
+
+		_isUserSignupShift: function(shiftId) {
+			var self = this;
+			return _.find(self.userSignups(), shiftId);
+		}
 
 	};
 

@@ -154,8 +154,32 @@ function db_select_join($table, $columns, $join, $where) {
 	return $query;
 }
 
-// function db_insert($table, $values, $where) {
+function db_insert($table, $columns, $values) {
+	$query = "INSERT INTO " . $table;
 
-// }
+	$first = true;
+	foreach ($columns as $key => $value) {
+		if($first == true) {
+			$query .= ' (' . $value;
+				$first = false;
+		} else {
+			$query .= ', ' . $value;
+		}
+	}
+
+	$query .= ') VALUES ';
+	$first = true;
+	foreach ($values as $key => $value) {
+		if($first == true) {
+			$query .= '(' . $value;
+				$first = false;
+		} else {
+			$query .= ', ' . $value;
+		}
+	}
+	$query .= ') ';
+
+	return $query;
+}
 
 ?>

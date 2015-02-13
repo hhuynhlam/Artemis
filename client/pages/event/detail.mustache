@@ -51,9 +51,17 @@
 					
 					<div class="text-center" data-bind="visible: !signups().length">There is no signups for this shift yet.</div>
 
-					<div class="col-xs-12 col-md-12 text-center button-signup">
-						<button class="btn btn-success" data-bind=" visible: signups().length < cap || cap <= 0, attr: { 'data-shift-id': id }">Sign Up</button>
-						<button class="btn btn-warning" data-bind=" visible: signups().length >= cap && cap > 0, attr: { 'data-shift-id': id }">Waitlist</button>
+					<div class="col-xs-12 col-md-12 text-center button-signup" 
+						data-bind="visible: !( ($parent._isForPledgesOnly(open_to) && !$parent._isUserPledge() ) || 
+											($parent._isForActivesOnly(open_to) && !$parent._isUserActive() ) )">
+						<button class="btn btn-success" data-bind=" visible: signups().length < cap || cap <= 0 && !$parent._isUserSignupShift(id), 
+																	attr: { 'data-shift-id': id },
+																	click: $parent.addUserSignup">Sign Up</button>
+
+						<button class="btn btn-warning" data-bind=" visible: signups().length >= cap && cap > 0 && !$parent._isUserSignupShift(id), 
+																	attr: { 'data-shift-id': id }">Waitlist</button>
+
+						<button class="btn btn-warning" data-bind=" visible: $parent._isUserSignupShift(id), attr: { 'data-shift-id': id }">Remove</button>
 					</div>
 				</div>
 

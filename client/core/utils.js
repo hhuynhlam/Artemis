@@ -140,6 +140,20 @@ define(function (require) {
 			return $.get(env.SERVER_ROOT + '/shift/user/signups', _data);
 		},
 
+		addUserSignups: function (userId, eventId, shiftId, driver, timestamp) {
+			var _data = {
+				user: userId,
+				shift: shiftId,
+				event: eventId,
+				driver: driver,
+				timestamp: timestamp
+			};
+
+			_data = this.appendApiKey(_data);
+			
+			return $.post(env.SERVER_ROOT + '/shift/user/signups/add', _data);
+		},
+
 		// Profile
 		updateUser: function (userData) {
 			userData = this.appendApiKey(userData);
