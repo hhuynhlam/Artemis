@@ -14,7 +14,7 @@ $app->get('/event', function () use ($app) {
 
     // get request parameters
     // type, startDate, endDate, limit, offset
-    $type = $app->request->get('type');
+    $type = $app->request->get('event_code');
     $startDate = $app->request->get('startDate');
     $endDate = $app->request->get('endDate');
     $limit = $app->request->get('limit');
@@ -22,14 +22,30 @@ $app->get('/event', function () use ($app) {
 
     $between = "";
     $where = "";
+    $first = true;
 
+    if ( !is_null($type) ) {
+        $where .= "event_code & " . $type;
+        $first = false;
+    }
 
     if ( !is_null($startDate) && !is_null($endDate) ) {
-        $where .= 'date BETWEEN ' . $startDate . ' AND ' . $endDate;
+        if ($first == true) {
+            $where .= "date BETWEEN " . $startDate . " AND " . $endDate;
+            $first = false;
+        } else {
+            $where .= "AND date BETWEEN " . $startDate . " AND " . $endDate;
+        }
+        
     }
 
     if ( !is_null($startDate) && is_null($endDate) ) {
-        $where .= " date >= " . $startDate;
+        if ($first == true) {
+            $where .= " date >= " . $startDate;
+            $first = false;
+        } else {
+            $where .= " AND date >= " . $startDate;
+        }
     }
     
     $results = $db->query( db_select_explicit('events', "*", $where, 'date ASC', $limit, $offset) );
