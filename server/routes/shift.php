@@ -128,4 +128,39 @@ $app->post('/shift/user/signups/add', function () use ($app) {
 
     //echo db_insert('signups', $columns, $values);
 });
+
+$app->get('/shift/user/signups/delete', function () use ($app) {
+    
+    // authenticate before do anything
+    if ( !authenticate($app->request->params('apiKey')) ) {
+        $app->status(403);
+        echo json_encode('You are not allowed to see this page.');
+        return;
+    }
+
+    // connect to db
+    require_once('_db.php');
+    
+    // get request parameters
+    $user = $app->request->params('user');
+    $shift = $app->request->params('shift');
+    $event = $app->request->params('event');
+
+    $where = [
+        "user" => $user,
+        "shift" => $shift,
+        "event" => $event
+    ];
+
+    $results = $db->query( db_delete('signups', $where) );
+    
+    if ($results == 1) {
+        echo json_encode('0');
+    } else {
+        $app->status(500);
+        echo json_encode('1');
+    }
+
+    //echo db_delete('signups', $where);
+});
 ?>

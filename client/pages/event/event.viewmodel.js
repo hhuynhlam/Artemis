@@ -220,6 +220,7 @@ define(function (require) {
 						s.start_time = moment.unix(s.start_time).format('h:mm a');
 						s.end_time = moment.unix(s.end_time).format('h:mm a');
 						s.signups = ko.observableArray([]);
+						s.isUserSignedUp = ko.observable(false);
 						self.shifts.push(s);
 					});
 
@@ -243,6 +244,13 @@ define(function (require) {
 							// map shifts to returned signups
 							for (var i = 0; i < _signups.length; i++) {
 								self.shifts()[i].signups(_signups[i][0]);
+								
+								if ( self._isUserSignedUp(self.shifts()[i].signups()) ) {
+									self.shifts()[i].isUserSignedUp(true);
+								}
+								else {
+									self.shifts()[i].isUserSignedUp(false);
+								}
 							}
 						}
 						else {
@@ -268,24 +276,6 @@ define(function (require) {
 			return promise;
 		},
 
-		loadUserSignups: function (eventId) {
-			var self = this;
-			var currentUser = utils.getCurrentUser();
-			var getUserSignups = utils.getUserSignups(currentUser.id, eventId);
-			var promise = $.Deferred();
-			
-			getUserSignups.done(function (su) {
-				self.userSignups.push(su);
-				promise.resolve();
-			});
-
-			getUserSignups.fail(function () {
-				promise.reject();
-			});
-
-			return promise;
-		},
-
 		addUserSignup: function(shift) {
 			var _user = utils.getCurrentUser().id;
 			var _driving = 0;
@@ -297,6 +287,7 @@ define(function (require) {
 				utils.getSignups(shift.id)
 					.done(function (data) {
 						shift.signups(data);
+						shift.isUserSignedUp(true);
 					});
 				
 			});
@@ -305,7 +296,23 @@ define(function (require) {
 				console.error('Error adding signup.');
 			});
 		},
-		// removeUserShift: function() {},
+		
+		removeUserSignup: function(shift) {
+			var _user = utils.getCurrentUser().id;
+			var removeSignup = utils.removeUserSignups(_user, shift.event, shift.id);
+
+			removeSignup.done(function() {
+				utils.getSignups(shift.id)
+					.done(function (data) {
+						shift.signups(data);
+						shift.isUserSignedUp(false);
+					});
+			});
+
+			removeSignup.fail(function() {
+				console.error('Error removing signup.');
+			});
+		},
 		// addUserWaitlist: function () {},
 		// removeUserWaitlist: function () {},
 		
@@ -332,9 +339,10 @@ define(function (require) {
 			return _user.position & constant.PLEDGE;
 		},
 
-		_isUserSignupShift: function(shiftId) {
-			var self = this;
-			return _.find(self.userSignups(), shiftId);
+		_isUserSignedUp: function(signups) {
+			return _.find(signups, function(s) { 
+				return s.user === utils.getCurrentUser().id; 
+			});
 		}
 
 	};

@@ -182,4 +182,20 @@ function db_insert($table, $columns, $values) {
 	return $query;
 }
 
+function db_delete($table, $where) {
+	$query = "DELETE FROM " . $table . " WHERE ";
+
+	$first = true;
+	foreach ($where as $key => $value) {
+		if($first == true) {
+			$query .= $key . '=' . $value;
+			$first = false;
+		} else {
+			$query .= ' AND ' . $key . '=' . $value;
+		}
+	}
+
+	return $query;
+}
+
 ?>

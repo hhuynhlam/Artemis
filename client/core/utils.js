@@ -154,6 +154,18 @@ define(function (require) {
 			return $.post(env.SERVER_ROOT + '/shift/user/signups/add', _data);
 		},
 
+		removeUserSignups: function (userId, eventId, shiftId) {
+			var _data = {
+				user: userId,
+				shift: shiftId,
+				event: eventId
+			};
+
+			_data = this.appendApiKey(_data);
+			
+			return $.get(env.SERVER_ROOT + '/shift/user/signups/delete', _data);
+		},
+
 		// Profile
 		updateUser: function (userData) {
 			userData = this.appendApiKey(userData);
