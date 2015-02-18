@@ -18,6 +18,7 @@ define(function (require) {
 	var eventViewModel = {
 
 		_clientRoot: env.CLIENT_ROOT,
+		currentDay: moment(new Date()),
 		events: ko.observableArray([]),
 		eventDetail: ko.observable({}),
 		eventLoading: ko.observable(true),
@@ -354,7 +355,7 @@ define(function (require) {
 	
 	// Init
 	(function init() {
-		eventViewModel.loadEvents();
+		eventViewModel.loadEvents(null, eventViewModel.currentDay);
 		
 		// lazy load events
 		$(window).on("scroll", function() {
@@ -363,7 +364,7 @@ define(function (require) {
 			
 			// scroll is pass document height
 			if (scrollPosition >= scrollHeight) {
-				eventViewModel.loadEvents( eventViewModel.filter() );
+				eventViewModel.loadEvents( eventViewModel.filter(), eventViewModel.currentDay );
 			}
 		});
 

@@ -72,6 +72,7 @@ function db_update($table, $values, $where) {
 	return $query;
 }
 
+// TODO: Consolidate two version of select into one explicit one (db_select_explicit)
 function db_select($table, $columns, $where, $between, $order, $limit, $offset) {
 	$query = "SELECT " . $columns . " FROM " . $table;
 
@@ -128,6 +129,28 @@ function db_select($table, $columns, $where, $between, $order, $limit, $offset) 
 	// add offset for events
 	if ( !is_null($offset) ) {
 		$query .= ' OFFSET ' . $offset;
+	}
+
+	return $query;
+}
+
+function db_select_explicit($table, $columns, $where, $order, $limit, $offset) {
+	$query = "SELECT " . $columns . " FROM " . $table;
+	
+	if( $where != "" ) {
+		$query .= " WHERE " . $where;	
+	}
+
+	if( !IS_NULL($order) ) {
+		$query .= " ORDER BY " . $order;	
+	}
+
+	if( !IS_NULL($limit) ) {
+		$query .= " LIMIT " . $limit;	
+	}
+
+	if( !IS_NULL($offset) ) {
+		$query .= " OFFSET " . $offset;
 	}
 
 	return $query;

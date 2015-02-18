@@ -13,25 +13,30 @@ $app->get('/event', function () use ($app) {
     require_once('_db.php');
 
     // get request parameters
-    $params = $app->request->get();
-    $between = '';
-    $where = array();
+    // type, startDate, endDate, limit, offset
+    $type = $app->request->get('type');
+    $startDate = $app->request->get('startDate');
+    $endDate = $app->request->get('endDate');
+    $limit = $app->request->get('limit');
+    $offset = $app->request->get('offset');
 
-    foreach($params as $key => $value) {
-        if ($key == 'apiKey' || $key == 'offset' || $key == 'limit' || $key == 'startDate' || $key == 'endDate') {
-            continue;
-        }
+    $between = "";
+    $where = "";
 
-        $where[$key] = $value;
+
+    if ( !is_null($startDate) && !is_null($endDate) ) {
+        $where .= 'date BETWEEN ' . $startDate . ' AND ' . $endDate;
     }
 
-    if ( !is_null($app->request->get('startDate')) && !is_null($app->request->get('endDate')) ) {
-        $between = 'date BETWEEN ' . $app->request->get('startDate') . ' AND ' . $app->request->get('endDate');
+    if ( !is_null($startDate) && is_null($endDate) ) {
+        $where .= " date >= " . $startDate;
     }
     
-    $results = $db->query( db_select('events', '*', $where, $between, 'date DESC', $app->request->get('limit'), $app->request->get('offset')) );
+    $results = $db->query( db_select_explicit('events', "*", $where, 'date ASC', $limit, $offset) );
     echo parseJsonFromSQL($results);
-    //echo db_select('events', $where, $between, 'date DESC', $app->request->get('limit'), $app->request->get('offset'));
+    
+    // $table, $columns, $where, $between, $order, $limit, $offset
+    //echo db_select_explicit('events', "*", $where, 'date ASC', $limit, $offset);
      
 });
 
