@@ -109,7 +109,7 @@ define(function (require) {
 
 				// clear events
 				self.events([]);
-				self.loadEvents( self.filter() );
+				self.loadEvents( self.filter(), eventViewModel.currentDay );
 
 			}
 
