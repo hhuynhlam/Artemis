@@ -2,8 +2,9 @@ require.config({
     baseUrl: '',
     paths: {
 
-        // Viewmdoels
+        // Viewmodels
         'navbar.viewmodel': 'components/navbar/navbar.viewmodel',
+        
         'home.viewmodel': 'pages/home/home.viewmodel',
 
         // Routes
@@ -13,10 +14,10 @@ require.config({
         'sandbox' : 'core/sandbox/sandbox',
 
         // Vendor
+        'bootstrap': 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
         'jquery': 'vendor/bower_components/jquery/dist/jquery.min',
         'knockout': 'vendor/bower_components/knockout/dist/knockout',
         'lodash': 'vendor/bower_components/lodash/dist/lodash.min',
-        'moment': 'vendor/bower_components/moment/min/moment.min',
         'sammy': 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
 
         // RequireJS Plugins
@@ -34,7 +35,6 @@ require.config({
     
     shim: {
         'bootstrap': { deps: ['jquery'] },
-        // 'fullcalendar': { deps: ['jquery', 'moment'] },
         'sammy': { deps: ['jquery'] }
     },
 

@@ -1,6 +1,6 @@
 'use strict';
 
-define(function (require) {
+define(function () {
 
 	var NavbarViewModel = function () {
 		

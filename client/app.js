@@ -3,6 +3,7 @@
 define(function (require) {
 	var ko = require('knockout');
 	var sammy = require('sammy');
+	require('bootstrap');
 
 	var AppViewModel = function () {
 		this.isReady = ko.observable(false);
