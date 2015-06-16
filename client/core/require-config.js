@@ -3,22 +3,23 @@ require.config({
     paths: {
 
         // Viewmodels
-        'navbar.viewmodel': 'components/navbar/navbar.viewmodel',
+        'navbar.viewmodel'              : 'components/navbar/navbar.viewmodel',
         
-        'home.viewmodel': 'pages/home/home.viewmodel',
+        'home.viewmodel'                : 'pages/home/home.viewmodel',
 
         // Routes
-        'home.router': 'pages/home/home.router',
+        'home.router'                   : 'pages/home/home.router',
 
         // Core
-        'sandbox' : 'core/sandbox/sandbox',
+        'sandbox'                       : 'core/sandbox/sandbox',
 
         // Vendor
-        'bootstrap': 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
-        'jquery': 'vendor/bower_components/jquery/dist/jquery.min',
-        'knockout': 'vendor/bower_components/knockout/dist/knockout',
-        'lodash': 'vendor/bower_components/lodash/dist/lodash.min',
-        'sammy': 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
+        'bootstrap'                     : 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
+        'jquery'                        : 'vendor/bower_components/jquery/dist/jquery.min',
+        'k'                             : 'vendor/bower_components/kendo-ui-core/js',
+        'knockout'                      : 'vendor/bower_components/knockout/dist/knockout',
+        'lodash'                        : 'vendor/bower_components/lodash/dist/lodash.min',
+        'sammy'                         : 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
 
         // RequireJS Plugins
         'async'                         : 'vendor/bower_components/requirejs-plugins/src/async',
@@ -34,23 +35,16 @@ require.config({
     },
     
     shim: {
-        'bootstrap': { deps: ['jquery'] },
-        'sammy': { deps: ['jquery'] }
-    },
-
-    config: {
-        'uikit': {
-
-            // Lazy-Load UIKit Components
-            'base': 'vendor/bower_components/uikit/js'
-        }
+        'jquery'                        : { exports: 'jQuery' },
+        'bootstrap'                     : { deps: ['jquery'] },
+        'k/kendo.core.min'              : { deps: ['jquery'] },
+        'sammy'                         : { deps: ['jquery'] }
     },
 
     map: {
         '*': {
-
-            // RequireJS CSS Plugin
-            'css': 'vendor/bower_components/require-css/css.min'
+            'css'                       : 'vendor/bower_components/require-css/css.min',   // RequireJS CSS Plugin
+            'kendo'                     : 'k/kendo.core.min'
         }
     }
 });

@@ -17,7 +17,7 @@ define(function (require) {
 
 		// 404 Error
 		app.notFound = function () {
-			// window.location.replace(env.CLIENT_ROOT + '/#/');
+			window.location.replace('/#/');
 		};
 
 		// Override this function so that Sammy doesn't mess with forms
