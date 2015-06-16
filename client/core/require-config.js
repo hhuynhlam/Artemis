@@ -1,29 +1,22 @@
 require.config({
     baseUrl: '',
     paths: {
-        // Env
-        'env': '_env',
 
-        // Navbar
+        // Viewmdoels
         'navbar.viewmodel': 'components/navbar/navbar.viewmodel',
-
-        // Home
         'home.viewmodel': 'pages/home/home.viewmodel',
 
+        // Routes
+        'home.router': 'pages/home/home.router',
+
         // Core
-        // 'constant': 'core/constant',
-        // 'customBindings' : 'core/customBindings',
         'sandbox' : 'core/sandbox/sandbox',
 
         // Vendor
-        // 'bootstrap': 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
-        // 'fullcalendar': 'vendor/bower_components/fullcalendar/dist/fullcalendar.min',
         'jquery': 'vendor/bower_components/jquery/dist/jquery.min',
-        // 'jquery-cookie': 'vendor/bower_components/jquery.cookie/jquery.cookie',
         'knockout': 'vendor/bower_components/knockout/dist/knockout',
         'lodash': 'vendor/bower_components/lodash/dist/lodash.min',
-        // 'md5': 'vendor/bower_components/blueimp-md5/js/md5.min',
-        // 'moment': 'vendor/bower_components/moment/min/moment.min',
+        'moment': 'vendor/bower_components/moment/min/moment.min',
         'sammy': 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
 
         // RequireJS Plugins
