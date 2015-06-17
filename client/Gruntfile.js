@@ -1,16 +1,51 @@
 'use strict';
 
- module.exports = function(grunt) {
+module.exports = function(grunt) {
 
-  // Setup Grunt
-  grunt.initConfig({
+var _ = require('lodash');
+var jasmineOptions = {
+    display: 'full',
+    summary: true,
+    template: require('grunt-template-jasmine-requirejs'),
+    templateOptions: {
+        requireConfigFile: './core/require-config.js',
+        requireConfig: {
+            baseUrl: './',
+        }
+    }
+};
 
+// Setup Grunt
+grunt.initConfig({
 
-  });
+    jasmine: {
+        ui: {
+            options: _.assign({
+                specs: grunt.file.expand([
+                    './**/*.spec.js',
+                    '!./vendor/**/*.spec.js'
+                ])
+            }, jasmineOptions)
+        },
 
-  // Load Grunt plugins
+        single: {
+            options: _.assign({
+                specs: grunt.file.expand([
+                    './**/*.spec.js',
+                    '!./vendor/**/*.spec.js'
+                ])
+            }, jasmineOptions)
+        }
+    }
 
-  // Register Grunt tasks
-  grunt.registerTask('default', []);
+});
+
+// Load Grunt plugins
+grunt.loadNpmTasks('grunt-contrib-jasmine');
+
+// Register Grunt tasks
+grunt.registerTask('default', []);
+grunt.registerTask('test', ['jasmine:ui']);
+grunt.registerTask('tdd', ['jasmine:single']);
 
 };

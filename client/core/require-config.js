@@ -6,6 +6,9 @@ require.config({
         'navbar.viewmodel'              : 'components/navbar/navbar.viewmodel',
         
         // Pages
+        'about.viewmodel'               : 'pages/about/about.viewmodel',
+        'about.router'                  : 'pages/about/about.router',
+
         'home.viewmodel'                : 'pages/home/home.viewmodel',
         'home.router'                   : 'pages/home/home.router',
 

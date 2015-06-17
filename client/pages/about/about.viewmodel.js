@@ -3,11 +3,9 @@
 define(function (require) {
 	var ko = require('knockout');
 
-	var aboutViewModel = function () {
-
-		this.name = ko.observable('Kat');
-
+	var AboutViewModel = function () {
+        this.kat = ko.observable();
 	};
 
-	return aboutViewModel;
+	return AboutViewModel;
 });
