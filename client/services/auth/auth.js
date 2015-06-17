@@ -14,7 +14,15 @@ define(function (require) {
 
             return sandbox.http.get(url, data)
             .then(function (user) {
-                sandbox.cookie.set('apo_user', JSON.stringify(user[0]), { expires: 1, path: window.env.CLIENT_HOST });
+                if (user.length !== 0) {
+                    sandbox.cookie.set('apo_user', JSON.stringify(user[0]), { expires: 1, path: window.env.CLIENT_HOST });
+                    return user;
+                } else {
+                    console.error('Error: Could not login (Incorrect username and/or password)');
+                }
+            })
+            .catch(function (err) {
+                console.error('Server Error: Could not login (', err ,')');
             });
         },
 
@@ -24,6 +32,11 @@ define(function (require) {
 
         isLoggedIn: function () {
             return (sandbox.cookie.read('apo_user')) ? true : false;
+        },
+
+        currentUser: function () {
+            var user = sandbox.cookie.read('apo_user');
+            return (user) ? JSON.parse(user) : null;
         }
     };
 

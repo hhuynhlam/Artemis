@@ -61,7 +61,7 @@
         </ul>
 
         <!-- Right Links -->
-<!--         <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right">
             <li  data-bind="visible: loggedIn">
                 <button type="button" class="btn btn-default visible-md-inline-block visible-lg-inline-block" title="Service Hours">
                     <span class="fa fa-heart"></span>
@@ -81,13 +81,13 @@
                     <span  data-bind="text: currentUser.first_name"></span><b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li><a href="#/profile">Profile</a></li>
-                    {{! <li><a href="#">Send Email</a></li> }}
+                    <li><a href="#">Send Email</a></li>
                     <li data-bind="visible: loggedIn, click: toggleLogout"><a href="#">Logout</a></li>
                 </ul>
             </li>
             
             <li data-bind="visible: !loggedIn"><a href="#/login">Login</a></li>
-        </ul> -->
+        </ul>
 
     </div>
 </div>
@@ -98,12 +98,12 @@
     Welcome back, <span data-bind="text: name"></span>
 </div>-->
 
-<!-- <div class="alert alert-dismissable alert-warning pop-notice" data-bind="visible: showLogout">
+<div class="alert alert-warning" data-bind="visible: showLogout">
     Are you sure you want to logout?
     <div>
         <button class="btn btn-warning btn-sm pull-right" data-bind="click: logout">Yes</a>
         <button class="btn btn-warning btn-sm pull-right" data-bind="click: toggleLogout">No</a>
     </div>
-</div> -->
+</div>
 
 </nav>

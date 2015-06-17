@@ -15,17 +15,17 @@ define(function (require) {
 	// define a new Sammy.Application bound to the #MainView DOM
 	var app = sammy('#MainView');
 
-		// -- Routes -- //
-		require('home.router')(app);
-		require('login.router')(app);
+	// -- Routes -- //
+	require('home.router')(app);
+	require('login.router')(app);
 
-		// 404 Error
-		app.notFound = function () {
-			window.location.replace('/#/');
-		};
+	// 404 Error
+	app.notFound = function () {
+		window.location.replace('/#/');
+	};
 
-		// Override this function so that Sammy doesn't mess with forms
-	    app._checkFormSubmission = function() { return (false); };
+	// Override this function so that Sammy doesn't mess with forms
+    app._checkFormSubmission = function() { return false; };
 
 
 	// run app

@@ -9,16 +9,16 @@ define(function (require) {
 		this.username = ko.observable('');
 
 		this.cancel = function () {
-			// window.location.href = env.CLIENT_ROOT + '/#/';
+			window.location.href = window.env.CLIENT_HOST;
 		};
 
 		this.submit = function () {
 			auth.login(this.username(), this.password())
-			.then(function () {
-				window.location.replace(window.env.CLIENT_HOST);
-			})
-			.catch(function (err) {
-				console.error('Error: Could not login (', err ,')');
+			.then(function (user) {
+				if (user) { window.location.replace(window.env.CLIENT_HOST); }
+				else {
+					console.log('do something with unsuccessful login here');
+				}
 			})
 			.done();
 		}.bind(this);
