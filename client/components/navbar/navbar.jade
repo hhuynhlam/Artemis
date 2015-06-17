@@ -1,0 +1,101 @@
+nav#Navbar
+  // Navigation
+  .navbar.navbar-default
+    .navbar-header
+      // Toggle Button
+      button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-responsive-collapse')
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      // Site Name
+      a.navbar-brand(href='#') Alpha Phi Omega | Rho Rho Chapter
+    // Collapsible
+    .navbar-collapse.collapse.navbar-responsive-collapse
+      // Main Links
+      ul.nav.navbar-nav
+        li.dropdown
+          a.dropdown-toggle(href='#/about', data-toggle='dropdown')
+            | About
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href='#/about/links') Affiliates
+            li
+              a(href='#/about/contact') Contacts
+            li
+              a(href='#/about/rushhistory') History 
+            li
+              a(href='#/about') Meetings
+            li
+              a(href='#/about/rushinfo') Rushing
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            | Events 
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href='#/event/calendar') Calendar
+            li
+              a(href='#/event') Events
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            | Media 
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href='#') Newsletters
+            li
+              a(href='#') Videos
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            | Members 
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href='#') Documents
+            li
+              a(href='#') Faces
+            li
+              a(href='#') FAQ
+            li
+              a(href='#') Finance
+            li
+              a(href='#') Roster
+      // Right Links
+      ul.nav.navbar-nav.navbar-right
+        li(data-bind='visible: loggedIn')
+          button.btn.btn-default.visible-md-inline-block.visible-lg-inline-block(type='button', title='Service Hours')
+            span.fa.fa-heart
+            span.badge
+              span(data-bind='text: currentUser.total_service')
+        li(data-bind='visible: loggedIn')
+          button.btn.btn-default.visible-md-inline-block.visible-lg-inline-block(type='button', title='Fellowship Hours')
+            span.fa.fa-soccer-ball-o
+            span.badge
+              span(data-bind='text: currentUser.total_fellowship')
+        li.dropdown(data-bind='visible: loggedIn')
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            span(data-bind='text: currentUser.first_name')
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href='#/profile') Profile
+            li
+              a(href='#') Send Email
+            li(data-bind='visible: loggedIn, click: toggleLogout')
+              a(href='#') Logout
+        li(data-bind='visible: !loggedIn')
+          a(href='#/login') Login
+  // Alerts
+  //
+    <div id="welcome" class="alert alert-dismissable alert-info pop-notice timed" data-bind="visible: loggedIn">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    Welcome back, <span data-bind="text: name"></span>
+    </div>
+  .alert.alert-warning(data-bind='visible: showLogout')
+    | Are you sure you want to logout?
+    .btn-group.pull-right(role='group')
+      button.btn.btn-warning.btn-sm(data-bind='click: toggleLogout')
+        | No
+      button.btn.btn-warning.btn-sm(data-bind='click: logout')
+        | Yes
