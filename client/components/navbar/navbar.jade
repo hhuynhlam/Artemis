@@ -7,10 +7,13 @@ nav#Navbar
         span.icon-bar
         span.icon-bar
         span.icon-bar
+      
       // Site Name
       a.navbar-brand(href='#') Alpha Phi Omega | Rho Rho Chapter
+    
     // Collapsible
     .navbar-collapse.collapse.navbar-responsive-collapse
+      
       // Main Links
       ul.nav.navbar-nav
         li.dropdown
@@ -28,7 +31,7 @@ nav#Navbar
               a(href='#/about') Meetings
             li
               a(href='#/about/rush') Rushing
-        li.dropdown
+        li.dropdown(data-bind='visible: loggedIn')
           a.dropdown-toggle(href='#', data-toggle='dropdown')
             | Events 
             b.caret
@@ -37,7 +40,7 @@ nav#Navbar
               a(href='#/event/calendar') Calendar
             li
               a(href='#/event') Events
-        li.dropdown
+        li.dropdown(data-bind='visible: loggedIn')
           a.dropdown-toggle(href='#', data-toggle='dropdown')
             | Media 
             b.caret
@@ -46,7 +49,7 @@ nav#Navbar
               a(href='#') Newsletters
             li
               a(href='#') Videos
-        li.dropdown
+        li.dropdown(data-bind='visible: loggedIn')
           a.dropdown-toggle(href='#', data-toggle='dropdown')
             | Members 
             b.caret
@@ -61,31 +64,35 @@ nav#Navbar
               a(href='#') Finance
             li
               a(href='#') Roster
+      
       // Right Links
       ul.nav.navbar-nav.navbar-right
-        li(data-bind='visible: loggedIn')
-          button.btn.btn-default.visible-md-inline-block.visible-lg-inline-block(type='button', title='Service Hours')
-            span.fa.fa-heart
-            span.badge
-              span(data-bind='text: currentUser.total_service')
-        li(data-bind='visible: loggedIn')
-          button.btn.btn-default.visible-md-inline-block.visible-lg-inline-block(type='button', title='Fellowship Hours')
-            span.fa.fa-soccer-ball-o
-            span.badge
-              span(data-bind='text: currentUser.total_fellowship')
         li.dropdown(data-bind='visible: loggedIn')
           a.dropdown-toggle(href='#', data-toggle='dropdown')
             span(data-bind='text: currentUser.first_name')
             b.caret
+          
           ul.dropdown-menu
+            li
+              a
+                span Service Hours: 
+                span(data-bind='text: currentUser.total_service')
+            li
+              a
+                span Fellowship Hours: 
+                span(data-bind='text: currentUser.total_fellowship')
+            li.divider
             li
               a(href='#/profile') Profile
             li
-              a(href='#') Send Email
+              a Send Email
             li(data-bind='visible: loggedIn, click: toggleLogout')
-              a(href='#') Logout
+              a Logout
+
         li(data-bind='visible: !loggedIn')
           a(href='#/login') Login
+  
+
   // Alerts
   //
     <div id="welcome" class="alert alert-dismissable alert-info pop-notice timed" data-bind="visible: loggedIn">

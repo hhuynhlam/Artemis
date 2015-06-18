@@ -3,6 +3,7 @@ require.config({
     paths: {
 
         // Components
+        'modal'                         : 'components/modal/modal',
         'navbar.viewmodel'              : 'components/navbar/navbar.viewmodel',
         
         // Pages

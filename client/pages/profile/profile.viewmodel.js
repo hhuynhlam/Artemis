@@ -4,10 +4,8 @@ define(function (require) {
 	var $ = require('jquery');
 	var auth = require('auth');
 	var ko = require('knockout');
+	var modal = require('modal');
 	var sandbox = require('sandbox');
-
-	var confirmTemplate = require('text!pages/profile/templates/save-confirm.html');
-	require('k/kendo.window.min');
 
 	var ProfileViewModel = function () {
 
@@ -92,35 +90,18 @@ define(function (require) {
 	};
 
 	ProfileViewModel.prototype.setupConfirmModal = function () {
-		var $modal = $('#ConfirmModal'),
-			$kendoWindow = $modal.data('kendoWindow'),
-			$cancel, $confirm;
+		var selector = '#ConfirmModal',
+			$kendoWindow = $(selector).data('kendoWindow');
 			
 		if ($kendoWindow) { 
 			$kendoWindow.open();
 		} else {
-
-			// init modal
-			$modal.html(confirmTemplate);
-			$modal.kendoWindow({ modal: true });
-			$kendoWindow = $modal.data('kendoWindow');
-
-			// setup selectors
-			$cancel = $('#ConfirmModal .cancel');
-			$confirm = $('#ConfirmModal .confirm');
-
-			// setup click bindings
-			$cancel.on('click', function() { 
-				sandbox.msg.publish('profile.cancel');
-				$kendoWindow.close();
-			});	
-			$confirm.on('click', function() {
-				sandbox.msg.publish('profile.save');
-				$kendoWindow.close();
+			modal('saveConfirm', {
+				selector: selector,
+				cancel: function () { sandbox.msg.publish('profile.cancel'); },
+				confirm: function () { sandbox.msg.publish('profile.save'); }
 			});
 		}
-		
-		$kendoWindow.center();
 	};
 
 	return ProfileViewModel;
