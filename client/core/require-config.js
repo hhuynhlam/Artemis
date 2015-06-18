@@ -30,6 +30,7 @@ require.config({
         'jquery'                        : 'vendor/bower_components/jquery/dist/jquery.min',
         'k'                             : 'vendor/bower_components/kendo-ui-core/js',
         'knockout'                      : 'vendor/bower_components/knockout/dist/knockout',
+        'knockout-postbox'              : 'vendor/bower_components/knockout-postbox/build/knockout-postbox.min',
         'lodash'                        : 'vendor/bower_components/lodash/dist/lodash.min',
         'md5'                           : 'vendor/bower_components/blueimp-md5/js/md5.min',
         'sammy'                         : 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',

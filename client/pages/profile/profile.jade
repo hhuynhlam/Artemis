@@ -1,12 +1,11 @@
 section#Profile.container
-  form.form-horizontal.well
+  form.form-horizontal.well(data-bind="submit: save")
     fieldset
       legend Edit Profile
       .form-group
         label.col-lg-3.control-label Phone
         .col-lg-9
-          input.form-control(type='tel', name='phone', pattern='^\d{10}$', title='Numbers only! (eg: 4084567890)',
-          data-bind="value: formViewModel.phone")
+          input.form-control(type='tel', name='phone', data-bind="value: formViewModel.phone")
       .form-group
         label.col-lg-3.control-label Email
         .col-lg-9
@@ -37,11 +36,13 @@ section#Profile.container
           input.form-control(type='password', name='password', data-bind="value: formViewModel.newPassword")
       .form-group
         .col-lg-12.text-center
-          button.btn.btn-default(type='reset') Cancel
-          button.btn.btn-primary(type='submit')  Submit 
+          button.btn.btn-default(type='reset', data-bind="click: reset") Cancel
+          button.btn.btn-primary(type='submit', data-bind="enable: formViewModel.isDirty")  Submit 
       //- .alert.alert-warning.row(role='alert', data-bind='visible: confirmEnabled', style='display: none;')
       //-   .col-lg-8.control-label.form-group(data-bind="css: { 'has-error': confirmError }")
       //-     input.form-control(type='password', placeholder='Enter Current Password', data-bind='value: confirmPassword')
       //-   .col-lg-4.control-label
       //-     button.col-lg-6.btn.btn-warning(type='button', data-bind='click: cancelConfirm') Cancel
       //-     button.col-lg-6.btn.btn-primary(type='button', data-bind='click: save') Confirm
+
+  div#ConfirmModal
