@@ -7,22 +7,21 @@ define(function (require) {
 	var LoginViewModel = function () {
 		this.password = ko.observable('');
 		this.username = ko.observable('');
+	};
 
-		this.cancel = function () {
-			window.location.href = window.env.CLIENT_HOST;
-		};
+	LoginViewModel.prototype.cancel = function () {
+		window.location.href = window.env.CLIENT_HOST;
+	};
 
-		this.submit = function () {
-			auth.login(this.username(), this.password())
-			.then(function (user) {
-				if (user) { window.location.replace(window.env.CLIENT_HOST); }
-				else {
-					console.log('do something with unsuccessful login here');
-				}
-			})
-			.done();
-		}.bind(this);
-		
+	LoginViewModel.prototype.submit = function () {
+		auth.login(this.username(), this.password())
+		.then(function (user) {
+			if (user) { window.location.replace(window.env.CLIENT_HOST); }
+			else {
+				console.log('do something with unsuccessful login here');
+			}
+		})
+		.done();
 	};
 
 	return LoginViewModel;

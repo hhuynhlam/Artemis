@@ -1,0 +1,47 @@
+section#Profile.container
+  form.form-horizontal.well
+    fieldset
+      legend Edit Profile
+      .form-group
+        label.col-lg-3.control-label Phone
+        .col-lg-9
+          input.form-control(type='tel', name='phone', pattern='^\d{10}$', title='Numbers only! (eg: 4084567890)',
+          data-bind="value: formViewModel.phone")
+      .form-group
+        label.col-lg-3.control-label Email
+        .col-lg-9
+          input.form-control(type='email', name='email', data-bind="value: formViewModel.email")
+      .form-group
+        label.col-lg-3.control-label(for='select') Shirt Size
+        .col-lg-9
+          select.form-control(name='shirt_size', data-bind="value: formViewModel.shirtSize")
+            option Select a Shirt Size...
+            option(value='YS') YS
+            option(value='YM') YM
+            option(value='YL') YL
+            option(value='S') S
+            option(value='M') M
+            option(value='L') L
+            option(value='XL') XL
+      .form-group
+        label.col-lg-3.control-label School Address
+        .col-lg-9
+          input.form-control(type='text', name='temp_address', data-bind="value: formViewModel.schoolAddress")
+      .form-group
+        label.col-lg-3.control-label Permanent Address
+        .col-lg-9
+          input.form-control(type='text', name='perm_address', data-bind="value: formViewModel.permAddress")
+      .form-group
+        label.col-lg-3.control-label New Password
+        .col-lg-9
+          input.form-control(type='password', name='password', data-bind="value: formViewModel.newPassword")
+      .form-group
+        .col-lg-12.text-center
+          button.btn.btn-default(type='reset') Cancel
+          button.btn.btn-primary(type='submit')  Submit 
+      //- .alert.alert-warning.row(role='alert', data-bind='visible: confirmEnabled', style='display: none;')
+      //-   .col-lg-8.control-label.form-group(data-bind="css: { 'has-error': confirmError }")
+      //-     input.form-control(type='password', placeholder='Enter Current Password', data-bind='value: confirmPassword')
+      //-   .col-lg-4.control-label
+      //-     button.col-lg-6.btn.btn-warning(type='button', data-bind='click: cancelConfirm') Cancel
+      //-     button.col-lg-6.btn.btn-primary(type='button', data-bind='click: save') Confirm

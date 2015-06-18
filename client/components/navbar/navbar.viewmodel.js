@@ -8,14 +8,14 @@ define(function () {
 		this.currentUser = auth.currentUser() || {};
         this.loggedIn = auth.isLoggedIn();
         this.showLogout = ko.observable(false);
+    };
 
-        this.logout = function () { 
-            auth.logout(); 
-            window.location.replace(window.env.CLIENT_HOST);
-        };
-        
-        this.toggleLogout = function () { this.showLogout(!this.showLogout()); }.bind(this);
-	};
+    NavbarViewModel.prototype.logout = function () { 
+        auth.logout(); 
+        window.location.replace(window.env.CLIENT_HOST);
+    };
+    
+    NavbarViewModel.prototype.toggleLogout = function () { this.showLogout(!this.showLogout()); };
 
 	return NavbarViewModel;
 });

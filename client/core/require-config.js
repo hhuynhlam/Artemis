@@ -15,6 +15,9 @@ require.config({
         'login.viewmodel'               : 'pages/login/login.viewmodel',
         'login.router'                  : 'pages/login/login.router',
 
+        'profile.viewmodel'             : 'pages/profile/profile.viewmodel',
+        'profile.router'                : 'pages/profile/profile.router',
+
         // Core
         'sandbox'                       : 'core/sandbox/sandbox',
 
