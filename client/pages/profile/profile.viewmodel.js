@@ -60,6 +60,7 @@ define(function (require) {
 				auth.logout();
 				auth.setCurrentUser(user);
 				this.currentUser = auth.currentUser();
+				this.formViewModel.isDirty(false);
 			}.bind(this))
 			.catch(function (err) {
 				console.error('Error: There was a problem saving profile (', err, ')');
