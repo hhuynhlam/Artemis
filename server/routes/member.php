@@ -57,8 +57,10 @@ $app->post('/member/update', function () use ($app) {
     $params = $app->request->post();
     $where = array("id" => $app->request->post('_id'));
 
-    $result = $db->query( db_update("members", $params, $where) );
-    echo json_encode($result); 
+    $db->query( db_update("members", $params, $where) );
+    $result = $db->query( 'SELECT * FROM members WHERE id="' . $app->request->post('_id') . '"');
+    
+    echo parseJsonFromSQL($result); 
 
 });
 

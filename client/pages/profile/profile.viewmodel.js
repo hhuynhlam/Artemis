@@ -51,15 +51,44 @@ define(function (require) {
 	};
 	
 	ProfileViewModel.prototype.save = function () {
-		var submit = sandbox.msg.subscribe('profile.save', function () {
-			sandbox.msg.dispose(submit, cancel);
-		});
+		var cancel, submit;
 
-		var cancel = sandbox.msg.subscribe('profile.cancel', function () {
+		submit = sandbox.msg.subscribe('profile.save', function () {
+			var url = window.env.SERVER_HOST + '/member/update',
+				userData = this.serializeUserData();
+			
+			sandbox.http.post(url, userData)
+			.then(function (user) {
+				auth.logout();
+				auth.setCurrentUser(user);
+				this.currentUser = auth.currentUser();
+			}.bind(this))
+			.catch(function (err) {
+				console.error('Error: There was a problem saving profile (', err, ')');
+			})
+			.done();
+
+			sandbox.msg.dispose(submit, cancel);
+		}, this);
+
+		cancel = sandbox.msg.subscribe('profile.cancel', function () {
 			sandbox.msg.dispose(submit, cancel);
 		});
 
 		this.setupConfirmModal();
+	};
+
+	ProfileViewModel.prototype.serializeUserData = function () {
+		return {
+			apiKey: window.env.API_KEY,
+			_id: this.currentUser.id,
+			phone: this.formViewModel.phone(),
+			email: this.formViewModel.email(),
+			shirt_size: this.formViewModel.shirtSize(),
+			temp_address: this.formViewModel.schoolAddress(),
+			perm_address: this.formViewModel.permAddress(),
+			password: (this.formViewModel.newPassword()) ? sandbox.crypto.encrypt(this.formViewModel.newPassword()) : undefined
+		};
 	};
 
 	ProfileViewModel.prototype.setupConfirmModal = function () {

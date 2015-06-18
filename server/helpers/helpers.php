@@ -49,7 +49,7 @@ function db_update($table, $values, $where) {
 			$first = false;
 		}
 		else {
-			$query .= "AND " . $key . "='" . $value . "'";
+			$query .= ", " . $key . "='" . $value . "'";
 		}
 	}
 

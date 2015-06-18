@@ -37,6 +37,10 @@ define(function (require) {
         currentUser: function () {
             var user = sandbox.cookie.read('apo_user');
             return (user) ? JSON.parse(user) : null;
+        },
+
+        setCurrentUser: function (user) {
+            sandbox.cookie.set('apo_user', JSON.stringify(user[0]), { expires: 1, path: window.env.CLIENT_HOST });
         }
     };
 

@@ -38,11 +38,5 @@ section#Profile.container
         .col-lg-12.text-center
           button.btn.btn-default(type='reset', data-bind="click: reset") Cancel
           button.btn.btn-primary(type='submit', data-bind="enable: formViewModel.isDirty")  Submit 
-      //- .alert.alert-warning.row(role='alert', data-bind='visible: confirmEnabled', style='display: none;')
-      //-   .col-lg-8.control-label.form-group(data-bind="css: { 'has-error': confirmError }")
-      //-     input.form-control(type='password', placeholder='Enter Current Password', data-bind='value: confirmPassword')
-      //-   .col-lg-4.control-label
-      //-     button.col-lg-6.btn.btn-warning(type='button', data-bind='click: cancelConfirm') Cancel
-      //-     button.col-lg-6.btn.btn-primary(type='button', data-bind='click: save') Confirm
 
   div#ConfirmModal
