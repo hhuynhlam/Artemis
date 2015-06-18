@@ -16,40 +16,6 @@ define(function (require) {
         //     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
         // },
 
-        // // Event
-        // getEvent: function (id) {
-        //     var _data = {
-        //         id: id,
-        //     };
-
-        //     _data = this.appendApiKey(_data);
-            
-        //     return $.get(env.SERVER_ROOT + '/event', _data);
-        // },
-
-        // getEvents: function (type, startDate, endDate, limit, offset) {
-        //     var _data = {
-        //         limit: limit,
-        //         offset: offset
-        //     };
-
-        //     if (type) {
-        //         _data.event_code = type;
-        //     }
-
-        //     if (startDate) {
-        //         _data.startDate = startDate.unix();
-        //     }
-
-        //     if (endDate) {
-        //         _data.endDate = endDate.unix();
-        //     }
-
-        //     _data = this.appendApiKey(_data);
-            
-        //     return $.get(env.SERVER_ROOT + '/event', _data);
-        // },
-
         // // Shifts
         // getShifts: function (eventId) {
         //     var _data = {

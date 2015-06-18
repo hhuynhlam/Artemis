@@ -10,7 +10,7 @@ define(function (require) {
 		this.formattedEvents = ko.computed(function () {
 			var result = [];
 			this.events().forEach(function (e) {
-				e.date = sandbox.date.parseUnix(e.date).format('MM/DD/YYYY');
+				e.date = (e.date) ? sandbox.date.parseUnix(e.date).format('MM/DD/YYYY') : '';
 				result.push(e);
 			});
 			return result;

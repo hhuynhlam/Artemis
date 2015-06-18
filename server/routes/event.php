@@ -14,6 +14,7 @@ $app->get('/event', function () use ($app) {
 
     // get request parameters
     // type, startDate, endDate, limit, offset
+    $id = $app->request->get('id');
     $type = $app->request->get('event_code');
     $startDate = $app->request->get('startDate');
     $endDate = $app->request->get('endDate');
@@ -24,9 +25,18 @@ $app->get('/event', function () use ($app) {
     $where = "";
     $first = true;
 
-    if ( !is_null($type) ) {
-        $where .= "event_code & " . $type;
+    if ( !is_null($id) ) {
+        $where .= "id = " . $id;
         $first = false;
+    }
+
+    if ( !is_null($type) ) {
+        if ($first == true) {
+            $where .= "event_code & " . $type;
+            $first = false;
+        } else {
+            $where .= "AND event_code & " . $type;
+        }
     }
 
     if ( !is_null($startDate) && !is_null($endDate) ) {

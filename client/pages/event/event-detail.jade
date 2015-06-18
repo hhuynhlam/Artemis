@@ -1,2 +1,31 @@
-section#EventDetail.container
-    h2 Detail
+section#EventDetail
+    ol.breadcrumb
+        li
+            a(href="/#/") Home
+        li
+            a(href="/#/event") Events
+        li.active Detail
+
+    .container
+        h2(data-bind="text: event().name")
+        .well.col-sm-8
+            div 
+                strong Date: &nbsp;
+                span(data-bind="text: event().date")
+            div 
+                strong Location: &nbsp;
+                a(data-bind="attr: { target: '_blank', href: 'http://maps.google.com/?q=' + event().location }")
+                    span(data-bind="text: event().location")
+            div 
+                strong Meet: &nbsp;
+                span(data-bind="text: event().meet_location") 
+                | &nbsp; &#64;  
+                span(data-bind="text: event().meet_time")
+            div
+                strong Description: 
+                div(data-bind="html: event().description")
+
+        .col-sm-4
+            .panel.panel-default
+                .panel-heading.text-center Shifts
+                .panel-body Test

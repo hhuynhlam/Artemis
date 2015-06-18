@@ -1,12 +1,20 @@
-section#Event.container
-    h2 Upcoming Events
-    .well
-        table.table
-            thead
-                tr
-                    th Date
-                    th Name
-            tbody(data-bind="foreach: formattedEvents")
-                tr
-                    td(data-bind="text: date")
-                    td(data-bind="text: name")
+section#Event
+    ol.breadcrumb
+        li
+            a(href="/#/") Home
+        li.active Events
+
+    .container
+        h2 Upcoming Events
+        .well
+            table.table
+                thead
+                    tr
+                        th Date
+                        th Name
+                tbody(data-bind="foreach: formattedEvents")
+                    tr
+                        td(data-bind="text: date")
+                        td
+                            a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + id }")
+                                span(data-bind="text: name")
