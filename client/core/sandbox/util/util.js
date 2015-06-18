@@ -5,6 +5,7 @@ define(function (require) {
 
     var utils = {
 
+        assign: _.assign,
         findIndex: _.findIndex,
         forIn: _.forIn,
         template: _.template,

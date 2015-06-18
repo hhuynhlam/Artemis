@@ -3,10 +3,13 @@
 define(function (require) {
     var ko = require('knockout');
     var sandbox = require('sandbox');
+    var ShiftViewModel = require('event-shift.viewmodel');
 
     var EventDetailViewModel = function (eventId) {
         this.event = ko.observable({});
+        this.shiftViewModel = ko.observable(new ShiftViewModel(eventId));
 
+        // init event
         this.getEvent({ id: eventId })
         .then(function (event) {
             var _event = event[0];

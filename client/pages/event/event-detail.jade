@@ -1,9 +1,9 @@
 section#EventDetail
     ol.breadcrumb
         li
-            a(href="/#/") Home
+            a(href="#/") Home
         li
-            a(href="/#/event") Events
+            a(href="#/event") Events
         li.active Detail
 
     .container
@@ -25,7 +25,20 @@ section#EventDetail
                 strong Description: 
                 div(data-bind="html: event().description")
 
-        .col-sm-4
-            .panel.panel-default
-                .panel-heading.text-center Shifts
-                .panel-body Test
+        .col-sm-4(data-bind="with: shiftViewModel")
+            div(data-bind="foreach: shifts")
+                .panel.panel-default
+                    .panel-heading
+                        div(data-bind="text: description")
+                        div
+                            span(data-bind="text: start_time")
+                            span(data-bind="visible: end_time, text: ' - ' + end_time")
+                    .panel-body
+                        ul(data-bind="foreach: $parent.signups()[id]")
+                            li
+                                span(data-bind="text: first_name") 
+                                | &nbsp;
+                                span(data-bind="text: last_name")
+                                | &nbsp;
+                                span(data-bind="visible: driver != 0") 
+                                    span(data-bind="text: '(' + driver + ')'")   

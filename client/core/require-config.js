@@ -11,6 +11,7 @@ require.config({
         'about.router'                  : 'pages/about/about.router',
 
         'event-detail.viewmodel'        : 'pages/event/event-detail.viewmodel',
+        'event-shift.viewmodel'         : 'pages/event/event-shift.viewmodel',
         'event.viewmodel'               : 'pages/event/event.viewmodel',
         'event.router'                  : 'pages/event/event.router',
 
