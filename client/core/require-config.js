@@ -10,6 +10,10 @@ require.config({
         'about.viewmodel'               : 'pages/about/about.viewmodel',
         'about.router'                  : 'pages/about/about.router',
 
+        'event-detail.viewmodel'        : 'pages/event/event-detail.viewmodel',
+        'event.viewmodel'               : 'pages/event/event.viewmodel',
+        'event.router'                  : 'pages/event/event.router',
+
         'home.viewmodel'                : 'pages/home/home.viewmodel',
         'home.router'                   : 'pages/home/home.router',
 
@@ -34,6 +38,7 @@ require.config({
         'knockout-postbox'              : 'vendor/bower_components/knockout-postbox/build/knockout-postbox.min',
         'lodash'                        : 'vendor/bower_components/lodash/dist/lodash.min',
         'md5'                           : 'vendor/bower_components/blueimp-md5/js/md5.min',
+        'moment'                        : 'vendor/bower_components/moment/min/moment.min',
         'sammy'                         : 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
         'Q'                             : 'vendor/bower_components/q/q',
 

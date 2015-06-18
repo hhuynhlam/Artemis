@@ -17,6 +17,7 @@ define(function (require) {
 
 	// -- Routes -- //
 	require('about.router')(app);
+	require('event.router')(app);
 	require('home.router')(app);
 	require('login.router')(app);
 	require('profile.router')(app);
