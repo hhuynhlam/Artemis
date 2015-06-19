@@ -5,8 +5,9 @@ define(function (require) {
 	var ko = require('knockout');
 	var sandbox = require('sandbox');
 
-	var EventViewModel = function () {
+	var EventListViewModel = function () {
 		this.events = ko.observableArray([]);
+        this.isMore = ko.observable(true);
         this.loadOffset = ko.observable(_LIMIT);
 		
 		this.formattedEvents = ko.computed(function () {
@@ -31,7 +32,7 @@ define(function (require) {
 		.done();
 	};
 
-	EventViewModel.prototype.getEvents = function (options) {
+	EventListViewModel.prototype.getEvents = function (options) {
 		var data, url;
 		options = options || {};
         
@@ -48,14 +49,20 @@ define(function (require) {
         return sandbox.http.get(url, data);
 	};
 
-    EventViewModel.prototype.seeMore = function () {
+    EventListViewModel.prototype.seeMore = function () {
+        if(!this.isMore()) { return; }
+
         this.getEvents({
             limit: _LIMIT,
             offset: this.loadOffset()
         })
         .then(function (events) {
-            this.loadOffset(this.loadOffset() + _LIMIT);
-            events.forEach(function (e) { this.events.push(e); }, this);
+            if(events.length) {
+                this.loadOffset(this.loadOffset() + _LIMIT);
+                events.forEach(function (e) { this.events.push(e); }, this);
+            } else {
+                this.isMore(false);
+            }
         }.bind(this))
         .catch(function (err) {
             console.error('Error: Cannot get more events (', err, ')');
@@ -63,5 +70,5 @@ define(function (require) {
         .done();
     };
 
-	return EventViewModel;
+	return EventListViewModel;
 });

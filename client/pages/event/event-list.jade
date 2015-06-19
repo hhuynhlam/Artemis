@@ -19,6 +19,6 @@ section#Event
                             a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + id }")
                                 span(data-bind="text: name")
 
-            nav.pager
-                li
-                    a(href="#" data-bind="click: seeMore") See More
+            div.text-center
+                button.btn.btn-default(data-bind="visible: isMore, click: seeMore") See More
+                button.btn.btn-default(data-bind="visible: !isMore()" disabled) No More
