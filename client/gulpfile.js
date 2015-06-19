@@ -88,7 +88,7 @@ gulp.task('watch', function () {
 // Shell
 //======================================
 
-gulp.task('serve', ['less', 'jade', 'watch'], shell.task([ 'node ./server.js' ]));
+gulp.task('serve', ['less', 'jade'], shell.task([ 'node ./server.js' ]));
 
 
 //======================================

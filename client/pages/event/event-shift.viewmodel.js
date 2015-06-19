@@ -4,25 +4,21 @@ define(function (require) {
     var auth = require('auth');
     var ko = require('knockout');
     var sandbox = require('sandbox');
-
-    var EventSignupViewModel = require('event-signup.viewmodel');
+    var EventActionViewModel = require('event-action.viewmodel');
 
     var EventShiftViewModel = function (eventId) {
-        this.eventSignupViewModel = ko.observable(new EventSignupViewModel());
+        this.eventActionViewModel = ko.observable(new EventActionViewModel());
         this.currentUser = auth.currentUser();
         this.shifts = ko.observableArray([]);
         this.signups = ko.observable({});
         this.waitlist = ko.observable({});
 
         // init shifts
-        this.getShifts({ eventId: eventId })
+        this.getData('shifts', eventId)
         .then(function (shifts) {
             shifts.forEach(function (s) {
-                s.start_time = (s.start_time) ? sandbox.date.parseUnix(s.start_time).format('h:mm A') : '';
-                s.end_time = (s.end_time) ? sandbox.date.parseUnix(s.end_time).format('h:mm A') : '';
-                s.isFull = ko.observable(false);
-                s.isSignedUp = ko.observable(false);
-                s.isWaitlisted = ko.observable(false);
+                this.formatShiftData(s);
+                this.setShiftObservables(s);
             }, this);
 
             this.shifts(shifts);
@@ -38,49 +34,25 @@ define(function (require) {
 
     EventShiftViewModel.prototype.getSignups = function (shifts) {
         shifts.forEach(function (shift) {           // for each shift
-            this.getSignupsByShift(shift.id)        // get the signups
+            this.getData('signups', shift.id)       // get the signups
             .then(function (signups) {
                 var result = {};
                 result[shift.id] = signups;
-
                 this.signups(sandbox.util.assign(this.signups, result));
-                this.setShiftAvailability(this.currentUser, shift, signups);
-                this.setActionSubscriptions(shift);
-            
+                this.setSignUpAvailabilityForShift(this.currentUser, shift, signups);
             }.bind(this))
             .catch(function (err) {
                 console.error('Error: Cannot get signups (', err, ')');
             })
-            .done();    
+            .done();
+
+            // setup signup, remove, waitlist, remove form waitlist
+            this.setActionSubscriptions(shift);
+
         }, this);
     };
 
-    EventShiftViewModel.prototype.getSignupsByShift = function (shiftId) {
-        var data, url;
-        
-        url = window.env.SERVER_HOST + '/shift/signups';
-        data = {
-            apiKey: window.env.API_KEY,
-            shift: shiftId
-        };
-
-        return sandbox.http.get(url, data);
-    };
-
-    EventShiftViewModel.prototype.getShifts = function (options) {
-        var data, url;
-        options = options || {};
-        
-        url = window.env.SERVER_HOST + '/shift';
-        data = {
-            apiKey: window.env.API_KEY,
-            event: options.eventId
-        };
-
-        return sandbox.http.get(url, data);
-    };
-
-    EventShiftViewModel.prototype.setShiftAvailability = function (user, shift, signups) {
+    EventShiftViewModel.prototype.setSignUpAvailabilityForShift = function (user, shift, signups) {
         var currentShift = sandbox.util.find(this.shifts(), function (s) { return s.id === shift.id; }), 
             userSignedUp = sandbox.util.find(signups, function (su) { return su.user === user.id; }, this);
 
@@ -92,14 +64,13 @@ define(function (require) {
     };
 
     EventShiftViewModel.prototype.getWaitlists = function (shifts) {
-        shifts.forEach(function (shift) {           // for each shift
-            this.getWaitlistByShift(shift.id)        // get the signups
+        shifts.forEach(function (shift) { 
+            this.getData('waitlist', shift.id)       
             .then(function (waitlist) {
                 var result = {};
                 result[shift.id] = waitlist;
-
                 this.waitlist(sandbox.util.assign(this.waitlist, result));
-                this.setWaitlistAvailability(this.currentUser, shift, waitlist);            
+                this.setWaitlistAvailabilityForShift(shift, waitlist);            
             }.bind(this))
             .catch(function (err) {
                 console.error('Error: Cannot get waitlist (', err, ')');
@@ -108,22 +79,38 @@ define(function (require) {
         }, this);
     };
 
-    EventShiftViewModel.prototype.setWaitlistAvailability = function (user, shift, waitlist) {
+    EventShiftViewModel.prototype.setWaitlistAvailabilityForShift = function (shift, waitlist) {
         var currentShift = sandbox.util.find(this.shifts(), function (s) { return s.id === shift.id; }), 
-            userWaitlisted = sandbox.util.find(waitlist, function (w) { return w.id === user.id; }, this);
+            userWaitlisted = sandbox.util.find(waitlist, function (w) { return w.id === this.currentUser.id; }, this);
 
         // find out if current user already waitlisted to shift
         if(userWaitlisted) { currentShift.isWaitlisted(true); }
     };
 
-    EventShiftViewModel.prototype.getWaitlistByShift = function (shiftId) {
-        var data, url;
-        
-        url = window.env.SERVER_HOST + '/waitlist';
-        data = {
-            apiKey: window.env.API_KEY,
-            shift: shiftId
-        };
+    EventShiftViewModel.prototype.formatShiftData = function (shift) {
+        shift.start_time = (shift.start_time) ? sandbox.date.parseUnix(shift.start_time).format('h:mm A') : '';
+        shift.end_time = (shift.end_time) ? sandbox.date.parseUnix(shift.end_time).format('h:mm A') : '';
+    };
+
+    EventShiftViewModel.prototype.getData = function (name, id) {
+        var data = {
+            apiKey: window.env.API_KEY
+        }, url;
+
+        switch(name) {
+            case 'shifts':
+                data.event = id;
+                url = window.env.SERVER_HOST + '/shift';
+                break;
+            case 'signups':
+                data.shift = id;
+                url = window.env.SERVER_HOST + '/shift/signups';
+                break;
+            case 'waitlist':
+                data.shift = id;
+                url = window.env.SERVER_HOST + '/waitlist';
+                break;
+        }
 
         return sandbox.http.get(url, data);
     };
@@ -161,6 +148,20 @@ define(function (require) {
             if(!this.waitlist()[shift.id].length) { currentShift.isFull(false); }
             this.getWaitlists([shift]);
             
+        }, this);
+    };
+
+    EventShiftViewModel.prototype.setShiftObservables = function (shift) {
+        shift.isFull = ko.observable(false);
+        shift.isSignedUp = ko.observable(false);
+        shift.isWaitlisted = ko.observable(false);
+
+        shift.canSignUp = ko.computed(function () {
+            return !shift.isSignedUp() && !shift.isFull() && (shift.open_to & this.currentUser.position);
+        }, this);
+
+        shift.canWaitlist = ko.computed(function () {
+            return !shift.isSignedUp() && shift.isFull() && !shift.isWaitlisted() && (shift.open_to & this.currentUser.position);
         }, this);
     };
 

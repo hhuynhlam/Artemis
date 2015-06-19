@@ -18,8 +18,7 @@ define(function (require) {
 
 		// init events
 		this.getEvents({
-			// type: sandbox.constant.eventType.SERVICE,
-			limit: 20
+			limit: 50
 		})
 		.then(function (events) {
 			this.events(events);

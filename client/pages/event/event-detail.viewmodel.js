@@ -10,9 +10,9 @@ define(function (require) {
         this.event = ko.observable({});
 
         // init event
-        this.getEvent({ id: eventId })
-        .then(function (event) {
-            var _event = event[0];
+        this.getEvent(eventId)
+        .then(function (_event) {
+            _event = _event[0];
             _event.date = (_event.date) ? sandbox.date.parseUnix(_event.date).format('MM/DD/YYYY') : '';
             this.event(_event);
         }.bind(this))
@@ -22,16 +22,13 @@ define(function (require) {
         .done();
     };
 
-    EventDetailViewModel.prototype.getEvent = function (options) {
+    EventDetailViewModel.prototype.getEvent = function (eventId) {
         var data, url;
-        options = options || {};
-        
         url = window.env.SERVER_HOST + '/event';
         data = {
             apiKey: window.env.API_KEY,
-            id: options.id
+            id: eventId
         };
-
         return sandbox.http.get(url, data);
     };
 

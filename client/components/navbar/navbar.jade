@@ -9,7 +9,8 @@ nav#Navbar
         span.icon-bar
       
       // Site Name
-      a.navbar-brand(href='#') Alpha Phi Omega | Rho Rho Chapter
+      a.navbar-brand.hidden-xs(href='#') Alpha Phi Omega | Rho Rho Chapter
+      a.navbar-brand.visible-xs-inline(href='#') APO | PP
     
     // Collapsible
     .navbar-collapse.collapse.navbar-responsive-collapse
@@ -92,6 +93,7 @@ nav#Navbar
         li(data-bind='visible: !loggedIn')
           a(href='#/login') Login
   
+  #LogoutModal
 
   // Alerts
   //
@@ -99,4 +101,3 @@ nav#Navbar
     <button type="button" class="close" data-dismiss="alert">×</button>
     Welcome back, <span data-bind="text: name"></span>
     </div>
-  #LogoutModal

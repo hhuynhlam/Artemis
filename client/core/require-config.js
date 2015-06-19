@@ -10,10 +10,10 @@ require.config({
         'about.viewmodel'               : 'pages/about/about.viewmodel',
         'about.router'                  : 'pages/about/about.router',
 
+        'event-action.viewmodel'        : 'pages/event/event-action.viewmodel',
         'event-detail.viewmodel'        : 'pages/event/event-detail.viewmodel',
+        'event-list.viewmodel'          : 'pages/event/event-list.viewmodel',
         'event-shift.viewmodel'         : 'pages/event/event-shift.viewmodel',
-        'event-signup.viewmodel'        : 'pages/event/event-signup.viewmodel',
-        'event.viewmodel'               : 'pages/event/event.viewmodel',
         'event.router'                  : 'pages/event/event.router',
 
         'home.viewmodel'                : 'pages/home/home.viewmodel',

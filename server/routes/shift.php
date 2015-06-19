@@ -134,7 +134,7 @@ $app->post('/shift/user/signups/add', function () use ($app) {
     //echo db_insert('signups', $columns, $values);
 });
 
-$app->get('/shift/user/signups/delete', function () use ($app) {
+$app->post('/shift/user/signups/delete', function () use ($app) {
     
     // authenticate before do anything
     if ( !authenticate($app->request->params('apiKey')) ) {

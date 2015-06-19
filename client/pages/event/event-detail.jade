@@ -8,6 +8,7 @@ section#EventDetail
 
     .container
         h2(data-bind="text: event().name")
+
         .well.col-sm-8
             div 
                 strong Date: &nbsp;
@@ -19,14 +20,16 @@ section#EventDetail
             div 
                 strong Meet: &nbsp;
                 span(data-bind="text: event().meet_location") 
-                | &nbsp; &#64;  
-                span(data-bind="text: event().meet_time")
+                span(data-bind="visible: event().meet_time")
+                    | &nbsp; &#64;  
+                    span(data-bind="text: event().meet_time")
             div
                 strong Description: 
                 div(data-bind="html: event().description")
 
         .col-sm-4(data-bind="with: shiftViewModel")
             div(data-bind="foreach: shifts")
+                //- shifts
                 .panel.panel-default
                     .panel-heading
                         div(data-bind="text: description")
@@ -35,6 +38,7 @@ section#EventDetail
                             span(data-bind="visible: end_time, text: ' - ' + end_time")
                     
                     .panel-body
+                        //- signups
                         ul(data-bind="foreach: $parent.signups()[id]")
                             li
                                 span(data-bind="text: first_name") 
@@ -43,25 +47,22 @@ section#EventDetail
                                 | &nbsp;
                                 span(data-bind="visible: driver != 0") 
                                     span(data-bind="text: '(' + driver + ')'")  
-                        
-                        div.text-center(data-bind="with: $parent.eventSignupViewModel")
-                            button.btn.btn-primary(data-bind="visible: !$parent.isSignedUp() && (!$parent.isFull()) && ($parent.open_to & currentUser.position), \
+                        //- buttons
+                        div.text-center(data-bind="with: $parent.eventActionViewModel")
+                            button.btn.btn-primary(data-bind="visible: $parent.canSignUp, \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: add") Signup
-                            button.btn.btn-default(data-bind="visible: !$parent.isSignedUp() && ($parent.isFull()) && \
-                                (!$parent.isWaitlisted()) && ($parent.open_to & currentUser.position), \
+                            button.btn.btn-default(data-bind="visible: $parent.canWaitlist, \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: addWaitlist") Waitlist
-                            button.btn.btn-warning(data-bind="visible: !$parent.isSignedUp() && ($parent.isFull()) && \
-                                $parent.isWaitlisted() && ($parent.open_to & currentUser.position), \
+                            button.btn.btn-warning(data-bind="visible: $parent.isWaitlisted, \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: removeWaitlist") Remove from Waitlist
                             button.btn.btn-danger(data-bind="visible: $parent.isSignedUp,  \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: remove") Remove
-                        
+                        //- waitlist
                         hr(data-bind="visible: isFull")
-                        
                         .well.well-sm(data-bind="visible: isFull")
                             h5 Waitlist:
                             ol(data-bind="foreach: $parent.waitlist()[id]")

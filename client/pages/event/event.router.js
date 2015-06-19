@@ -11,14 +11,14 @@ define(function (require) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
             require([
                 'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'event.viewmodel', 'text!pages/event/event.html'
-            ], function (NavbarViewModel, navBarTemplate, EventViewModel, eventTemplate) {
-                var partials = navBarTemplate.concat(eventTemplate);
+                'event-list.viewmodel', 'text!pages/event/event-list.html'
+            ], function (NavbarViewModel, navBarTemplate, EventListViewModel, eventListTemplate) {
+                var partials = navBarTemplate.concat(eventListTemplate);
                 context.swap(sandbox.util.template(partials));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
-                ko.applyBindings(new EventViewModel(), document.getElementById('Event'));
+                ko.applyBindings(new EventListViewModel(), document.getElementById('Event'));
             });
         });
 
