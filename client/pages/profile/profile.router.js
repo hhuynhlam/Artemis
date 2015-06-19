@@ -11,11 +11,11 @@ define(function (require) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
             else {
                 require([
-                    'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                    'profile.viewmodel', 'text!pages/profile/profile.html'
-                ], function (NavbarViewModel, navBarTemplate, ProfileViewModel, profileTemplate) {
-                    var partials = navBarTemplate.concat(profileTemplate);
-                    context.swap(sandbox.util.template(partials));
+                    'navbar.viewmodel',
+                    'profile.viewmodel', 
+                    'text!pages/profile/profile.html'
+                ], function (NavbarViewModel, ProfileViewModel, profileTemplate) {
+                    context.swap(sandbox.util.template(profileTemplate));
 
                     // apply ko bindings
                     ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));

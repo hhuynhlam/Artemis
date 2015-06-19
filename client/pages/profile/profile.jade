@@ -2,44 +2,44 @@ extends ../_layout.jade
 
 block content
   section#Profile.container
-  form.form-horizontal.well(data-bind="submit: save")
-    fieldset
-      legend Edit Profile
-      .form-group
-        label.col-lg-3.control-label Phone
-        .col-lg-9
-          input.form-control(type='tel', name='phone', data-bind="value: formViewModel.phone")
-      .form-group
-        label.col-lg-3.control-label Email
-        .col-lg-9
-          input.form-control(type='email', name='email', data-bind="value: formViewModel.email")
-      .form-group
-        label.col-lg-3.control-label(for='select') Shirt Size
-        .col-lg-9
-          select.form-control(name='shirt_size', data-bind="value: formViewModel.shirtSize")
-            option Select a Shirt Size...
-            option(value='YS') YS
-            option(value='YM') YM
-            option(value='YL') YL
-            option(value='S') S
-            option(value='M') M
-            option(value='L') L
-            option(value='XL') XL
-      .form-group
-        label.col-lg-3.control-label School Address
-        .col-lg-9
-          input.form-control(type='text', name='temp_address', data-bind="value: formViewModel.schoolAddress")
-      .form-group
-        label.col-lg-3.control-label Permanent Address
-        .col-lg-9
-          input.form-control(type='text', name='perm_address', data-bind="value: formViewModel.permAddress")
-      .form-group
-        label.col-lg-3.control-label New Password
-        .col-lg-9
-          input.form-control(type='password', name='password', data-bind="value: formViewModel.newPassword")
-      .form-group
-        .col-lg-12.text-center
-          button.btn.btn-default(type='reset', data-bind="click: reset") Cancel
-          button.btn.btn-primary(type='submit', data-bind="enable: formViewModel.isDirty")  Submit 
+    form.form-horizontal.well(data-bind="submit: save")
+      fieldset
+        legend Edit Profile
+        .form-group
+          label.col-lg-3.control-label Phone
+          .col-lg-9
+            input.form-control(type='tel', name='phone', data-bind="value: formViewModel.phone")
+        .form-group
+          label.col-lg-3.control-label Email
+          .col-lg-9
+            input.form-control(type='email', name='email', data-bind="value: formViewModel.email")
+        .form-group
+          label.col-lg-3.control-label(for='select') Shirt Size
+          .col-lg-9
+            select.form-control(name='shirt_size', data-bind="value: formViewModel.shirtSize")
+              option Select a Shirt Size...
+              option(value='YS') YS
+              option(value='YM') YM
+              option(value='YL') YL
+              option(value='S') S
+              option(value='M') M
+              option(value='L') L
+              option(value='XL') XL
+        .form-group
+          label.col-lg-3.control-label School Address
+          .col-lg-9
+            input.form-control(type='text', name='temp_address', data-bind="value: formViewModel.schoolAddress")
+        .form-group
+          label.col-lg-3.control-label Permanent Address
+          .col-lg-9
+            input.form-control(type='text', name='perm_address', data-bind="value: formViewModel.permAddress")
+        .form-group
+          label.col-lg-3.control-label New Password
+          .col-lg-9
+            input.form-control(type='password', name='password', data-bind="value: formViewModel.newPassword")
+        .form-group
+          .col-lg-12.text-center
+            button.btn.btn-default(type='reset', data-bind="click: reset") Cancel
+            button.btn.btn-primary(type='submit', data-bind="enable: formViewModel.isDirty")  Submit 
 
-  div#ConfirmModal
+    div#ConfirmModal

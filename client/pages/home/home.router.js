@@ -8,11 +8,11 @@ define(function (require) {
         
         app.get('/#/', function (context) {
             require([
-                'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'home.viewmodel', 'text!pages/home/home.html'
-            ], function (NavbarViewModel, navBarTemplate, HomeViewModel, homeTemplate) {
-                var partials = navBarTemplate.concat(homeTemplate);
-                context.swap(sandbox.util.template(partials));
+                'navbar.viewmodel',
+                'home.viewmodel', 
+                'text!pages/home/home.html'
+            ], function (NavbarViewModel, HomeViewModel, homeTemplate) {
+                context.swap(sandbox.util.template(homeTemplate));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
