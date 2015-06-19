@@ -82,7 +82,7 @@ define(function (require) {
             userSignedUp = sandbox.util.find(signups, function (su) { return su.user === user.id; }, this);
 
         // find out if shift is full
-        if(signups.length >= shift.cap) { currentShift.isFull(true); }
+        if(signups.length >= shift.cap && shift.cap !== '0') { currentShift.isFull(true); }
 
         // find out if current user already signup to shift
         if(userSignedUp) { currentShift.isSignedUp(true); }

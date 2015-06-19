@@ -45,12 +45,12 @@ section#EventDetail
                                     span(data-bind="text: '(' + driver + ')'")  
                         
                         div.text-center(data-bind="with: $parent.eventSignupViewModel")
-                            button.btn.btn-primary(data-bind="visible: !$parent.isSignedUp() && !$parent.isFull(), \
+                            button.btn.btn-primary(data-bind="visible: !$parent.isSignedUp() && (!$parent.isFull()) && ($parent.open_to & currentUser.position), \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: add") Signup
-                            button.btn.btn-default(data-bind="visible: !$parent.isSignedUp() && $parent.isFull, \
+                            button.btn.btn-default(data-bind="visible: !$parent.isSignedUp() && ($parent.isFull()) && ($parent.open_to & currentUser.position), \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: waitlist") Waitlist
-                            button.btn.btn-danger(data-bind="visible: $parent.isSignedUp, \
+                            button.btn.btn-danger(data-bind="visible: $parent.isSignedUp,  \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: remove") Remove  
