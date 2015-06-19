@@ -37,15 +37,18 @@ define(function (require) {
         var $target = $($(event)[0].target),
             data, url;
         
-        url = window.env.SERVER_HOST + '/waitlist';
+        url = window.env.SERVER_HOST + '/waitlist/add';
         data = {
             apiKey: window.env.API_KEY,
-            shift: $target.attr('data-shiftId')
+            user: this.currentUser.id,
+            shift: $target.attr('data-shiftId'),
+            event: $target.attr('data-eventId'),
+            timestamp: sandbox.date.toUnix()
         };
 
-        sandbox.http.get(url, data)
+        sandbox.http.post(url, data)
         .then(function (waitlist) {
-            debugger;
+            sandbox.msg.publish($target.attr('data-shiftId') + '.shift.waitlist', waitlist);
         })
         .catch(function (err) {
             console.error('Error: Could not waitlist to shift (', err, ')');

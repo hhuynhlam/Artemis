@@ -128,9 +128,12 @@ define(function (require) {
             currentShift.isSignedUp(true);
         }, this);
 
-        sandbox.msg.subscribe(shift.id + '.shift.waitlist', function () {
+        sandbox.msg.subscribe(shift.id + '.shift.waitlist', function (updatedWaitlist) {
             debugger;
-        });
+            var updated = {};
+            updated[shift.id] = updatedWaitlist;
+            this.waitlist(sandbox.util.assign(this.waitlist, updated));
+        }, this);
 
         sandbox.msg.subscribe(shift.id + '.shift.remove', function (updatedSignups) {
             var updated = {};
