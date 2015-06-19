@@ -1,11 +1,14 @@
 'use strict';
 
+var concat = require('gulp-concat');
 var del = require('del');
 var gulp = require('gulp');
 var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
 var less = require('gulp-less');
 var plumber = require('gulp-plumber');
+var rename = require('gulp-rename');
+var rjs = require('gulp-requirejs');
 var shell = require('gulp-shell');
 
 
@@ -59,7 +62,7 @@ gulp.task('jade', function () {
 //======================================
 
 gulp.task('clean', function() {
-    del(['_dist/**/*', '!_dist/env.json']);
+    del(['_dist/**/*']);
 });
 
 
@@ -68,15 +71,53 @@ gulp.task('clean', function() {
 //======================================
 
 gulp.task('copy', function() {
-    gulp.src('assets/**/*').pipe(gulp.dest('_dist/assets'));
-    gulp.src('components/**/*').pipe(gulp.dest('_dist/components'));
-    gulp.src('core/**/*').pipe(gulp.dest('_dist/core'));
-    gulp.src('pages/**/*').pipe(gulp.dest('_dist/pages'));
-    gulp.src('services/**/*').pipe(gulp.dest('_dist/services'));
-    gulp.src('vendor/**/*').pipe(gulp.dest('_dist/vendor'));
-    gulp.src(['app.js', 'index.html']).pipe(gulp.dest('_dist'));
+    gulp.src([
+        'vendor/bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'vendor/bower_components/font-awesome/css/font-awesome.min.css',
+        'vendor/bower_components/kendo-ui-core/styles/kendo.common-bootstrap.min.css',
+        'vendor/bower_components/kendo-ui-core/styles/kendo.bootstrap.min.css',
+        'assets/css/global.css'])
+    .pipe(concat('main.css'))
+    .pipe(gulp.dest('_dist'));
+
+    gulp.src([
+        'assets/img/**'
+    ]).pipe(gulp.dest('_dist/assets/img'));
+
+    gulp.src([
+        'vendor/bower_components/requirejs/require.js'
+    ]).pipe(gulp.dest('_dist'));
+
+    gulp.src([
+        'index.release.html'
+    ])
+    .pipe(rename('index.html'))
+    .pipe(gulp.dest('_dist'));
+    
+    gulp.src([
+        '**/*.html', 
+        '!node_modules/**', 
+        '!vendor/**', 
+        '!index.html',
+        '!index.release.html',
+        '!_dist/**'])
+    .pipe(gulp.dest('_dist'));
 });
 
+
+//======================================
+// RJS Optimize
+//======================================
+//
+gulp.task('rjs', function() {
+    rjs({
+        baseUrl: "./",
+        mainConfigFile: "./core/require-config.js",
+        name: "./app.js",
+        out: "main.js"
+    })
+    .pipe(gulp.dest('_dist'));
+});
 
 //======================================
 // Watch
@@ -99,5 +140,6 @@ gulp.task('serve', ['less', 'jade'], shell.task([ 'node ./server.js' ]));
 // Primary Tasks
 //======================================
 gulp.task('default', ['jshint', 'less', 'jade']);
+gulp.task('build', ['copy', 'rjs']);
 
 

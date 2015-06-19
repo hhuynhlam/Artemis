@@ -4,17 +4,16 @@ define(function (require) {
     var auth = require('auth');
     var ko = require('knockout');
     var sandbox = require('sandbox');
+    var EventDetailViewModel = require('event-detail.viewmodel');
+    var EventListViewModel = require('event-list.viewmodel');
+    var NavbarViewModel = require('navbar.viewmodel');
 
     var eventRouter = function (app) {   
         
         app.get('/#/event', function (context) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
-            require([
-                'navbar.viewmodel',
-                'event-list.viewmodel', 
-                'text!pages/event/event-list.html'
-            ], function (NavbarViewModel, EventListViewModel, eventListTemplate) {
-                context.swap(sandbox.util.template(eventListTemplate));
+            require(['text!pages/event/event-list.html'], function (template) {
+                context.swap(sandbox.util.template(template));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
@@ -24,12 +23,8 @@ define(function (require) {
 
         app.get('/#/event/:id', function (context) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
-            require([
-                'navbar.viewmodel',
-                'event-detail.viewmodel', 
-                'text!pages/event/event-detail.html'
-            ], function (NavbarViewModel, EventDetailViewModel, eventDetailTemplate) {
-                context.swap(sandbox.util.template(eventDetailTemplate));
+            require(['text!pages/event/event-detail.html'], function (template) {
+                context.swap(sandbox.util.template(template));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));

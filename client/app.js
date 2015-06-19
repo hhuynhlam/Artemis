@@ -3,10 +3,13 @@
 define(function (require) {
 	var ko = require('knockout');
 	var sammy = require('sammy');
+	var sandbox = require('sandbox');
 	require('bootstrap');
 
 	// set environment variables
-	window.env = window.env || require('json!env.json');
+	var _env = require('json!env.json');
+	window.env = window.env || {};
+	sandbox.util.assign(window.env, _env);
 
 	var AppViewModel = function () {
 		this.isReady = ko.observable(false);

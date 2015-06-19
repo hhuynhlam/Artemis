@@ -3,16 +3,14 @@
 define(function (require) {
     var ko = require('knockout');
     var sandbox = require('sandbox');
+    var HomeViewModel = require('home.viewmodel');
+    var NavbarViewModel = require('navbar.viewmodel');
 
     var homeRouter = function (app) {   
         
         app.get('/#/', function (context) {
-            require([
-                'navbar.viewmodel',
-                'home.viewmodel', 
-                'text!pages/home/home.html'
-            ], function (NavbarViewModel, HomeViewModel, homeTemplate) {
-                context.swap(sandbox.util.template(homeTemplate));
+            require(['text!pages/home/home.html'], function (template) {
+                context.swap(sandbox.util.template(template));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));

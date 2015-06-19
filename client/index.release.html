@@ -10,11 +10,8 @@
     <meta name="description" content="">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="vendor/bower_components/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="vendor/bower_components/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="vendor/bower_components/kendo-ui-core/styles/kendo.common-bootstrap.min.css" />
-    <link rel="stylesheet" href="vendor/bower_components/kendo-ui-core/styles/kendo.bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/css/global.css" />
+    <link rel="stylesheet" href="main.css" />
+
 
   </head>
   <body>
@@ -38,12 +35,13 @@
     <!-- Scripts -->
     <script>
       window.env = window.env || {};
-      window.env.CLIENT_HOST = 'http://localhost:9000/#';
-      window.env.SERVER_HOST = 'http://localhost/index.php';
+      window.env.CLIENT_HOST = 'http://clubs.uci.edu/aphio/beta/client/#';
+      window.env.SERVER_HOST = 'http://clubs.uci.edu/aphio/beta/server/index.php';
     </script>
     
-    <script src="vendor/bower_components/requirejs/require.js" data-main="app"></script>
-    <script src="core/require-config.js"></script>
+    <script src="require.js"></script>
+    <script src="main.js"></script>
+    <script>require(['app.js']);</script>
 
 </body>
 </html>
