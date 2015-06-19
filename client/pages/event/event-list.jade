@@ -18,3 +18,7 @@ section#Event
                         td
                             a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + id }")
                                 span(data-bind="text: name")
+
+            nav.pager
+                li
+                    a(href="#" data-bind="click: seeMore") See More

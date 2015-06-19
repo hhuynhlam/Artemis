@@ -1,11 +1,13 @@
 'use strict';
 
 define(function (require) {
+    var _LIMIT = 50;
 	var ko = require('knockout');
 	var sandbox = require('sandbox');
 
 	var EventViewModel = function () {
 		this.events = ko.observableArray([]);
+        this.loadOffset = ko.observable(_LIMIT);
 		
 		this.formattedEvents = ko.computed(function () {
 			var result = [];
@@ -18,7 +20,7 @@ define(function (require) {
 
 		// init events
 		this.getEvents({
-			limit: 50
+			limit: _LIMIT
 		})
 		.then(function (events) {
 			this.events(events);
@@ -45,6 +47,21 @@ define(function (require) {
 
         return sandbox.http.get(url, data);
 	};
+
+    EventViewModel.prototype.seeMore = function () {
+        this.getEvents({
+            limit: _LIMIT,
+            offset: this.loadOffset()
+        })
+        .then(function (events) {
+            this.loadOffset(this.loadOffset() + _LIMIT);
+            events.forEach(function (e) { this.events.push(e); }, this);
+        }.bind(this))
+        .catch(function (err) {
+            console.error('Error: Cannot get more events (', err, ')');
+        })
+        .done();
+    };
 
 	return EventViewModel;
 });
