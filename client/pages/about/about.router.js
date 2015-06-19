@@ -8,11 +8,11 @@ define(function (require) {
         
         app.get('/#/about', function (context) {
             require([
-                'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'about.viewmodel', 'text!pages/about/about.html'
-            ], function (NavbarViewModel, navBarTemplate, AboutViewModel, aboutTemplate) {
-                var partials = navBarTemplate.concat(aboutTemplate);
-                context.swap(sandbox.util.template(partials));
+                'navbar.viewmodel',
+                'about.viewmodel', 
+                'text!pages/about/about.html'
+            ], function (NavbarViewModel, AboutViewModel, aboutTemplate) {
+                context.swap(sandbox.util.template(aboutTemplate));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
@@ -22,11 +22,11 @@ define(function (require) {
 
         app.get('/#/about/contact', function (context) {
             require([
-                'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'about.viewmodel', 'text!pages/about/templates/contact.html'
-            ], function (NavbarViewModel, navBarTemplate, AboutViewModel, aboutTemplate) {
-                var partials = navBarTemplate.concat(aboutTemplate);
-                context.swap(sandbox.util.template(partials));
+                'navbar.viewmodel',
+                'about.viewmodel', 
+                'text!pages/about/templates/contact.html'
+            ], function (NavbarViewModel, AboutViewModel, aboutTemplate) {
+                context.swap(sandbox.util.template(aboutTemplate));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
@@ -36,11 +36,11 @@ define(function (require) {
 
         app.get('/#/about/history', function (context) {
             require([
-                'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'about.viewmodel', 'text!pages/about/templates/history.html'
-            ], function (NavbarViewModel, navBarTemplate, AboutViewModel, aboutTemplate) {
-                var partials = navBarTemplate.concat(aboutTemplate);
-                context.swap(sandbox.util.template(partials));
+                'navbar.viewmodel',
+                'about.viewmodel', 
+                'text!pages/about/templates/history.html'
+            ], function (NavbarViewModel, AboutViewModel, aboutTemplate) {
+                context.swap(sandbox.util.template(aboutTemplate));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
@@ -50,11 +50,11 @@ define(function (require) {
 
         app.get('/#/about/links', function (context) {
             require([
-                'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'about.viewmodel', 'text!pages/about/templates/links.html'
-            ], function (NavbarViewModel, navBarTemplate, AboutViewModel, aboutTemplate) {
-                var partials = navBarTemplate.concat(aboutTemplate);
-                context.swap(sandbox.util.template(partials));
+                'navbar.viewmodel',
+                'about.viewmodel', 
+                'text!pages/about/templates/links.html'
+            ], function (NavbarViewModel, AboutViewModel, aboutTemplate) {
+                context.swap(sandbox.util.template(aboutTemplate));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
@@ -64,11 +64,11 @@ define(function (require) {
 
         app.get('/#/about/rush', function (context) {
             require([
-                'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'about.viewmodel', 'text!pages/about/templates/rush.html'
-            ], function (NavbarViewModel, navBarTemplate, AboutViewModel, aboutTemplate) {
-                var partials = navBarTemplate.concat(aboutTemplate);
-                context.swap(sandbox.util.template(partials));
+                'navbar.viewmodel',
+                'about.viewmodel', 
+                'text!pages/about/templates/rush.html'
+            ], function (NavbarViewModel, AboutViewModel, aboutTemplate) {
+                context.swap(sandbox.util.template(aboutTemplate));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));

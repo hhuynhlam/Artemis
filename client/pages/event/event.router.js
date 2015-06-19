@@ -10,11 +10,11 @@ define(function (require) {
         app.get('/#/event', function (context) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
             require([
-                'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'event-list.viewmodel', 'text!pages/event/event-list.html'
-            ], function (NavbarViewModel, navBarTemplate, EventListViewModel, eventListTemplate) {
-                var partials = navBarTemplate.concat(eventListTemplate);
-                context.swap(sandbox.util.template(partials));
+                'navbar.viewmodel',
+                'event-list.viewmodel', 
+                'text!pages/event/event-list.html'
+            ], function (NavbarViewModel, EventListViewModel, eventListTemplate) {
+                context.swap(sandbox.util.template(eventListTemplate));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
@@ -25,11 +25,11 @@ define(function (require) {
         app.get('/#/event/:id', function (context) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
             require([
-                'navbar.viewmodel', 'text!components/navbar/navbar.html',
-                'event-detail.viewmodel', 'text!pages/event/event-detail.html'
-            ], function (NavbarViewModel, navBarTemplate, EventDetailViewModel, eventDetailTemplate) {
-                var partials = navBarTemplate.concat(eventDetailTemplate);
-                context.swap(sandbox.util.template(partials));
+                'navbar.viewmodel',
+                'event-detail.viewmodel', 
+                'text!pages/event/event-detail.html'
+            ], function (NavbarViewModel, EventDetailViewModel, eventDetailTemplate) {
+                context.swap(sandbox.util.template(eventDetailTemplate));
 
                 // apply ko bindings
                 ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));

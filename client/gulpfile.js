@@ -43,7 +43,11 @@ gulp.task('less', function () {
 //======================================
 
 gulp.task('jade', function () {
-    return gulp.src('./**/*.jade')
+    return gulp.src([
+        './**/*.jade',
+        '!./**/*_layout.jade',
+        '!./**/*navbar.jade'
+    ])
     .pipe(plumber())
     .pipe(jade())
     .pipe(gulp.dest('./'));
