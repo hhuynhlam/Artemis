@@ -18,7 +18,7 @@ define(function (require) {
 
 		// init events
 		this.getEvents({
-			type: sandbox.constant.eventType.SERVICE,
+			// type: sandbox.constant.eventType.SERVICE,
 			limit: 20
 		})
 		.then(function (events) {
@@ -40,7 +40,7 @@ define(function (require) {
         	event_code: options.type,
         	limit: options.limit,
         	offset: options.offset,
-        	startDate: (options.startDate) ? sandbox.date.toUnix(options.startDate) : undefined,
+        	startDate: sandbox.date.toUnix(options.startDate),
         	endDate: (options.endDate) ? sandbox.date.toUnix(options.endDate) : undefined
         };
 
