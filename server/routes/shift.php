@@ -158,8 +158,19 @@ $app->get('/shift/user/signups/delete', function () use ($app) {
     ];
 
     $results = $db->query( db_delete('signups', $where) );
-    
+
     if ($results == 1) {
+        $anotherWhere = ' shift = ' . $shift . ' AND event = ' . $event;
+        $waitlist = parseArrayFromSQL($db->query('SELECT * FROM waitlist WHERE ' . $anotherWhere . ' ORDER BY timestamp ASC LIMIT 1 '));
+        
+        if(count($waitlist) != 0) {
+            $waitlist = $waitlist[0]; $where['user'] = $waitlist['user'];
+            $results = $db->query( db_delete('waitlist', $where) );
+            $columns = ['user', 'shift', 'event', 'driver', 'chair', 'credit', 'timestamp'];
+            $values= [$waitlist['user'], $waitlist['shift'], $waitlist['event'], 0, 0, 0, $waitlist['timestamp']];
+            $results = $db->query( db_insert('signups', $columns, $values) );
+        }
+
         $results = $db->query('SELECT m.first_name, m.last_name, su.driver, su.user 
             FROM members as m 
             JOIN signups as su ON su.user = m.id 

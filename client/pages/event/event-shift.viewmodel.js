@@ -85,7 +85,7 @@ define(function (require) {
             userSignedUp = sandbox.util.find(signups, function (su) { return su.user === user.id; }, this);
 
         // find out if shift is full
-        if(signups.length >= shift.cap && shift.cap !== '0') { currentShift.isFull(true); }
+        if(signups.length >= shift.cap && shift.cap !== '0' && shift.cap !== '-1') { currentShift.isFull(true); }
 
         // find out if current user already signup to shift
         if(userSignedUp) { currentShift.isSignedUp(true); }
@@ -157,7 +157,10 @@ define(function (require) {
             updated[shift.id] = updatedSignups;
             this.signups(sandbox.util.assign(this.signups, updated));
             currentShift.isSignedUp(false);
-            currentShift.isFull(false);
+            
+            if(!this.waitlist()[shift.id].length) { currentShift.isFull(false); }
+            this.getWaitlists([shift]);
+            
         }, this);
     };
 

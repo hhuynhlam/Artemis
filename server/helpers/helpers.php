@@ -31,6 +31,22 @@ function parseJsonFromSQL($results) {
     return;
 }
 
+function parseArrayFromSQL($results) {
+
+    $response = array();
+    
+    if ($results != false) {
+
+        while($row = $results->fetch_assoc()) {
+            array_push($response, $row);
+        }
+
+        return $response;
+    }
+
+    return;
+}
+
 // SQL helpers
 function db_update($table, $values, $where) {
 	$query = "UPDATE " . $table . " SET ";
