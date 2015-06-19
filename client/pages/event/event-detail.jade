@@ -48,9 +48,14 @@ section#EventDetail
                             button.btn.btn-primary(data-bind="visible: !$parent.isSignedUp() && (!$parent.isFull()) && ($parent.open_to & currentUser.position), \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: add") Signup
-                            button.btn.btn-default(data-bind="visible: !$parent.isSignedUp() && ($parent.isFull()) && ($parent.open_to & currentUser.position), \
+                            button.btn.btn-default(data-bind="visible: !$parent.isSignedUp() && ($parent.isFull()) && \
+                                (!$parent.isWaitlisted()) && ($parent.open_to & currentUser.position), \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
-                                click: waitlist") Waitlist
+                                click: addWaitlist") Waitlist
+                            button.btn.btn-warning(data-bind="visible: !$parent.isSignedUp() && ($parent.isFull()) && \
+                                $parent.isWaitlisted() && ($parent.open_to & currentUser.position), \
+                                attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
+                                click: removeWaitlist") Remove from Waitlist
                             button.btn.btn-danger(data-bind="visible: $parent.isSignedUp,  \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                 click: remove") Remove

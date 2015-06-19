@@ -33,7 +33,7 @@ define(function (require) {
         .done();
     };
 
-    EventSignupViewModel.prototype.waitlist = function (viewmodel, event) {
+    EventSignupViewModel.prototype.addWaitlist = function (viewmodel, event) {
         var $target = $($(event)[0].target),
             data, url;
         
@@ -48,10 +48,33 @@ define(function (require) {
 
         sandbox.http.post(url, data)
         .then(function (waitlist) {
-            sandbox.msg.publish($target.attr('data-shiftId') + '.shift.waitlist', waitlist);
+            sandbox.msg.publish($target.attr('data-shiftId') + '.shift.waitlist.add', waitlist);
         })
         .catch(function (err) {
             console.error('Error: Could not waitlist to shift (', err, ')');
+        })
+        .done();
+    };
+
+    EventSignupViewModel.prototype.removeWaitlist = function (viewmodel, event) {
+        var $target = $($(event)[0].target),
+            data, url;
+        
+        url = window.env.SERVER_HOST + '/waitlist/delete';
+        data = {
+            apiKey: window.env.API_KEY,
+            user: this.currentUser.id,
+            shift: $target.attr('data-shiftId'),
+            event: $target.attr('data-eventId'),
+            timestamp: sandbox.date.toUnix()
+        };
+
+        sandbox.http.post(url, data)
+        .then(function (waitlist) {
+            sandbox.msg.publish($target.attr('data-shiftId') + '.shift.waitlist.remove', waitlist);
+        })
+        .catch(function (err) {
+            console.error('Error: Could not remove waitlist from shift (', err, ')');
         })
         .done();
     };
