@@ -5,7 +5,10 @@ define(function (require) {
     var ko = require('knockout');
     var sandbox = require('sandbox');
 
+    var EventSignupViewModel = require('event-signup.viewmodel');
+
     var EventShiftViewModel = function (eventId) {
+        this.eventSignupViewModel = ko.observable(new EventSignupViewModel());
         this.currentUser = auth.currentUser();
         this.shifts = ko.observableArray([]);
         this.signups = ko.observable({});
@@ -13,8 +16,6 @@ define(function (require) {
         // init shifts
         this.getShifts({ eventId: eventId })
         .then(function (shifts) {
-            this.getSignups(shifts);
-
             shifts.forEach(function (s) {
                 s.start_time = (s.start_time) ? sandbox.date.parseUnix(s.start_time).format('h:mm A') : '';
                 s.end_time = (s.end_time) ? sandbox.date.parseUnix(s.end_time).format('h:mm A') : '';
@@ -23,6 +24,8 @@ define(function (require) {
             }, this);
 
             this.shifts(shifts);
+            this.getSignups(shifts);
+
         }.bind(this))
         .catch(function (err) {
             console.error('Error: Cannot get shifts (', err, ')');
@@ -36,9 +39,10 @@ define(function (require) {
             .then(function (signups) {
                 var result = {};
                 result[shift.id] = signups;
-                this.signups(sandbox.util.assign(this.signups, result));
 
+                this.signups(sandbox.util.assign(this.signups, result));
                 this.setShiftAvailability(this.currentUser, shift, signups);
+                this.setActionSubscriptions(shift);
             
             }.bind(this))
             .catch(function (err) {
@@ -82,6 +86,28 @@ define(function (require) {
 
         // find out if current user already signup to shift
         if(userSignedUp) { currentShift.isSignedUp(true); }
+    };
+
+    EventShiftViewModel.prototype.setActionSubscriptions = function (shift) {
+        var currentShift = sandbox.util.find(this.shifts(), function (s) { return s.id === shift.id; });
+
+        sandbox.msg.subscribe(shift.id + '.shift.add', function (updatedSignups) {
+            var updated = {};
+            updated[shift.id] = updatedSignups;
+            this.signups(sandbox.util.assign(this.signups, updated));
+            currentShift.isSignedUp(true);
+        }, this);
+
+        sandbox.msg.subscribe(shift.id + '.shift.waitlist', function () {
+            debugger;
+        });
+
+        sandbox.msg.subscribe(shift.id + '.shift.remove', function (updatedSignups) {
+            var updated = {};
+            updated[shift.id] = updatedSignups;
+            this.signups(sandbox.util.assign(this.signups, updated));
+            currentShift.isSignedUp(false);
+        }, this);
     };
 
     return EventShiftViewModel;

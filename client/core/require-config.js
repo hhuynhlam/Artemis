@@ -12,6 +12,7 @@ require.config({
 
         'event-detail.viewmodel'        : 'pages/event/event-detail.viewmodel',
         'event-shift.viewmodel'         : 'pages/event/event-shift.viewmodel',
+        'event-signup.viewmodel'        : 'pages/event/event-signup.viewmodel',
         'event.viewmodel'               : 'pages/event/event.viewmodel',
         'event.router'                  : 'pages/event/event.router',
 

@@ -33,6 +33,7 @@ section#EventDetail
                         div
                             span(data-bind="text: start_time")
                             span(data-bind="visible: end_time, text: ' - ' + end_time")
+                    
                     .panel-body
                         ul(data-bind="foreach: $parent.signups()[id]")
                             li
@@ -42,7 +43,14 @@ section#EventDetail
                                 | &nbsp;
                                 span(data-bind="visible: driver != 0") 
                                     span(data-bind="text: '(' + driver + ')'")  
-                        div.text-center
-                            button.btn.btn-primary(data-bind="visible: !isSignedUp() && !isFull()") Signup
-                            button.btn.btn-default(data-bind="visible: !isSignedUp() && isFull") Waitlist
-                            button.btn.btn-danger(data-bind="visible: isSignedUp") Remove  
+                        
+                        div.text-center(data-bind="with: $parent.eventSignupViewModel")
+                            button.btn.btn-primary(data-bind="visible: !$parent.isSignedUp() && !$parent.isFull(), \
+                                attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
+                                click: add") Signup
+                            button.btn.btn-default(data-bind="visible: !$parent.isSignedUp() && $parent.isFull, \
+                                attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
+                                click: waitlist") Waitlist
+                            button.btn.btn-danger(data-bind="visible: $parent.isSignedUp, \
+                                attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
+                                click: remove") Remove  

@@ -120,7 +120,12 @@ $app->post('/shift/user/signups/add', function () use ($app) {
     $results = $db->query( db_insert('signups', $columns, $values) );
     
     if ($results == 1) {
-        echo json_encode('0');
+        $results = $db->query('SELECT m.first_name, m.last_name, su.driver, su.user 
+            FROM members as m 
+            JOIN signups as su ON su.user = m.id 
+            JOIN shifts as s ON s.id = su.shift 
+            WHERE su.shift = ' . $shift);
+        echo parseJsonFromSQL($results);
     } else {
         $app->status(500);
         echo json_encode('1');
@@ -155,7 +160,12 @@ $app->get('/shift/user/signups/delete', function () use ($app) {
     $results = $db->query( db_delete('signups', $where) );
     
     if ($results == 1) {
-        echo json_encode('0');
+        $results = $db->query('SELECT m.first_name, m.last_name, su.driver, su.user 
+            FROM members as m 
+            JOIN signups as su ON su.user = m.id 
+            JOIN shifts as s ON s.id = su.shift 
+            WHERE su.shift = ' . $shift);
+        echo parseJsonFromSQL($results);
     } else {
         $app->status(500);
         echo json_encode('1');

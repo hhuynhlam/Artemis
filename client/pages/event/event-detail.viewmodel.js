@@ -6,8 +6,8 @@ define(function (require) {
     var ShiftViewModel = require('event-shift.viewmodel');
 
     var EventDetailViewModel = function (eventId) {
-        this.event = ko.observable({});
         this.shiftViewModel = ko.observable(new ShiftViewModel(eventId));
+        this.event = ko.observable({});
 
         // init event
         this.getEvent({ id: eventId })
