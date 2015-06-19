@@ -61,7 +61,7 @@ $app->get('/shift/signups', function () use ($app) {
 
     $where = "sh.id = " . $shift . " ORDER BY m.first_name ASC, m.last_name ASC ";
 
-    $results = $db->query( db_select_join( $table, '*', $join, $where ) );
+    $results = $db->query( db_select_join( $table, 'm.first_name, m.last_name, su.driver, su.user', $join, $where ) );
     echo parseJsonFromSQL($results);
     //echo db_select_join( $table, $join, $where );
 });
