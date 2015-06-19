@@ -34,7 +34,23 @@ define(function (require) {
     };
 
     EventSignupViewModel.prototype.waitlist = function (viewmodel, event) {
+        var $target = $($(event)[0].target),
+            data, url;
         
+        url = window.env.SERVER_HOST + '/waitlist';
+        data = {
+            apiKey: window.env.API_KEY,
+            shift: $target.attr('data-shiftId')
+        };
+
+        sandbox.http.get(url, data)
+        .then(function (waitlist) {
+            debugger;
+        })
+        .catch(function (err) {
+            console.error('Error: Could not waitlist to shift (', err, ')');
+        })
+        .done();
     };
 
     EventSignupViewModel.prototype.remove = function (viewmodel, event) {

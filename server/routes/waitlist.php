@@ -13,32 +13,22 @@ $app->get('/waitlist', function () use ($app) {
     require_once('_db.php');
 
     // get request parameters
-    $params = $app->request->params();
+    $params = $app->request->get();
+    $between = '';
+    $where = array();
 
-    // if there are no parameters, query all
-    if (count($params) == 0)
-    {
-        
-        $results = $db->query( 'SELECT * FROM waitlist' );
-        echo parseJsonFromSQL($results);
+    foreach($params as $key => $value) {
+        if ($key == 'apiKey') {
+            continue;
+        }
 
-    } 
-
-    // if there are parameters
-    else 
-    {
-        // implode request parameters into query where clause
-        $where = implode(' AND ', array_map(function ($v, $k) { 
-            return sprintf('%s="%s"', $k, $v); 
-        }, $params, array_keys($params)));
-
-        // replace double quotes with single quotes (mySQL friendly-syntax)
-        $where = stripslashes($where);
-        $where = str_replace('"', '', $where);
-
-        $results = $db->query( 'SELECT * FROM waitlist WHERE ' . $where );
-        echo parseJsonFromSQL($results);
-    } 
+        $where[$key] = $value;
+    }
+    
+    $results = $db->query( db_select('waitlist as w JOIN members as m ON w.user = m.id', 
+        'm.first_name, m.last_name', 
+        $where, null, 'timestamp ASC', null, null ) );
+    echo parseJsonFromSQL($results);
 });
 
 ?>

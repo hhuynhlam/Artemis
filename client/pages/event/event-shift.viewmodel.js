@@ -12,6 +12,7 @@ define(function (require) {
         this.currentUser = auth.currentUser();
         this.shifts = ko.observableArray([]);
         this.signups = ko.observable({});
+        this.waitlist = ko.observable({});
 
         // init shifts
         this.getShifts({ eventId: eventId })
@@ -25,6 +26,7 @@ define(function (require) {
 
             this.shifts(shifts);
             this.getSignups(shifts);
+            this.getWaitlists(shifts);
 
         }.bind(this))
         .catch(function (err) {
@@ -65,10 +67,38 @@ define(function (require) {
         return sandbox.http.get(url, data);
     };
 
+    EventShiftViewModel.prototype.getWaitlists = function (shifts) {
+        shifts.forEach(function (shift) {           // for each shift
+            this.getWaitlistByShift(shift.id)        // get the signups
+            .then(function (waitlist) {
+                var result = {};
+                result[shift.id] = waitlist;
+
+                this.waitlist(sandbox.util.assign(this.waitlist, result));            
+            }.bind(this))
+            .catch(function (err) {
+                console.error('Error: Cannot get waitlist (', err, ')');
+            })
+            .done();    
+        }, this);
+    };
+
     EventShiftViewModel.prototype.getSignupsByShift = function (shiftId) {
         var data, url;
         
         url = window.env.SERVER_HOST + '/shift/signups';
+        data = {
+            apiKey: window.env.API_KEY,
+            shift: shiftId
+        };
+
+        return sandbox.http.get(url, data);
+    };
+
+    EventShiftViewModel.prototype.getWaitlistByShift = function (shiftId) {
+        var data, url;
+        
+        url = window.env.SERVER_HOST + '/waitlist';
         data = {
             apiKey: window.env.API_KEY,
             shift: shiftId
@@ -107,6 +137,7 @@ define(function (require) {
             updated[shift.id] = updatedSignups;
             this.signups(sandbox.util.assign(this.signups, updated));
             currentShift.isSignedUp(false);
+            currentShift.isFull(false);
         }, this);
     };
 

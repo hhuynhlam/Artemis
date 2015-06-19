@@ -53,4 +53,14 @@ section#EventDetail
                                 click: waitlist") Waitlist
                             button.btn.btn-danger(data-bind="visible: $parent.isSignedUp,  \
                                 attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
-                                click: remove") Remove  
+                                click: remove") Remove
+                        
+                        hr(data-bind="visible: isFull")
+                        
+                        .well.well-sm(data-bind="visible: isFull")
+                            h5 Waitlist:
+                            ol(data-bind="foreach: $parent.waitlist()[id]")
+                                li
+                                    span(data-bind="text: first_name") 
+                                    | &nbsp;
+                                    span(data-bind="text: last_name")
