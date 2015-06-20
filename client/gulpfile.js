@@ -6,7 +6,8 @@ var gulp = require('gulp');
 var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
 var less = require('gulp-less');
-var minify = require('gulp-minify-css');
+var minifyCss = require('gulp-minify-css');
+var minifyHtml = require('gulp-minify-html');
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var rjs = require('gulp-requirejs');
@@ -82,7 +83,7 @@ gulp.task('copy', function() {
         'vendor/bower_components/kendo-ui-core/styles/kendo.bootstrap.min.css',
         'assets/css/global.css'])
     .pipe(concat('main.css'))
-    .pipe(minify())
+    .pipe(minifyCss())
     .pipe(gulp.dest('_dist'));
 
     // copy over images
@@ -103,6 +104,7 @@ gulp.task('copy', function() {
         'index.release.html'
     ])
     .pipe(rename('index.html'))
+    .pipe(minifyHtml())
     .pipe(gulp.dest('_dist'));
     
     // copy html
@@ -113,6 +115,7 @@ gulp.task('copy', function() {
         '!index.html',
         '!index.release.html',
         '!_dist/**'])
+    .pipe(minifyHtml())
     .pipe(gulp.dest('_dist'));
 });
 
