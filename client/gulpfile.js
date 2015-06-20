@@ -6,10 +6,12 @@ var gulp = require('gulp');
 var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
 var less = require('gulp-less');
+var minify = require('gulp-minify-css');
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var rjs = require('gulp-requirejs');
 var shell = require('gulp-shell');
+var uglify = require('gulp-uglify');
 
 
 //======================================
@@ -71,6 +73,8 @@ gulp.task('clean', function() {
 //======================================
 
 gulp.task('copy', function() {
+    
+    // concat/minify css
     gulp.src([
         'vendor/bower_components/bootstrap/dist/css/bootstrap.min.css',
         'vendor/bower_components/font-awesome/css/font-awesome.min.css',
@@ -78,22 +82,30 @@ gulp.task('copy', function() {
         'vendor/bower_components/kendo-ui-core/styles/kendo.bootstrap.min.css',
         'assets/css/global.css'])
     .pipe(concat('main.css'))
+    .pipe(minify())
     .pipe(gulp.dest('_dist'));
 
+    // copy over images
     gulp.src([
         'assets/img/**'
-    ]).pipe(gulp.dest('_dist/assets/img'));
+    ])
+    .pipe(gulp.dest('_dist/assets/img'));
 
+    // copy vendor/require.js
     gulp.src([
         'vendor/bower_components/requirejs/require.js'
-    ]).pipe(gulp.dest('_dist'));
+    ])
+    .pipe(uglify())
+    .pipe(gulp.dest('_dist'));
 
+    // copy index.html
     gulp.src([
         'index.release.html'
     ])
     .pipe(rename('index.html'))
     .pipe(gulp.dest('_dist'));
     
+    // copy html
     gulp.src([
         '**/*.html', 
         '!node_modules/**', 
@@ -116,6 +128,7 @@ gulp.task('rjs', function() {
         name: "./app.js",
         out: "main.js"
     })
+    .pipe(uglify())
     .pipe(gulp.dest('_dist'));
 });
 
