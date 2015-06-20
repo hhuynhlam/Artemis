@@ -4,6 +4,7 @@ require.config({
 
         // Components
         'modal'                         : 'components/modal/modal',
+        'multi-select'                  : 'components/multi-select/multi-select',
         'navbar.viewmodel'              : 'components/navbar/navbar.viewmodel',
         
         // Pages

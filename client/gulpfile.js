@@ -117,6 +117,12 @@ gulp.task('copy', function() {
         '!_dist/**'])
     .pipe(minifyHtml())
     .pipe(gulp.dest('_dist'));
+
+    // copy .htaccess
+    gulp.src([
+        '.htaccess'
+    ])
+    .pipe(gulp.dest('_dist'));
 });
 
 

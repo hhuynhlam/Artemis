@@ -3,9 +3,11 @@
 define(function (require) {
     var _LIMIT = 50;
 	var ko = require('knockout');
+    var multiSelect = require('multi-select');
 	var sandbox = require('sandbox');
 
 	var EventListViewModel = function () {
+        this.eventCode = ko.observable();
 		this.events = ko.observableArray([]);
         this.isMore = ko.observable(true);
         this.loadOffset = ko.observable(_LIMIT);
@@ -25,6 +27,7 @@ define(function (require) {
 		})
 		.then(function (events) {
 			this.events(events);
+            this.setupFilter();
 		}.bind(this))
 		.catch(function (err) {
 			console.error('Error: Cannot get events (', err, ')');
@@ -54,7 +57,8 @@ define(function (require) {
 
         this.getEvents({
             limit: _LIMIT,
-            offset: this.loadOffset()
+            offset: this.loadOffset(),
+            type: (this.eventCode()) ? this.eventCode() : undefined
         })
         .then(function (events) {
             if(events.length) {
@@ -68,6 +72,58 @@ define(function (require) {
             console.error('Error: Cannot get more events (', err, ')');
         })
         .done();
+    };
+
+    EventListViewModel.prototype.setupFilter = function () {
+        var selector = '#FilterEvents',
+            filters = [
+                { name: 'Service', value: sandbox.constant.eventType.SERVICE},
+                { name: 'Fellowship', value: sandbox.constant.eventType.FELLOWSHIP},
+                { name: 'General Event', value: sandbox.constant.eventType.GENERAL_EVENT()},
+
+                { name: 'Campus', value: sandbox.constant.eventType.CAMPUS},
+                { name: 'Community', value: sandbox.constant.eventType.COMMUNITY},
+                { name: 'Fraternity', value: sandbox.constant.eventType.FRATERNITY},
+                { name: 'Fundraiser', value: sandbox.constant.eventType.FUNDRAISER},
+                { name: 'Nation', value: sandbox.constant.eventType.NATION},
+
+                { name: 'Cool', value: sandbox.constant.eventType.COOL_FELLOWSHIP},
+                { name: 'Crazy', value: sandbox.constant.eventType.CRAZY_FELLOWSHIP},
+                { name: 'Sexy', value: sandbox.constant.eventType.SEXY_FELLOWSHIP},
+
+                { name: 'Interchapters', value: sandbox.constant.eventType.INTERCHAPTER()},
+                { name: 'Interchapter Home', value: sandbox.constant.eventType.INTERCHAPTER_HOME},
+                { name: 'Interchapter Away', value: sandbox.constant.eventType.INTERCHAPTER_AWAY}
+            ];
+
+        multiSelect({
+            selector: selector,
+            textField: 'name',
+            valueField: 'value',
+            data: filters,
+            onChange: function () {
+                var selected = $(selector).data('kendoMultiSelect').value(),
+                    eventCode = 0;
+
+                // calc the event code
+                selected.forEach(function (code) {
+                    eventCode += code;
+                });
+
+                this.eventCode(eventCode);
+                this.getEvents({
+                    type: (eventCode) ? eventCode : undefined,
+                    limit: _LIMIT
+                })
+                .then(function(events){
+                    this.events(events);
+                }.bind(this))
+                .catch(function (err) {
+                    console.error('Error: Cannot filter events (', err, ')');
+                })
+                .done();
+            }.bind(this)
+        });
     };
 
 	return EventListViewModel;

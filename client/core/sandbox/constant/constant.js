@@ -4,24 +4,24 @@ define(function () {
     var constant = {
         
         eventType: {
-            SERVICE: 1,
+            FAMILY_EVENT: 4096,
             FELLOWSHIP: 2,
             OTHER: 4,
-            FAMILY_EVENT: 4096,
+            SERVICE: 1,
 
-            COMMUNITY: 8,
             CAMPUS: 16,
+            COMMUNITY: 8,
             FRATERNITY: 32,
-            NATION: 64,
             FUNDRAISER: 128,
             GENERAL: 8192,
+            NATION: 64,
         
-            INTERCHAPTER_HOME: 256,
-            CRAZY_FELLOWSHIP: 512,
-            SEXY_FELLOWSHIP: 1024,
             COOL_FELLOWSHIP: 2048,
-            MEETING: 16384,
+            CRAZY_FELLOWSHIP: 512,
             INTERCHAPTER_AWAY: 32768,
+            INTERCHAPTER_HOME: 256,
+            MEETING: 16384,
+            SEXY_FELLOWSHIP: 1024,
 
             GENERAL_FELLOWSHIP: function () { return this.GENERAL; },
             GENERAL_EVENT: function () { return this.MEETING + this.OTHER; },
