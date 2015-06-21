@@ -6,12 +6,14 @@ block content
     .col-md-12
       .alert.alert-info Test
 
+    //- Upcoming Shifts
     .col-md-6
       .panel.panel-default
         .panel-heading 
           h1.panel-title Upcoming Shifts
         .panel-body 
-          table.table
+          span(data-bind="visible: !upcomingEvents().length") You have no upcoming shifts.
+          table.table(data-bind="visible: upcomingEvents().length")
             thead
               tr
                 th Date
@@ -27,6 +29,7 @@ block content
                 td(data-bind="text: start_time")
                 td(data-bind="text: end_time")
 
+    //- Edit Profile
     form.col-md-6.form-horizontal(data-bind="submit: save")
       fieldset.panel.panel-default
         .panel-heading 
