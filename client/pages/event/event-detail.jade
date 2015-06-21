@@ -56,10 +56,10 @@ block content
                                 button.btn.btn-primary(data-bind="visible: $parent.canSignUp, \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                     click: add") Signup
-                                button.btn.btn-default(data-bind="visible: $parent.canWaitlist, \
+                                button.btn.btn-warning(data-bind="visible: $parent.canWaitlist, \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                     click: addWaitlist") Waitlist
-                                button.btn.btn-warning(data-bind="visible: $parent.isWaitlisted, \
+                                button.btn.btn-danger(data-bind="visible: $parent.isWaitlisted, \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                     click: removeWaitlist") Remove from Waitlist
                                 button.btn.btn-danger(data-bind="visible: $parent.isSignedUp,  \

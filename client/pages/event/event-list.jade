@@ -8,12 +8,15 @@ block content
             li.active Events
 
         .container
-            h2 Upcoming Events
-            .well
-                
+            h2 
+                | Upcoming Events
+                .btn.btn-primary.pull-right View Past Events
+            
+            .well.col-xs-12
+
                 #FilterEvents(data-placeholder="Filter Events")
 
-                table.table
+                table.table.col-xs-12
                     thead
                         tr
                             th Date
@@ -26,5 +29,5 @@ block content
                                     span(data-bind="text: name")
 
                 div.text-center
-                    button.btn.btn-info(data-bind="visible: isMore, click: seeMore") See More
-                    button.btn.btn-info(data-bind="visible: !isMore()" disabled) No More
+                    button.btn.btn-primary(data-bind="visible: isMore, click: seeMore") See More
+                    button.btn.btn-primary(data-bind="visible: !isMore()" disabled) No More
