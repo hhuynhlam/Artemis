@@ -1,8 +1,29 @@
 #MainView {
   padding-top: 72px;
 }
+.top-space {
+  margin-top: 15px;
+}
+.bottom-space {
+  margin-bottom: 15px;
+}
+.left-space {
+  margin-left: 15px;
+}
+.right-space {
+  margin-right: 15px;
+}
 .breadcrumb {
   margin-top: -20px;
+}
+.btn {
+  border-radius: 0;
+}
+.btn-default {
+  border: none;
+}
+div.k-window-content {
+  padding: 15px;
 }
 #Navbar {
   position: fixed;
@@ -12,4 +33,7 @@
 }
 a {
   cursor: pointer;
+}
+.panel {
+  border-radius: 0;
 }

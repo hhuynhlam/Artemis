@@ -8,16 +8,15 @@ define(function (require) {
 	var sandbox = require('sandbox');
 
 	var ProfileViewModel = function () {
+		this.currentUser = auth.currentUser();
+		this.upcomingEvents = ko.observableArray([]);
 
-		var currentUser = auth.currentUser();
-		this.currentUser = currentUser;
-		
 		this.formViewModel = {
-			phone: ko.observable(currentUser.phone),
-			email: ko.observable(currentUser.email),
-			shirtSize: ko.observable(currentUser.shirt_size),
-			schoolAddress: ko.observable(currentUser.temp_address),
-			permAddress: ko.observable(currentUser.perm_address),
+			phone: ko.observable(this.currentUser.phone),
+			email: ko.observable(this.currentUser.email),
+			shirtSize: ko.observable(this.currentUser.shirt_size),
+			schoolAddress: ko.observable(this.currentUser.temp_address),
+			permAddress: ko.observable(this.currentUser.perm_address),
 			newPassword: ko.observable(''),
 			isDirty: ko.observable(false)
 		};
@@ -36,8 +35,12 @@ define(function (require) {
 				if (oldValue !== newVal) { this.formViewModel.isDirty(true); }
 			}, this);
 		}, this);
+
+		// get upcoming events
+		this.getUpcomingEvents();
 	};
 
+	// Edit Profile
 	ProfileViewModel.prototype.reset = function () {
 		this.formViewModel.phone(this.currentUser.phone);
 		this.formViewModel.email(this.currentUser.email);
@@ -103,6 +106,34 @@ define(function (require) {
 				confirm: function () { sandbox.msg.publish('profile.save'); }
 			});
 		}
+	};
+
+	// Upcoming Events
+	ProfileViewModel.prototype.getUpcomingEvents = function () {
+		var url = window.env.SERVER_HOST + '/signup/user',
+			data = {
+				apiKey: window.env.API_KEY,
+				id: this.currentUser.id
+			};
+
+		sandbox.http.get(url, data)
+		.then(function (events) {
+			this.upcomingEvents(this.formatData(events));
+		}.bind(this))
+		.catch(function (err) {
+			console.error('Error: Cannot get upcoming events (', err, ')');
+		})
+		.done();
+	};
+
+	ProfileViewModel.prototype.formatData = function (events) {
+		events.forEach(function (e) {
+			if (e.start_time) { e.start_time = sandbox.date.parseUnix(e.start_time).format('h:mm A'); }
+			if (e.end_time) { e.end_time = sandbox.date.parseUnix(e.end_time).format('h:mm A'); }
+			if (e.date) { e.date = sandbox.date.parseUnix(e.date).format('MM/DD/YYYY'); }
+		});
+
+		return events;
 	};
 
 	return ProfileViewModel;

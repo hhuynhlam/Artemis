@@ -41,4 +41,32 @@ $app->get('/signup', function () use ($app) {
     } 
 });
 
+$app->get('/signup/user', function () use ($app) {
+    
+    // authenticate before do anything
+    if ( !authenticate($app->request->params('apiKey')) ) {
+        $app->status(403);
+        echo json_encode('You are not allowed to see this page.');
+        return;
+    }
+
+    // connect to db
+    require_once('_db.php');
+
+    // get request parameters
+    $user = $app->request->get('id');;
+
+    // if there are no parameters, query all
+    if (count($user) != 0)
+    {
+        $results = $db->query( 
+            'SELECT su.user, su.event, su.shift, e.name, e.date, s.start_time, s.end_time
+            FROM signups as su 
+            JOIN events as e ON e.id = su.event
+            JOIN shifts as s ON s.id = su.shift  
+            WHERE su.user = ' . $user );
+        echo parseJsonFromSQL($results);
+    } 
+});
+
 ?>
