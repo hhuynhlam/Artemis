@@ -2,6 +2,10 @@ extends ../_layout.jade
 
 block content
   section#Profile.container
+    
+    .col-md-12
+      .alert.alert-info Test
+
     .col-md-6
       .panel.panel-default
         .panel-heading 
@@ -40,7 +44,7 @@ block content
             label.col-lg-3.control-label(for='select') Shirt Size
             .col-lg-9
               select.form-control(name='shirt_size', data-bind="value: formViewModel.shirtSize")
-                option Select a Shirt Size...
+                option(value='') Select a Shirt Size...
                 option(value='YS') YS
                 option(value='YM') YM
                 option(value='YL') YL
