@@ -21,6 +21,9 @@ define(function (require) {
 			isDirty: ko.observable(false)
 		};
 
+		// format currentUser data
+		this.currentUser.notes = sandbox.util.nlToBr(this.currentUser.notes);
+
 		// setup submit actions for each form inputs
 		sandbox.util.forIn(this.formViewModel, function (val, key) {
 			var oldValue;
@@ -118,7 +121,7 @@ define(function (require) {
 
 		sandbox.http.get(url, data)
 		.then(function (events) {
-			this.upcomingEvents(this.formatData(events));
+			this.upcomingEvents(this.formatEventData(events));
 		}.bind(this))
 		.catch(function (err) {
 			console.error('Error: Cannot get upcoming events (', err, ')');
@@ -126,7 +129,7 @@ define(function (require) {
 		.done();
 	};
 
-	ProfileViewModel.prototype.formatData = function (events) {
+	ProfileViewModel.prototype.formatEventData = function (events) {
 		events.forEach(function (e) {
 			if (e.start_time) { e.start_time = sandbox.date.parseUnix(e.start_time).format('h:mm A'); }
 			if (e.end_time) { e.end_time = sandbox.date.parseUnix(e.end_time).format('h:mm A'); }
