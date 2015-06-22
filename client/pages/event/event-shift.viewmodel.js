@@ -16,6 +16,8 @@ define(function (require) {
         // init shifts
         this.getData('shifts', eventId)
         .then(function (shifts) {
+            this.disablePastShifts(shifts);
+
             shifts.forEach(function (s) {
                 this.formatShiftData(s);
                 this.setShiftObservables(s);
@@ -163,6 +165,14 @@ define(function (require) {
         shift.canWaitlist = ko.computed(function () {
             return !shift.isSignedUp() && shift.isFull() && !shift.isWaitlisted() && (shift.open_to & this.currentUser.position);
         }, this);
+    };
+
+    EventShiftViewModel.prototype.disablePastShifts = function (shifts) {
+        var currentDate = sandbox.date.toUnix();
+        shifts.forEach(function (s) {
+            if (s.start_time <= currentDate) { s.disabled = true; }
+            else { s.disabled = false; }
+        });
     };
 
     return EventShiftViewModel;

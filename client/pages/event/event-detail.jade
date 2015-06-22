@@ -55,16 +55,16 @@ block content
                             div.text-center(data-bind="with: $parent.eventActionViewModel")
                                 button.btn.btn-primary(data-bind="visible: $parent.canSignUp, \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
-                                    click: add") Signup
+                                    click: add, disable: $parent.disabled") Signup
                                 button.btn.btn-warning(data-bind="visible: $parent.canWaitlist, \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
-                                    click: addWaitlist") Waitlist
+                                    click: addWaitlist, disable: $parent.disabled") Waitlist
                                 button.btn.btn-danger(data-bind="visible: $parent.isWaitlisted, \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
-                                    click: removeWaitlist") Remove from Waitlist
+                                    click: removeWaitlist, disable: $parent.disabled") Remove from Waitlist
                                 button.btn.btn-danger(data-bind="visible: $parent.isSignedUp,  \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
-                                    click: remove") Remove
+                                    click: remove, disable: $parent.disabled") Remove
                             //- waitlist
                             hr(data-bind="visible: isFull")
                             .well.well-sm(data-bind="visible: isFull")
