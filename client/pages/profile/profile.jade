@@ -22,7 +22,7 @@ block content
                 th Start Time
                 th End Time
             tbody(data-bind="foreach: upcomingEvents")
-              tr
+              tr(data-bind="css: { 'text-danger': conflict }")
                 td(data-bind="text: date")
                 td
                   a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + event }")

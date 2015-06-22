@@ -130,10 +130,15 @@ define(function (require) {
 	};
 
 	ProfileViewModel.prototype.formatEventData = function (events) {
+		var _events = [];
 		events.forEach(function (e) {
+			var conflict = sandbox.util.find(_events, function (_e) { return e.start_time >= _e.start_time && e.start_time <= _e.end_time; });
+			_events.push(sandbox.util.clone(e));
+
 			if (e.start_time) { e.start_time = sandbox.date.parseUnix(e.start_time).format('h:mm A'); }
 			if (e.end_time) { e.end_time = sandbox.date.parseUnix(e.end_time).format('h:mm A'); }
 			if (e.date) { e.date = sandbox.date.parseUnix(e.date).format('MM/DD/YYYY'); }
+			if (conflict) { e.conflict = true; } else { e.conflict = false; }
 		});
 
 		return events;
