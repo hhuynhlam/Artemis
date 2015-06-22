@@ -23,13 +23,16 @@ block content
                 th End Time
             tbody(data-bind="foreach: upcomingEvents")
               tr(data-bind="css: { 'text-danger': conflict }")
-                td(data-bind="text: date")
+                td
+                  span(data-bind="text: date")
+                  i.fa.fa-exclamation-triangle.left-space(data-bind="visible: conflict")
                 td
                   a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + event }")
                     span(data-bind="text: name")
                 td(data-bind="text: start_time")
                 td(data-bind="text: end_time")
 
+    //- Notes
     .col-md-3
       .alert.alert-warning 
         strong Notes
