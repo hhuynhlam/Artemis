@@ -3,6 +3,11 @@
 define(function () {
     var constant = {
         
+        cutoffHours: {
+            SERVICE: 72,
+            FELLOWSHIP: 0
+        },
+
         eventType: {
             FAMILY_EVENT: 4096,
             FELLOWSHIP: 2,
