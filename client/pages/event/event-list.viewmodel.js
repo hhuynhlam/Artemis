@@ -13,7 +13,10 @@ define(function (require) {
         this.loadOffset = ko.observable(_LIMIT);
 
         this.eventView = ko.observable('upcoming');
-        this.eventView.subscribe(function () { this.loadOffset(_LIMIT); }, this);
+        this.eventView.subscribe(function () { 
+            this.loadOffset(_LIMIT);
+            this.isMore(true); 
+        }, this);
 		
 		this.formattedEvents = ko.computed(function () {
 			var result = [];
@@ -68,7 +71,7 @@ define(function (require) {
         .then(function (events) {
             if(events.length) {
                 this.loadOffset(this.loadOffset() + _LIMIT);
-                this.events(events);
+                events.forEach(function (e) { this.events.push(e); }, this);
             } else {
                 this.isMore(false);
             }
