@@ -60,11 +60,11 @@ $app->get('/signup/user', function () use ($app) {
     if (count($user) != 0)
     {
         $results = $db->query( 
-            'SELECT su.user, su.event, su.shift, e.name, e.date, s.start_time, s.end_time
+            'SELECT su.user, su.event, su.shift, e.name, e.date, s.start_time, s.end_time, su.timestamp
             FROM signups as su 
             JOIN events as e ON e.id = su.event
             JOIN shifts as s ON s.id = su.shift  
-            WHERE su.user = ' . $user );
+            WHERE su.user = ' . $user . ' ORDER BY e.date ASC, su.timestamp ASC' );
         echo parseJsonFromSQL($results);
     } 
 });

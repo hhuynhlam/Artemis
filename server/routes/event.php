@@ -26,25 +26,25 @@ $app->get('/event', function () use ($app) {
     $first = true;
 
     if ( !is_null($id) ) {
-        $where .= "id = " . $id;
+        $where .= " id = " . $id;
         $first = false;
     }
 
     if ( !is_null($type) ) {
         if ($first == true) {
-            $where .= "event_code & " . $type;
+            $where .= " event_code & " . $type;
             $first = false;
         } else {
-            $where .= "AND event_code & " . $type;
+            $where .= " AND event_code & " . $type;
         }
     }
 
     if ( !is_null($startDate) && !is_null($endDate) ) {
         if ($first == true) {
-            $where .= "date BETWEEN " . $startDate . " AND " . $endDate;
+            $where .= " date BETWEEN " . $startDate . " AND " . $endDate;
             $first = false;
         } else {
-            $where .= "AND date BETWEEN " . $startDate . " AND " . $endDate;
+            $where .= " AND date BETWEEN " . $startDate . " AND " . $endDate;
         }
         
     }
@@ -62,7 +62,7 @@ $app->get('/event', function () use ($app) {
     echo parseJsonFromSQL($results);
     
     // $table, $columns, $where, $between, $order, $limit, $offset
-    //echo db_select_explicit('events', "*", $where, 'date ASC', $limit, $offset);
+    // // echo db_select_explicit('events', "*", $where, 'date ASC', $limit, $offset);
      
 });
 

@@ -11,6 +11,9 @@ define(function (require) {
 		this.events = ko.observableArray([]);
         this.isMore = ko.observable(true);
         this.loadOffset = ko.observable(_LIMIT);
+
+        this.eventView = ko.observable('upcoming');
+        this.eventView.subscribe(function () { this.loadOffset(_LIMIT); }, this);
 		
 		this.formattedEvents = ko.computed(function () {
 			var result = [];
@@ -36,17 +39,19 @@ define(function (require) {
 	};
 
 	EventListViewModel.prototype.getEvents = function (options) {
-		var data, url;
+		var data, url, endDate;
 		options = options || {};
         
+        endDate = (options.endDate) ? sandbox.date.toUnix(options.endDate) : undefined;
+
         url = window.env.SERVER_HOST + '/event';
         data = {
         	apiKey: window.env.API_KEY,
         	event_code: options.type,
         	limit: options.limit,
         	offset: options.offset,
-        	startDate: sandbox.date.toUnix(options.startDate),
-        	endDate: (options.endDate) ? sandbox.date.toUnix(options.endDate) : undefined
+        	startDate: (this.eventView() === 'past') ? sandbox.date.toUnix('01/01/1970') : sandbox.date.toUnix(options.startDate),
+        	endDate: (this.eventView() === 'past') ? sandbox.date.toUnix() : endDate
         };
 
         return sandbox.http.get(url, data);
@@ -63,13 +68,45 @@ define(function (require) {
         .then(function (events) {
             if(events.length) {
                 this.loadOffset(this.loadOffset() + _LIMIT);
-                events.forEach(function (e) { this.events.push(e); }, this);
+                this.events(events);
             } else {
                 this.isMore(false);
             }
         }.bind(this))
         .catch(function (err) {
             console.error('Error: Cannot get more events (', err, ')');
+        })
+        .done();
+    };
+
+    EventListViewModel.prototype.seePastEvents = function () { 
+        this.eventView('past'); 
+
+        this.getEvents({
+            limit: _LIMIT,
+            type: (this.eventCode()) ? this.eventCode() : undefined
+        })
+        .then(function (events) {
+            this.events(events);
+        }.bind(this))
+        .catch(function (err) {
+            console.error('Error: Cannot get past events (', err, ')');
+        })
+        .done();
+    };
+
+    EventListViewModel.prototype.seeUpcomingEvents = function () { 
+        this.eventView('upcoming'); 
+
+        this.getEvents({
+            limit: _LIMIT,
+            type: (this.eventCode()) ? this.eventCode() : undefined
+        })
+        .then(function (events) {
+            this.events(events);
+        }.bind(this))
+        .catch(function (err) {
+            console.error('Error: Cannot get upcoming events (', err, ')');
         })
         .done();
     };

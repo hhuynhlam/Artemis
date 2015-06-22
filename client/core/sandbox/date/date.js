@@ -5,7 +5,7 @@ define(function (require) {
 
     var date = {
         parseUnix: moment.unix,
-        toUnix: function (date) { return (date) ? moment(new Date(date)).unix() : moment(new Date()).unix(); }
+        toUnix: function (date) { return (date) ? moment(new Date(date)).unix() : moment(Date.now()).unix(); }
     };
 
     return date;
