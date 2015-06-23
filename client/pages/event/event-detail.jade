@@ -53,16 +53,16 @@ block content
                                         span(data-bind="text: '(' + driver + ')'")  
                             //- buttons
                             div.text-center(data-bind="with: $parent.eventActionViewModel")
-                                button.btn.btn-primary(data-bind="visible: $parent.canSignUp, \
+                                button.btn.btn-primary(data-bind="visible: $parent.canSignUp() && $parent.isReady(), \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                     click: add, disable: $parent.disabled") Signup
-                                button.btn.btn-warning(data-bind="visible: $parent.canWaitlist, \
+                                button.btn.btn-warning(data-bind="visible: $parent.canWaitlist() && $parent.isReady(), \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                     click: addWaitlist, disable: $parent.disabled") Waitlist
-                                button.btn.btn-danger(data-bind="visible: $parent.isWaitlisted, \
+                                button.btn.btn-danger(data-bind="visible: $parent.isWaitlisted() && $parent.isReady(), \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                     click: removeWaitlist, disable: $parent.disabled") Remove from Waitlist
-                                button.btn.btn-danger(data-bind="visible: $parent.isSignedUp,  \
+                                button.btn.btn-danger(data-bind="visible: $parent.isSignedUp() && $parent.isReady(),  \
                                     attr: { 'data-shiftId': $parent.id, 'data-eventId': $parent.event }, \
                                     click: remove, disable: $parent.disabled") Remove
                             //- waitlist

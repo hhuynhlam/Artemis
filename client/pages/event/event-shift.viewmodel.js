@@ -74,7 +74,9 @@ define(function (require) {
                 var result = {};
                 result[shift.id] = waitlist;
                 this.waitlist(sandbox.util.assign(this.waitlist, result));
-                this.setWaitlistAvailabilityForShift(shift, waitlist);            
+                this.setWaitlistAvailabilityForShift(shift, waitlist);
+
+                this.setShiftsToReady(shifts);            
             }.bind(this))
             .catch(function (err) {
                 console.error('Error: Cannot get waitlist (', err, ')');
@@ -89,6 +91,10 @@ define(function (require) {
 
         // find out if current user already waitlisted to shift
         if(userWaitlisted) { currentShift.isWaitlisted(true); }
+    };
+
+    EventShiftViewModel.prototype.setShiftsToReady = function (shifts) {
+        shifts.forEach(function (shift) { shift.isReady(true); });
     };
 
     EventShiftViewModel.prototype.formatShiftData = function (shift) {
@@ -182,6 +188,7 @@ define(function (require) {
         shift.isFull = ko.observable(false);
         shift.isSignedUp = ko.observable(false);
         shift.isWaitlisted = ko.observable(false);
+        shift.isReady = ko.observable(false);
 
         shift.canSignUp = ko.computed(function () {
             return !shift.isSignedUp() && !shift.isFull() && (shift.open_to & this.currentUser.position);
