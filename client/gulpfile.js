@@ -80,6 +80,7 @@ gulp.task('copy', function() {
         'vendor/bower_components/bootstrap/dist/css/bootstrap.min.css',
         'vendor/bower_components/font-awesome/css/font-awesome.min.css',
         'vendor/bower_components/kendo-ui-core/styles/kendo.common-bootstrap.min.css',
+        'vendor/bower_components/fullcalendar/dist/fullcalendar.min.css'
         'assets/css/global.css'])
     .pipe(concat('main.css'))
     .pipe(minifyCss())

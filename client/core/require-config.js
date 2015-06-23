@@ -12,6 +12,7 @@ require.config({
         'about.router'                  : 'pages/about/about.router',
 
         'event-action.viewmodel'        : 'pages/event/event-action.viewmodel',
+        'event-calendar.viewmodel'      : 'pages/event/event-calendar.viewmodel',
         'event-detail.viewmodel'        : 'pages/event/event-detail.viewmodel',
         'event-list.viewmodel'          : 'pages/event/event-list.viewmodel',
         'event-shift.viewmodel'         : 'pages/event/event-shift.viewmodel',
@@ -35,6 +36,7 @@ require.config({
         // Vendor
         'bootstrap'                     : 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
         'cookie'                        : 'vendor/bower_components/jquery.cookie/jquery.cookie',
+        'fullcalendar'                  : 'vendor/bower_components/fullcalendar/dist/fullcalendar.min',
         'jquery'                        : 'vendor/bower_components/jquery/dist/jquery.min',
         'k'                             : 'vendor/bower_components/kendo-ui-core/js',
         'knockout'                      : 'vendor/bower_components/knockout/dist/knockout',
@@ -61,6 +63,7 @@ require.config({
     shim: {
         'jquery'                        : { exports: 'jQuery' },
         'bootstrap'                     : { deps: ['jquery'] },
+        'fullcalendar'                  : { deps: ['jquery'] },
         'cookie'                        : { deps: ['jquery'] },
         'k/kendo.core.min'              : { deps: ['jquery'] },
         'sammy'                         : { deps: ['jquery'] }
