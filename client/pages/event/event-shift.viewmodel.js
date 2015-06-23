@@ -13,11 +13,14 @@ define(function (require) {
         this.signups = ko.observable({});
         this.waitlist = ko.observable({});
 
+        this.eventId = eventId;
+
         // init shifts
         this.getData('shifts', eventId)
         .then(function (shifts) {
-            this.disableShifts(shifts);
-
+            return this.disableShifts(shifts);
+        }.bind(this))
+        .then(function (shifts) {
             shifts.forEach(function (s) {
                 this.formatShiftData(s);
                 this.setShiftObservables(s);
@@ -26,7 +29,6 @@ define(function (require) {
             this.shifts(shifts);
             this.getSignups(shifts);
             this.getWaitlists(shifts);
-
         }.bind(this))
         .catch(function (err) {
             console.error('Error: Cannot get shifts (', err, ')');
@@ -97,10 +99,23 @@ define(function (require) {
     EventShiftViewModel.prototype.disableShifts = function (shifts) {
         var currentDate = sandbox.date.toUnix();
 
-        shifts.forEach(function (s) {
-            var cutOff = sandbox.date.subHours(s.start_time, sandbox.constant.cutoffHours.SERVICE);
-            if (s.start_time <= currentDate || currentDate >= cutOff) { s.disabled = true; }
-            else { s.disabled = false; }
+        return sandbox.http.get(window.env.SERVER_HOST + '/event', {
+            apiKey: window.env.API_KEY,
+            id: this.eventId
+        })
+        .then(function (event) {
+            var cutoff, cutoffTime;
+            if (event.event_code & sandbox.constant.eventType.SERVICE) { cutoff = true; }   // cutoff only services
+
+            shifts.forEach(function (s) {                
+                cutoffTime = (cutoff) ? sandbox.date.subHours(s.start_time, sandbox.constant.cutoffHours.SERVICE) : null; 
+                if ( cutoffTime && currentDate >= cutoffTime ) {
+                    s.disabled = true; 
+                } else if (s.start_time <= currentDate) { s.disabled = true; } 
+                else { s.disabled = false; }
+            });
+
+            return shifts;
         });
     };
 
