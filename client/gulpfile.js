@@ -92,6 +92,12 @@ gulp.task('copy', function() {
     ])
     .pipe(gulp.dest('_dist/assets/img'));
 
+    // copy over fonts
+    gulp.src([
+        'assets/font/**'
+    ])
+    .pipe(gulp.dest('_dist/assets/font'));
+
     // copy vendor/require.js
     gulp.src([
         'vendor/bower_components/requirejs/require.js'
