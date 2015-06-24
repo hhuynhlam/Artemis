@@ -2,55 +2,63 @@
 
 define(function (require) {
     var $ = require('jquery');
-    var ko = require('knockout');
     var sandbox = require('sandbox');
     require('fullcalendar');
 
     var EventCalendarViewModel = function () {
-        var month = sandbox.date.getStartEndOfMonth(sandbox.date.getDate().format('M'));
         this.$selector = $('#Calendar');
+        this.renderCalendar();
+    };
 
-        // setup
-        this.setupObservables();
+    EventCalendarViewModel.prototype.getEvents = function (start, end, timezone, callback) {
+        var data, url;
 
-        // load events
-        this.getEvents({
-            startDate: month.start,
-            endDate: month.end
-        })
+        // setup http 
+        url = window.env.SERVER_HOST + '/event';
+        data = {
+            apiKey: window.env.API_KEY,
+            startDate: (start) ? start.unix() : undefined,
+            endDate: (end) ? end.unix() : undefined
+        };
+
+        // execute http
+        sandbox.http.get(url, data)
         .then(function (events) {
-            this.events(events);
-            this.renderCalendar();
-        }.bind(this))
+            callback(events);
+        })
         .catch(function (err) {
             console.error('Error: Cannot get events (', err, ')');
         })
         .done();
     };
 
-    EventCalendarViewModel.prototype.getEvents = function (options) {
-        var data, url;
-        options = options || {};
+    EventCalendarViewModel.prototype.transformEvent = function (eventData) {
+        var className;
 
-        url = window.env.SERVER_HOST + '/event';
-        data = {
-            apiKey: window.env.API_KEY,
-            event_code: options.type,
-            startDate: (options.startDate) ? options.startDate.unix() : undefined,
-            endDate: (options.endDate) ? options.endDate.unix() : undefined
+        if (eventData.event_code & sandbox.constant.eventType.SERVICE) { className = 'event-service'; }
+        else if (eventData.event_code & sandbox.constant.eventType.FELLOWSHIP) { className = 'event-fellowship'; }
+        else if (eventData.event_code & sandbox.constant.eventType.GENERAL_EVENT()) { className = 'event-general-event'; }
+
+        return {
+            title: eventData.name,
+            start: sandbox.date.parseUnix(eventData.date).format('YYYY-MM-DD'),
+            className: className,
+            url: window.env.CLIENT_HOST + '/event/' + eventData.id
         };
-
-        return sandbox.http.get(url, data);
     };
 
     EventCalendarViewModel.prototype.renderCalendar = function () {
         this.$selector.fullCalendar({
+            
+            // style options
             header: {
                 left: 'prevYear prev',
                 center: 'title',
                 right: 'next nextYear'
             },
             
+            contentHeight: 'auto',
+
             theme: true,
             themeButtonIcons: {
                 prev: 'custom fa fa-angle-left',
@@ -59,25 +67,17 @@ define(function (require) {
                 nextYear: 'custom fa fa-angle-double-right'
             },
 
-            events: this.calendarEvents()
+            // event rendering options
+            events: this.getEvents,
+            eventDataTransform: this.transformEvent,
+            lazyFetching: true
+
+            // TODO: handle < 992px for better responsiveness
+            // handleWindowResize: true,
+            // windowResize: function(view) {
+            //     debugger;
+            // },
         });
-    };
-
-    EventCalendarViewModel.prototype.setupObservables = function () {
-        this.events = ko.observableArray([]);
-        
-        this.calendarEvents = ko.computed(function () {
-            var data = [];
-            this.events().forEach(function (event) {
-                data.push({
-                    title: event.name,
-                    start: sandbox.date.parseUnix(event.date).format('YYYY-MM-DD')
-                });
-            });
-            return data;
-        }, this);
-
-        this.calendarEvents.subscribe(function () { this.renderCalendar(); }, this);
     };
 
     return EventCalendarViewModel;

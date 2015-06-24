@@ -2913,6 +2913,33 @@ td.k-state-focused.k-state-selected,
   box-shadow: none;
   text-shadow: none;
 }
+/**
+ * Full Calendar Overrides
+ */
+.fc-event {
+  border: none;
+  border-radius: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  -webkit-appearance: none;
+  min-height: 25px;
+  white-space: normal;
+  word-wrap: normal;
+}
+/**
+ * Site Specific
+ */
+.event-service {
+  background-color: #d9534f;
+}
+.event-fellowship {
+  background-color: #5cb85c;
+}
+.event-general-event {
+  background-color: #337ab7;
+}
 .dropdown-menu {
   border-radius: 0;
   border-top-left-radius: 0;
