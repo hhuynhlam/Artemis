@@ -117,18 +117,30 @@ $app->post('/shift/user/signups/add', function () use ($app) {
     $columns = ['user', 'shift', 'event', 'driver', 'chair', 'credit', 'timestamp'];
     $values= [$user, $shift, $event, $driver, 0, 0, $timestamp];
 
-    $results = $db->query( db_insert('signups', $columns, $values) );
-    
-    if ($results == 1) {
-        $results = $db->query('SELECT m.first_name, m.last_name, su.driver, su.user 
-            FROM members as m 
-            JOIN signups as su ON su.user = m.id 
-            JOIN shifts as s ON s.id = su.shift 
-            WHERE su.shift = ' . $shift);
-        echo parseJsonFromSQL($results);
+    // check before adding
+    $checkCap = parseArrayFromSQL($db->query('SELECT COUNT(user) as count, cap 
+            FROM shifts as s
+            LEFT JOIN signups as su on s.id = su.shift 
+            WHERE s.id = ' . $shift))[0];
+
+    if($checkCap['count'] < $checkCap['cap']) {
+        $results = $db->query( db_insert('signups', $columns, $values) );
+
+        if ($results == 1) {
+            $results = $db->query('SELECT m.first_name, m.last_name, su.driver, su.user 
+                FROM members as m 
+                JOIN signups as su ON su.user = m.id 
+                JOIN shifts as s ON s.id = su.shift 
+                WHERE su.shift = ' . $shift);
+            echo parseJsonFromSQL($results);
+        } else {
+            $app->status(500);
+            echo json_encode('1');
+        }
+
     } else {
         $app->status(500);
-        echo json_encode('1');
+        echo json_encode('Cap has been reached.');
     }
 
     //echo db_insert('signups', $columns, $values);
