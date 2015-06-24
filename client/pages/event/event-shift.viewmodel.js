@@ -111,7 +111,7 @@ define(function (require) {
         })
         .then(function (event) {
             var cutoff, cutoffTime;
-            if (event.event_code & sandbox.constant.eventType.SERVICE) { cutoff = true; }   // cutoff only services
+            if (event[0].event_code & sandbox.constant.eventType.SERVICE) { cutoff = true; }   // cutoff only services
 
             shifts.forEach(function (s) {                
                 cutoffTime = (cutoff) ? sandbox.date.subHours(s.start_time, sandbox.constant.cutoffHours.SERVICE) : null; 
