@@ -117,7 +117,7 @@ define(function (require) {
                 cutoffTime = (cutoff) ? sandbox.date.subHours(s.start_time, sandbox.constant.cutoffHours.SERVICE) : null; 
                 if ( cutoffTime && currentDate >= cutoffTime ) {
                     s.disabled = true; 
-                } else if (s.start_time <= currentDate) { s.disabled = true; } 
+                } else if (s.start_time !== '0' && s.start_time <= currentDate) { s.disabled = true; } 
                 else { s.disabled = false; }
             });
 
