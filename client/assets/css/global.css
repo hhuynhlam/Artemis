@@ -2916,6 +2916,14 @@ td.k-state-focused.k-state-selected,
 /**
  * Full Calendar Overrides
  */
+.fc td,
+.fc th {
+  border-color: #eeeeee;
+}
+.fc-today {
+  background-color: #b4d1ea;
+  color: #fff;
+}
 .fc-event {
   border: none;
   border-radius: 0;
@@ -2939,6 +2947,25 @@ td.k-state-focused.k-state-selected,
 }
 .event-general-event {
   background-color: #337ab7;
+}
+.legend-block {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  vertical-align: middle;
+}
+.calendar-legend small {
+  font-size: 12px;
+  vertical-align: middle;
+}
+.legend-block-primary {
+  background-color: #337ab7;
+}
+.legend-block-success {
+  background-color: #5cb85c;
+}
+.legend-block-danger {
+  background-color: #d9534f;
 }
 .dropdown-menu {
   border-radius: 0;
