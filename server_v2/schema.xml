@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="aphio" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="bbcode" idMethod="native" phpName="Bbcode">
+    <column name="name" phpName="Name" type="VARCHAR" size="15" required="true" defaultValue=""/>
+    <column name="bbcode_expr" phpName="BbcodeExpr" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="html_rep" phpName="HtmlRep" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="html_expr" phpName="HtmlExpr" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="bbcode_rep" phpName="BbcodeRep" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="brother_of_the_week" idMethod="native" phpName="BrotherOfTheWeek">
+    <column name="user" phpName="User" type="INTEGER" required="true"/>
+    <column name="reason" phpName="Reason" type="VARCHAR" size="300" required="true"/>
+    <column name="week" phpName="Week" type="INTEGER" required="true"/>
+    <column name="year" phpName="Year" type="INTEGER" required="true"/>
+    <column name="term" phpName="Term" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="brother_of_the_week_2" idMethod="native" phpName="BrotherOfTheWeek2">
+    <column name="user" phpName="User" type="INTEGER" required="true"/>
+    <column name="reason" phpName="Reason" type="VARCHAR" size="300" required="true"/>
+    <column name="week" phpName="Week" type="INTEGER" required="true"/>
+    <column name="year" phpName="Year" type="INTEGER" required="true"/>
+    <column name="term" phpName="Term" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="chat_logs" idMethod="native" phpName="ChatLogs">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="start_time" phpName="StartTime" type="BIGINT" required="true" defaultValue="0"/>
+    <column name="term" phpName="Term" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="50" required="true" defaultValue=""/>
+    <column name="description" phpName="Description" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="log_location" phpName="LogLocation" type="VARCHAR" size="100" required="true" defaultValue=""/>
+    <column name="status" phpName="Status" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="restricted" phpName="Restricted" type="LONGVARCHAR" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="events" idMethod="native" phpName="Events">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="75" required="true" defaultValue=""/>
+    <column name="event_code" phpName="EventCode" type="INTEGER" size="2" sqlType="int(2) unsigned" required="true" defaultValue="0"/>
+    <column name="date" phpName="Date" type="BIGINT" required="true" defaultValue="0"/>
+    <column name="location" phpName="Location" type="LONGVARCHAR"/>
+    <column name="meet_location" phpName="MeetLocation" type="LONGVARCHAR"/>
+    <column name="meet_time" phpName="MeetTime" type="LONGVARCHAR"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR"/>
+    <column name="drivers_needed" phpName="DriversNeeded" type="SMALLINT" size="1" sqlType="smallint(1) unsigned" required="true" defaultValue="0"/>
+    <column name="created_by" phpName="CreatedBy" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="log_posted" phpName="LogPosted" type="BOOLEAN" size="1" sqlType="tinyint(1) unsigned" required="true" defaultValue="false"/>
+    <column name="log_description" phpName="LogDescription" type="LONGVARCHAR"/>
+    <column name="log_comments" phpName="LogComments" type="LONGVARCHAR"/>
+    <column name="log_improvements" phpName="LogImprovements" type="LONGVARCHAR"/>
+    <column name="log_reattend" phpName="LogReattend" type="VARCHAR"/>
+    <column name="organization" phpName="Organization" type="LONGVARCHAR"/>
+    <column name="contact_name" phpName="ContactName" type="LONGVARCHAR"/>
+    <column name="contact_phone" phpName="ContactPhone" type="BIGINT"/>
+    <column name="frat_expense" phpName="FratExpense" type="DOUBLE"/>
+    <column name="loged_by" phpName="LogedBy" type="INTEGER" size="10" sqlType="int(10) unsigned"/>
+    <column name="verified" phpName="Verified" type="BOOLEAN" size="1" sqlType="tinyint(1) unsigned" required="true" defaultValue="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="excomm_contact_info" idMethod="native" phpName="ExcommContactInfo">
+    <column name="position" phpName="Position" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="address" phpName="Address" type="VARCHAR" size="40"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="feedme_box" idMethod="native" phpName="FeedmeBox">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="topic" phpName="Topic" type="VARCHAR" required="true"/>
+    <column name="date" phpName="Date" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="message" phpName="Message" type="LONGVARCHAR"/>
+    <column name="type" phpName="Type" type="CHAR" defaultValue=""/>
+    <column name="read_by" phpName="ReadBy" type="VARCHAR"/>
+    <column name="released_by" phpName="ReleasedBy" type="INTEGER" size="10" sqlType="int(10) unsigned" defaultValue="0"/>
+    <column name="reply" phpName="Reply" type="LONGVARCHAR"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="finance_accounts" idMethod="native" phpName="FinanceAccounts">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="35" required="true" defaultValue=""/>
+    <column name="active" phpName="Active" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="list_position" phpName="ListPosition" type="INTEGER" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="finance_items" idMethod="native" phpName="FinanceItems">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <column name="price" phpName="Price" type="FLOAT" required="true" defaultValue="0"/>
+    <column name="account" phpName="Account" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="fees" phpName="Fees" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="active" phpName="Active" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="finance_transactions" idMethod="native" phpName="FinanceTransactions">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="amount" phpName="Amount" type="FLOAT" required="true" defaultValue="0"/>
+    <column name="account" phpName="Account" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="entered_by" phpName="EnteredBy" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <column name="item" phpName="Item" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="status" phpName="Status" type="TINYINT" size="2" required="true" defaultValue="0"/>
+    <column name="type" phpName="Type" type="SMALLINT" size="2" required="true" defaultValue="0"/>
+    <column name="src_dst" phpName="SrcDst" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <column name="notes" phpName="Notes" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="request_date" phpName="RequestDate" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="complete_date" phpName="CompleteDate" type="INTEGER" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="forum_bbcode" idMethod="native" phpName="ForumBbcode">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="15" required="true" defaultValue=""/>
+    <column name="bbcode_expr" phpName="BbcodeExpr" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="html_rep" phpName="HtmlRep" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="html_expr" phpName="HtmlExpr" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <column name="bbcode_rep" phpName="BbcodeRep" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="forum_forums" idMethod="native" phpName="ForumForums">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="LONGVARCHAR" required="true"/>
+    <column name="moderator" phpName="Moderator" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="view_permission" phpName="ViewPermission" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="list_pos" phpName="ListPos" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="forum_posts" idMethod="native" phpName="ForumPosts">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="topic" phpName="Topic" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="content" phpName="Content" type="LONGVARCHAR" required="true"/>
+    <column name="author" phpName="Author" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="post_time" phpName="PostTime" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="edit_time" phpName="EditTime" type="INTEGER" size="10" sqlType="int(10) unsigned"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="forum_smilies" idMethod="native" phpName="ForumSmilies">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="code" phpName="Code" type="VARCHAR" size="15" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="forum_subscriptions" idMethod="native" phpName="ForumSubscriptions">
+    <column name="topic_id" phpName="TopicId" type="INTEGER" required="true"/>
+    <column name="member_id" phpName="MemberId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="forum_topics" idMethod="native" phpName="ForumTopics">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="LONGVARCHAR" required="true"/>
+    <column name="forum" phpName="Forum" type="INTEGER" sqlType="int(11) unsigned" required="true" defaultValue="0"/>
+    <column name="type" phpName="Type" type="TINYINT" required="true" defaultValue="0"/>
+    <column name="creator" phpName="Creator" type="INTEGER" sqlType="int(11) unsigned" required="true" defaultValue="0"/>
+    <column name="viewed_list" phpName="ViewedList" type="LONGVARCHAR"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="forum_winner" idMethod="native" phpName="ForumWinner">
+    <column name="set_date" phpName="SetDate" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="post_id" phpName="PostId" type="INTEGER" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="forum_winner_ids" idMethod="native" phpName="ForumWinnerIds">
+    <column name="id" phpName="Id" type="INTEGER" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="gallery_comments" idMethod="native" phpName="GalleryComments">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="image" phpName="Image" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="posted_by" phpName="PostedBy" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="time" phpName="Time" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="comment" phpName="Comment" type="VARCHAR" size="200" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="gallery_galleries" idMethod="native" phpName="GalleryGalleries">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="gallery_images" idMethod="native" phpName="GalleryImages">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" autoIncrement="true" required="true"/>
+    <column name="gallery" phpName="Gallery" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="posted_by" phpName="PostedBy" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="70"/>
+    <index name="id">
+      <index-column name="id"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="important_dates" idMethod="native" phpName="ImportantDates">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="date" phpName="Date" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="100" required="true" defaultValue=""/>
+    <column name="description" phpName="Description" type="LONGVARCHAR"/>
+    <column name="posted_by" phpName="PostedBy" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="permissions" phpName="Permissions" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="interchapter_signups" idMethod="native" phpName="InterchapterSignups">
+    <column name="event_id" phpName="EventId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="40" required="true" defaultValue=""/>
+    <column name="chapter" phpName="Chapter" type="VARCHAR" size="20" required="true" defaultValue=""/>
+    <column name="email" phpName="Email" type="LONGVARCHAR" required="true"/>
+    <column name="phone" phpName="Phone" type="VARCHAR" size="12" required="true" defaultValue="0"/>
+    <column name="date" phpName="Date" type="INTEGER" size="10" required="true" defaultValue="0"/>
+    <column name="shirt_size" phpName="ShirtSize" type="VARCHAR" size="2" required="true" defaultValue=""/>
+    <column name="vegetarian" phpName="Vegetarian" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="housing_needed" phpName="HousingNeeded" type="TINYINT" required="true" defaultValue="0"/>
+    <column name="deleted" phpName="Deleted" type="INTEGER" size="10" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="lifetime_votes" idMethod="native" phpName="LifetimeVotes">
+    <column name="id" phpName="Id" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="vote" phpName="Vote" type="INTEGER" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="members" idMethod="native" phpName="Members">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" autoIncrement="true" required="true"/>
+    <column name="first_name" phpName="FirstName" type="LONGVARCHAR" required="true"/>
+    <column name="middle_name" phpName="MiddleName" type="LONGVARCHAR"/>
+    <column name="last_name" phpName="LastName" type="LONGVARCHAR" required="true"/>
+    <column name="position" phpName="Position" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="mail_list" phpName="MailList" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="email" phpName="Email" type="LONGVARCHAR" required="true"/>
+    <column name="aim" phpName="Aim" type="LONGVARCHAR"/>
+    <column name="website" phpName="Website" type="LONGVARCHAR"/>
+    <column name="phone" phpName="Phone" type="VARCHAR" size="12" required="true" defaultValue=""/>
+    <column name="perm_address" phpName="PermAddress" type="LONGVARCHAR"/>
+    <column name="temp_address" phpName="TempAddress" type="LONGVARCHAR"/>
+    <column name="avatar" phpName="Avatar" type="LONGVARCHAR"/>
+    <column name="signature" phpName="Signature" type="LONGVARCHAR"/>
+    <column name="class" phpName="Class" type="LONGVARCHAR" required="true"/>
+    <column name="username" phpName="Username" type="VARCHAR" size="12" required="true" defaultValue=""/>
+    <column name="password" phpName="Password" type="LONGVARCHAR" required="true"/>
+    <column name="family" phpName="Family" type="VARCHAR" size="5"/>
+    <column name="birthday" phpName="Birthday" type="INTEGER" size="10"/>
+    <column name="shirt_size" phpName="ShirtSize" type="VARCHAR" size="2"/>
+    <column name="total_service" phpName="TotalService" type="DOUBLE" sqlType="double unsigned" required="true" defaultValue="0"/>
+    <column name="total_fellowship" phpName="TotalFellowship" type="DOUBLE" sqlType="double unsigned" required="true" defaultValue="0"/>
+    <column name="notes" phpName="Notes" type="LONGVARCHAR" required="true"/>
+    <column name="fees_owed" phpName="FeesOwed" type="FLOAT" required="true" defaultValue="0"/>
+    <column name="email_list" phpName="EmailList" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
+    <column name="reminder" phpName="Reminder" type="TINYINT" required="true" defaultValue="1"/>
+    <unique name="id">
+      <unique-column name="id"/>
+    </unique>
+    <unique name="username">
+      <unique-column name="username"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="minutes" idMethod="native" phpName="Minutes">
+    <column name="date" phpName="Date" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="filename" phpName="Filename" type="LONGVARCHAR" required="true"/>
+    <column name="uploaded_by" phpName="UploadedBy" type="INTEGER"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="misc_committee" idMethod="native" phpName="MiscCommittee">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="page" phpName="Page" type="VARCHAR" size="100" required="true"/>
+    <column name="link" phpName="Link" type="VARCHAR" size="150" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="100" required="true"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="200" required="true"/>
+    <column name="content" phpName="Content" type="LONGVARCHAR" required="true"/>
+    <column name="last_edited" phpName="LastEdited" type="BIGINT" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="misc_content" idMethod="native" phpName="MiscContent">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="page" phpName="Page" type="VARCHAR" size="100" required="true"/>
+    <column name="link" phpName="Link" type="VARCHAR" size="150" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="100" required="true"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="200" required="true"/>
+    <column name="content" phpName="Content" type="LONGVARCHAR" required="true"/>
+    <column name="last_edited" phpName="LastEdited" type="BIGINT" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="newsletters" idMethod="native" phpName="Newsletters">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="30"/>
+    <column name="date" phpName="Date" type="BIGINT" required="true" defaultValue="0"/>
+    <column name="term" phpName="Term" type="INTEGER" size="10" required="true" defaultValue="0"/>
+    <column name="filename" phpName="Filename" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <column name="uploaded_by" phpName="UploadedBy" type="INTEGER" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="poll_categories" idMethod="native" phpName="PollCategories">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="200" required="true"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="300" required="true"/>
+    <column name="open_date" phpName="OpenDate" type="BIGINT" required="true"/>
+    <column name="close_date" phpName="CloseDate" type="BIGINT" required="true"/>
+    <column name="term" phpName="Term" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="poll_option_groups" idMethod="native" phpName="PollOptionGroups">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="50" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="poll_options" idMethod="native" phpName="PollOptions">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="poll_id" phpName="PollId" type="INTEGER"/>
+    <column name="group_id" phpName="GroupId" type="INTEGER"/>
+    <column name="text" phpName="Text" type="VARCHAR" size="100" required="true"/>
+    <column name="position" phpName="Position" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="poll_votes" idMethod="native" phpName="PollVotes">
+    <column name="userid" phpName="Userid" type="INTEGER" required="true"/>
+    <column name="poll_id" phpName="PollId" type="INTEGER" required="true"/>
+    <column name="option_id" phpName="OptionId" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="polls" idMethod="native" phpName="Polls">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="category" phpName="Category" type="INTEGER"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="200" required="true"/>
+    <column name="open_date" phpName="OpenDate" type="BIGINT" required="true"/>
+    <column name="close_date" phpName="CloseDate" type="BIGINT" required="true"/>
+    <column name="option_group" phpName="OptionGroup" type="INTEGER"/>
+    <column name="max_votes" phpName="MaxVotes" type="INTEGER" required="true" defaultValue="1"/>
+    <column name="description" phpName="Description" type="LONGVARCHAR" required="true"/>
+    <column name="term" phpName="Term" type="INTEGER" required="true"/>
+    <column name="winner" phpName="Winner" type="VARCHAR"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="reminders" idMethod="native" phpName="Reminders">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="type" phpName="Type" type="INTEGER" required="true" defaultValue="102400"/>
+    <column name="date" phpName="Date" type="BIGINT" required="true" defaultValue="0"/>
+    <column name="message" phpName="Message" type="LONGVARCHAR" required="true"/>
+    <column name="posted_by" phpName="PostedBy" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="current" phpName="Current" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="sect_reg" idMethod="native" phpName="SectReg">
+    <column name="name" phpName="Name" type="VARCHAR" size="40" required="true" defaultValue=""/>
+    <column name="chapter" phpName="Chapter" type="VARCHAR" size="20" required="true" defaultValue=""/>
+    <column name="email" phpName="Email" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <column name="phone" phpName="Phone" type="VARCHAR" size="12" required="true" defaultValue=""/>
+    <column name="shirt" phpName="Shirt" type="VARCHAR" size="3" required="true" defaultValue=""/>
+    <column name="veg" phpName="Veg" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="kosher" phpName="Kosher" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="housing" phpName="Housing" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <column name="hpref" phpName="Hpref" type="VARCHAR" size="40" required="true" defaultValue=""/>
+    <column name="date" phpName="Date" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="shifts" idMethod="native" phpName="Shifts">
+    <column name="id" phpName="Id" type="INTEGER" autoIncrement="true" required="true"/>
+    <column name="event" phpName="Event" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="start_time" phpName="StartTime" type="BIGINT" required="true" defaultValue="0"/>
+    <column name="end_time" phpName="EndTime" type="BIGINT" required="true" defaultValue="0"/>
+    <column name="open_to" phpName="OpenTo" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="cap" phpName="Cap" type="INTEGER" required="true" defaultValue="-1"/>
+    <column name="description" phpName="Description" type="VARCHAR" size="30" required="true" defaultValue=""/>
+    <unique name="id">
+      <unique-column name="id"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="signups" idMethod="native" phpName="Signups">
+    <column name="user" phpName="User" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="shift" phpName="Shift" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="event" phpName="Event" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="driver" phpName="Driver" type="SMALLINT" size="2" sqlType="smallint(2) unsigned" required="true" defaultValue="0"/>
+    <column name="chair" phpName="Chair" type="SMALLINT" size="1" sqlType="smallint(1) unsigned" required="true" defaultValue="0"/>
+    <column name="credit" phpName="Credit" type="FLOAT" required="true" defaultValue="-1"/>
+    <column name="timestamp" phpName="Timestamp" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="signups_bkup" idMethod="native" phpName="SignupsBkup">
+    <column name="user" phpName="User" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="shift" phpName="Shift" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <column name="event" phpName="Event" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="driver" phpName="Driver" type="SMALLINT" size="2" sqlType="smallint(2) unsigned" required="true" defaultValue="0"/>
+    <column name="chair" phpName="Chair" type="SMALLINT" size="1" sqlType="smallint(1) unsigned" required="true" defaultValue="0"/>
+    <column name="credit" phpName="Credit" type="FLOAT" required="true" defaultValue="-1"/>
+    <column name="timestamp" phpName="Timestamp" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="smilies" idMethod="native" phpName="Smilies">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="code" phpName="Code" type="VARCHAR" size="15" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="survey_questions" idMethod="native" phpName="SurveyQuestions">
+    <column name="question_number" phpName="QuestionNumber" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="question" phpName="Question" type="VARCHAR" size="150" required="true" defaultValue=""/>
+    <column name="num_of_responses" phpName="NumOfResponses" type="INTEGER" required="true" defaultValue="1"/>
+    <column name="family" phpName="Family" type="VARCHAR" size="5" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="survey_responses" idMethod="native" phpName="SurveyResponses">
+    <column name="user_id" phpName="UserId" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="question_number" phpName="QuestionNumber" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="response" phpName="Response" type="VARCHAR" size="60" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="term_info" idMethod="native" phpName="TermInfo">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="10" required="true" defaultValue=""/>
+    <column name="start_date" phpName="StartDate" type="BIGINT" required="true" defaultValue="0"/>
+    <column name="quarter" phpName="Quarter" type="VARCHAR" size="7" required="true" defaultValue=""/>
+    <column name="year" phpName="Year" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="pledge_start_date" phpName="PledgeStartDate" type="BIGINT" required="true" defaultValue="0"/>
+    <column name="current" phpName="Current" type="BOOLEAN" size="1" required="true" defaultValue="false"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="tools" idMethod="native" phpName="Tools">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="40" required="true" defaultValue=""/>
+    <column name="permissions" phpName="Permissions" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="restrictions" phpName="Restrictions" type="INTEGER" required="true"/>
+    <column name="link" phpName="Link" type="VARCHAR" size="40" required="true" defaultValue=""/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="vote_members" idMethod="native" phpName="VoteMembers">
+    <column name="id" phpName="Id" type="INTEGER" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="vote_votes" idMethod="native" phpName="VoteVotes">
+    <column name="vote" phpName="Vote" type="INTEGER" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+  <table name="waitlist" idMethod="native" phpName="Waitlist">
+    <column name="user" phpName="User" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="shift" phpName="Shift" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="event" phpName="Event" type="INTEGER" required="true" defaultValue="0"/>
+    <column name="timestamp" phpName="Timestamp" type="BIGINT" required="true" defaultValue="0"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="MyISAM"/>
+    </vendor>
+  </table>
+</database>
