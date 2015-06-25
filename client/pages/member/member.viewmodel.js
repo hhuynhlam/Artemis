@@ -7,64 +7,23 @@ define(function (require) {
 	require('k/kendo.grid.min');
 
 	var MemberViewModel = function () {
+		this.$selector = $('#RosterGrid'); 
+
 		this.actives = ko.observableArray([]);
 		this.alumni = ko.observableArray([]);
 		this.affiliates = ko.observableArray([]);
-
-
-		var $selector = $('#RosterGrid'); 
+		this.view = ko.observable('Active');
 
 		// init events
 		this.getMembers()
 		.then(function (members) {
-			var data = [];
-
 			members.forEach(function (m) {
-				// if(m.position & sandbox.constant.role.ACTIVE) { this.actives.push(m); }
-				// else if(m.position & sandbox.constant.role.ALUMNUS) { this.alumni.push(m); }
-				// else if(m.position & sandbox.constant.role.AFFILIATE) { this.affiliates.push(m); }
-				data.push({
-					Name: m.first_name + ' ' + m.last_name,
-					Class: m.class_name,
-					Family: m.family,
-					Position: m.position,
-					Phone: m.phone,
-					Email: m.email
-				});	
-
+				if(m.position & sandbox.constant.role.ACTIVE) { this.actives.push(m); }
+				else if(m.position & sandbox.constant.role.ALUMNUS) { this.alumni.push(m); }
+				else if(m.position & sandbox.constant.role.AFFILIATE) { this.affiliates.push(m); }
 			}, this);
-			
-			$selector.kendoGrid({
-				dataSource: {
-                    data: data,
-                    schema: {
-                        model: {
-                            fields: {
-                                Name: { type: "string" },
-                                Class: { type: "string" },
-                                Family: { type: "string" },
-                                Position: { type: "number" },
-                                Phone: { type: "string" },
-                                Email: { type: "string" },
 
-                            }
-                        }
-                    },
-                    pageSize: 20
-                },
-                scrollable: true,
-                sortable: true,
-                filterable: true,
-                columns: [
-                    'Name',
-	                'Class',
-	                'Family',
-	                'Position',
-	                'Phone',
-	                'Email'
-                ]
-			});
-
+			this.setupGrid();
 		}.bind(this))
 		.catch(function (err) {
 			console.error('Error: Cannot get events (', err, ')');
@@ -79,6 +38,65 @@ define(function (require) {
         data = { apiKey: window.env.API_KEY };
 
         return sandbox.http.get(url, data);
+	};
+
+	MemberViewModel.prototype.setupGrid = function () {
+		this.$selector.kendoGrid({
+			dataSource: {
+                data: this.actives(),
+                schema: {
+                    model: {
+                        fields: {
+                            first_name: { type: "string" },
+                            last_name: { type: "string" },
+                            class_name: { type: "string" },
+                            family: { type: "string" },
+                            position: { type: "number" },
+                            phone: { type: "string" },
+                            email: { type: "string" },
+                        }
+                    }
+                },
+                pageSize: 50
+            },
+            selectable: 'row',
+            scrollable: true,
+            sortable: true,
+            filterable: true,
+            columns: [
+                { field: "first_name", title: "First Name"},
+                { field: "last_name", title: "Last Name"},
+                { field: "class_name", title: "Class"},
+                { field: "family", title: "Family"},
+                { field: "position", title: "Position"},
+                { field: "phone", title: "Phone"},
+                { field: "email", title: "Email"}
+            ],
+            change: function () {
+            	// do something when selected
+            }
+		});
+	};
+
+	MemberViewModel.prototype.refreshGrid = function (newData) {
+		var $grid = this.$selector.data('kendoGrid');
+		$grid.dataSource.data(newData);
+		$grid.refresh();
+	};
+
+	MemberViewModel.prototype.switchToActives = function () {
+		this.view('Active');
+		this.refreshGrid(this.actives());
+	};
+
+	MemberViewModel.prototype.switchToAlumni = function () {
+		this.view('Alumnus');
+		this.refreshGrid(this.alumni());
+	};
+
+	MemberViewModel.prototype.switchToAffiliates = function () {
+		this.view('Affiliate');
+		this.refreshGrid(this.affiliates());
 	};
 
 	return MemberViewModel;

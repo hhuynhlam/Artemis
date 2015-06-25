@@ -5,34 +5,17 @@ block content
     ol.breadcrumb
             li
                 a(href="#/") Home
-            li.active Roster
+            li.active Roster 
 
         .container
-            h2 Roster
-
+            h2
+                span(data-bind="text: view")
+                .pull-right.text-right
+                    .btn.btn-primary(data-bind="click: switchToActives") Actives
+                    .btn.btn-primary(data-bind="click: switchToAlumni") Alumni
+                    .btn.btn-primary(data-bind="click: switchToAffiliates") Affiliates
+            
             .well.col-xs-12
-
-                //- #FilterEvents(data-placeholder="Filter Events")
-
-                //- table.table.col-xs-12
-                //-     thead
-                //-         tr
-                //-             th Name
-                //-             th Class
-                //-             th Family
-                //-             th Position
-                //-             th Phone
-                //-             th Email
-
-                //-     tbody(data-bind="foreach: actives")
-                //-         tr
-                //-             td(data-bind="text: first_name + ' ' + last_name")
-                //-             td(data-bind="text: class_name")
-                //-             td(data-bind="text: family")
-                //-             td(data-bind="text: position")
-                //-             td(data-bind="text: phone")
-                //-             td(data-bind="text: email")
-
                 #RosterGrid
     
     
