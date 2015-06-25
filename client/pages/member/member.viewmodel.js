@@ -57,12 +57,8 @@ define(function (require) {
                         }
                     }
                 },
-                pageSize: 50
+                pageSize: 20
             },
-            selectable: 'row',
-            scrollable: true,
-            sortable: true,
-            filterable: true,
             columns: [
                 { field: "first_name", title: "First Name"},
                 { field: "last_name", title: "Last Name"},
@@ -72,6 +68,14 @@ define(function (require) {
                 { field: "phone", title: "Phone"},
                 { field: "email", title: "Email"}
             ],
+            filterable: {
+            	extra: false
+            },
+            mobile: true,
+            pageable: true,
+            selectable: 'row',
+            scrollable: true,
+            sortable: true,
             change: function () {
             	// do something when selected
             }
