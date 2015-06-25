@@ -4,12 +4,14 @@ define(function (require) {
 	var $ = require('jquery');
 	var ko = require('knockout');
 	var sandbox = require('sandbox');
-	require('datatable');
 
 	var MemberViewModel = function () {
 		this.actives = ko.observableArray([]);
 		this.alumni = ko.observableArray([]);
 		this.affiliates = ko.observableArray([]);
+
+
+		var $selector = $('#RosterGrid'); 
 
 		// init events
 		this.getMembers()
@@ -20,19 +22,6 @@ define(function (require) {
 			// 	else if(m.position & sandbox.constant.role.ALUMNUS) { this.alumni.push(m); }
 			// 	else if(m.position & sandbox.constant.role.AFFILIATE) { this.affiliates.push(m); }
 			// }, this);
-			
-			var $selector = $('#RosterGrid');
-			$selector.dataTable({
-		        data: members,
-		        columns: [
-		            { 'title': 'Name' },
-		            { 'title': 'Class' },
-		            { 'title': 'Family' },
-		            { 'title': 'Position'},
-		            { 'title': 'Phone'},
-		            { 'title': 'Email'}
-		        ]
-		    });   
 
 		}.bind(this))
 		.catch(function (err) {

@@ -41,7 +41,7 @@ require.config({
         'cookie'                        : 'vendor/bower_components/jquery.cookie/jquery.cookie',
         'fullcalendar'                  : 'vendor/bower_components/fullcalendar/dist/fullcalendar.min',
         'jquery'                        : 'vendor/bower_components/jquery/dist/jquery.min',
-        'k'                             : 'vendor/bower_components/kendo-ui-core/js',
+        'k'                             : 'vendor/bower_components/kendo/js',
         'knockout'                      : 'vendor/bower_components/knockout/dist/knockout',
         'knockout-postbox'              : 'vendor/bower_components/knockout-postbox/build/knockout-postbox.min',
         'lodash'                        : 'vendor/bower_components/lodash/dist/lodash.min',
