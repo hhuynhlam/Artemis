@@ -23,6 +23,7 @@ define(function (require) {
 	require('event.router')(app);
 	require('home.router')(app);
 	require('login.router')(app);
+	require('member.router')(app);
 	require('profile.router')(app);
 
 	// 404 Error
