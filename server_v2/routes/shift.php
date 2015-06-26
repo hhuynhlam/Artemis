@@ -15,14 +15,13 @@ $app->get('/shift', function () use ($app) {
 
     // construct query
     $shifts = ShiftsQuery::create();
-    if($eventId) { $shifts = $shifts->filterByEvent($eventId); }
-    if($select) { $shifts = $shifts->select($select); }
+    if(!is_null($eventId)) { $shifts = $shifts->filterByEvent($eventId); }
+    if(!is_null($select)) { $shifts = $shifts->select($select); }
 
     // execute query
-    $shifts = $shifts->find();
+    returnDataJSON($shifts->find()->toJSON(), 'Shiftss');
 
-    // return
-    echo $shifts->toJSON();
+    // echo $shifts->toString();
 });
 
 $app->get('/shift/signups', function () use ($app) {
@@ -35,7 +34,7 @@ $app->get('/shift/signups', function () use ($app) {
     }
 
     // check required params
-    if(IS_NULL($app->request->get('shift'))) {
+    if(is_null($app->request->get('shift'))) {
         $app->status(406); 
         echo json_encode('You need to specify a shift.');
         return; 
@@ -43,21 +42,16 @@ $app->get('/shift/signups', function () use ($app) {
     
     // get request parameters
     $shiftId = $app->request->get('shift');
-    $select = $app->request->get('select');
 
     // construct query
-    $shifts = ShiftsQuery::create()
-        ->useSignupsQuery()
+    $signups = SignupsQuery::create()
+        ->useMembersQuery()
         ->endUse()
-        ->filterById($shiftId);
+        ->filterByShift($shiftId)
+        ->addAsColumn('first_name', 'members.first_name')
+        ->addAsColumn('last_name', 'members.last_name')
+        ->select(array('driver', 'user'));
 
-    if($select) { $shifts = $shifts->select($select); }
-
-    // execute query
-    $shifts = $shifts->find();
-
-    // return
-    echo $shifts->toJSON();
-
-    // echo $shifts->toString();
+    // execute and return
+    returnDataJSON($signups->find()->toJSON(), 'Signupss');
 });

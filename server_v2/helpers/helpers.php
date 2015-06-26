@@ -9,3 +9,7 @@ function authenticate($apiKey) {
 		return false;
 	}
 }
+
+function returnDataJSON($result, $name) {
+    echo json_encode(json_decode($result)->$name);
+}

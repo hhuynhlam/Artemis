@@ -5,6 +5,7 @@ namespace Base;
 use \Signups as ChildSignups;
 use \SignupsQuery as ChildSignupsQuery;
 use \Exception;
+use \PDO;
 use Map\SignupsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -12,7 +13,6 @@ use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 
 /**
@@ -27,6 +27,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildSignupsQuery orderByChair($order = Criteria::ASC) Order by the chair column
  * @method     ChildSignupsQuery orderByCredit($order = Criteria::ASC) Order by the credit column
  * @method     ChildSignupsQuery orderByTimestamp($order = Criteria::ASC) Order by the timestamp column
+ * @method     ChildSignupsQuery orderById($order = Criteria::ASC) Order by the id column
  *
  * @method     ChildSignupsQuery groupByUser() Group by the user column
  * @method     ChildSignupsQuery groupByShift() Group by the shift column
@@ -35,6 +36,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildSignupsQuery groupByChair() Group by the chair column
  * @method     ChildSignupsQuery groupByCredit() Group by the credit column
  * @method     ChildSignupsQuery groupByTimestamp() Group by the timestamp column
+ * @method     ChildSignupsQuery groupById() Group by the id column
  *
  * @method     ChildSignupsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildSignupsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -44,15 +46,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildSignupsQuery rightJoinMembers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Members relation
  * @method     ChildSignupsQuery innerJoinMembers($relationAlias = null) Adds a INNER JOIN clause to the query using the Members relation
  *
- * @method     ChildSignupsQuery leftJoinShifts($relationAlias = null) Adds a LEFT JOIN clause to the query using the Shifts relation
- * @method     ChildSignupsQuery rightJoinShifts($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Shifts relation
- * @method     ChildSignupsQuery innerJoinShifts($relationAlias = null) Adds a INNER JOIN clause to the query using the Shifts relation
- *
- * @method     ChildSignupsQuery leftJoinShiftsRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the ShiftsRelatedById relation
- * @method     ChildSignupsQuery rightJoinShiftsRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ShiftsRelatedById relation
- * @method     ChildSignupsQuery innerJoinShiftsRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the ShiftsRelatedById relation
- *
- * @method     \MembersQuery|\ShiftsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \MembersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildSignups findOne(ConnectionInterface $con = null) Return the first ChildSignups matching the query
  * @method     ChildSignups findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSignups matching the query, or a new ChildSignups object populated from the query conditions when no match is found
@@ -63,7 +57,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildSignups findOneByDriver(int $driver) Return the first ChildSignups filtered by the driver column
  * @method     ChildSignups findOneByChair(int $chair) Return the first ChildSignups filtered by the chair column
  * @method     ChildSignups findOneByCredit(double $credit) Return the first ChildSignups filtered by the credit column
- * @method     ChildSignups findOneByTimestamp(int $timestamp) Return the first ChildSignups filtered by the timestamp column *
+ * @method     ChildSignups findOneByTimestamp(int $timestamp) Return the first ChildSignups filtered by the timestamp column
+ * @method     ChildSignups findOneById(int $id) Return the first ChildSignups filtered by the id column *
 
  * @method     ChildSignups requirePk($key, ConnectionInterface $con = null) Return the ChildSignups by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSignups requireOne(ConnectionInterface $con = null) Return the first ChildSignups matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -75,6 +70,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildSignups requireOneByChair(int $chair) Return the first ChildSignups filtered by the chair column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSignups requireOneByCredit(double $credit) Return the first ChildSignups filtered by the credit column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildSignups requireOneByTimestamp(int $timestamp) Return the first ChildSignups filtered by the timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildSignups requireOneById(int $id) Return the first ChildSignups filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildSignups[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildSignups objects based on current ModelCriteria
  * @method     ChildSignups[]|ObjectCollection findByUser(int $user) Return ChildSignups objects filtered by the user column
@@ -84,6 +80,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildSignups[]|ObjectCollection findByChair(int $chair) Return ChildSignups objects filtered by the chair column
  * @method     ChildSignups[]|ObjectCollection findByCredit(double $credit) Return ChildSignups objects filtered by the credit column
  * @method     ChildSignups[]|ObjectCollection findByTimestamp(int $timestamp) Return ChildSignups objects filtered by the timestamp column
+ * @method     ChildSignups[]|ObjectCollection findById(int $id) Return ChildSignups objects filtered by the id column
  * @method     ChildSignups[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -143,13 +140,83 @@ abstract class SignupsQuery extends ModelCriteria
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
-        throw new LogicException('The Signups object has no primary key');
+        if ($key === null) {
+            return null;
+        }
+        if ((null !== ($obj = SignupsTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
+            // the object is already in the instance pool
+            return $obj;
+        }
+        if ($con === null) {
+            $con = Propel::getServiceContainer()->getReadConnection(SignupsTableMap::DATABASE_NAME);
+        }
+        $this->basePreSelect($con);
+        if ($this->formatter || $this->modelAlias || $this->with || $this->select
+         || $this->selectColumns || $this->asColumns || $this->selectModifiers
+         || $this->map || $this->having || $this->joins) {
+            return $this->findPkComplex($key, $con);
+        } else {
+            return $this->findPkSimple($key, $con);
+        }
+    }
+
+    /**
+     * Find object by primary key using raw SQL to go fast.
+     * Bypass doSelect() and the object formatter by using generated code.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildSignups A model object, or null if the key is not found
+     */
+    protected function findPkSimple($key, ConnectionInterface $con)
+    {
+        $sql = 'SELECT user, shift, event, driver, chair, credit, timestamp, id FROM signups WHERE id = :p0';
+        try {
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sql), 0, $e);
+        }
+        $obj = null;
+        if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
+            /** @var ChildSignups $obj */
+            $obj = new ChildSignups();
+            $obj->hydrate($row);
+            SignupsTableMap::addInstanceToPool($obj, (string) $key);
+        }
+        $stmt->closeCursor();
+
+        return $obj;
+    }
+
+    /**
+     * Find object by primary key.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @return ChildSignups|array|mixed the result, formatted by the current formatter
+     */
+    protected function findPkComplex($key, ConnectionInterface $con)
+    {
+        // As the query uses a PK condition, no limit(1) is necessary.
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKey($key)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->formatOne($dataFetcher);
     }
 
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
+     * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     ConnectionInterface $con an optional connection object
@@ -158,7 +225,16 @@ abstract class SignupsQuery extends ModelCriteria
      */
     public function findPks($keys, ConnectionInterface $con = null)
     {
-        throw new LogicException('The Signups object has no primary key');
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
+        }
+        $this->basePreSelect($con);
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKeys($keys)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->format($dataFetcher);
     }
 
     /**
@@ -170,7 +246,8 @@ abstract class SignupsQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        throw new LogicException('The Signups object has no primary key');
+
+        return $this->addUsingAlias(SignupsTableMap::COL_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -182,7 +259,8 @@ abstract class SignupsQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        throw new LogicException('The Signups object has no primary key');
+
+        return $this->addUsingAlias(SignupsTableMap::COL_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -237,8 +315,6 @@ abstract class SignupsQuery extends ModelCriteria
      * $query->filterByShift(array(12, 34)); // WHERE shift IN (12, 34)
      * $query->filterByShift(array('min' => 12)); // WHERE shift > 12
      * </code>
-     *
-     * @see       filterByShifts()
      *
      * @param     mixed $shift The value to use as filter.
      *              Use scalar values for equality.
@@ -477,6 +553,47 @@ abstract class SignupsQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * </code>
+     *
+     * @param     mixed $id The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildSignupsQuery The current query, for fluid interface
+     */
+    public function filterById($id = null, $comparison = null)
+    {
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(SignupsTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(SignupsTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SignupsTableMap::COL_ID, $id, $comparison);
+    }
+
+    /**
      * Filter the query by a related \Members object
      *
      * @param \Members|ObjectCollection $members The related object(s) to use as filter
@@ -554,156 +671,6 @@ abstract class SignupsQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Shifts object
-     *
-     * @param \Shifts|ObjectCollection $shifts The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildSignupsQuery The current query, for fluid interface
-     */
-    public function filterByShifts($shifts, $comparison = null)
-    {
-        if ($shifts instanceof \Shifts) {
-            return $this
-                ->addUsingAlias(SignupsTableMap::COL_SHIFT, $shifts->getId(), $comparison);
-        } elseif ($shifts instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(SignupsTableMap::COL_SHIFT, $shifts->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByShifts() only accepts arguments of type \Shifts or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Shifts relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildSignupsQuery The current query, for fluid interface
-     */
-    public function joinShifts($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Shifts');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Shifts');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Shifts relation Shifts object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \ShiftsQuery A secondary query class using the current class as primary query
-     */
-    public function useShiftsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinShifts($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Shifts', '\ShiftsQuery');
-    }
-
-    /**
-     * Filter the query by a related \Shifts object
-     *
-     * @param \Shifts|ObjectCollection $shifts the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildSignupsQuery The current query, for fluid interface
-     */
-    public function filterByShiftsRelatedById($shifts, $comparison = null)
-    {
-        if ($shifts instanceof \Shifts) {
-            return $this
-                ->addUsingAlias(SignupsTableMap::COL_SHIFT, $shifts->getId(), $comparison);
-        } elseif ($shifts instanceof ObjectCollection) {
-            return $this
-                ->useShiftsRelatedByIdQuery()
-                ->filterByPrimaryKeys($shifts->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByShiftsRelatedById() only accepts arguments of type \Shifts or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the ShiftsRelatedById relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildSignupsQuery The current query, for fluid interface
-     */
-    public function joinShiftsRelatedById($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ShiftsRelatedById');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'ShiftsRelatedById');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the ShiftsRelatedById relation Shifts object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \ShiftsQuery A secondary query class using the current class as primary query
-     */
-    public function useShiftsRelatedByIdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinShiftsRelatedById($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ShiftsRelatedById', '\ShiftsQuery');
-    }
-
-    /**
      * Exclude object from result
      *
      * @param   ChildSignups $signups Object to remove from the list of results
@@ -713,8 +680,7 @@ abstract class SignupsQuery extends ModelCriteria
     public function prune($signups = null)
     {
         if ($signups) {
-            throw new LogicException('Signups object has no primary key');
-
+            $this->addUsingAlias(SignupsTableMap::COL_ID, $signups->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

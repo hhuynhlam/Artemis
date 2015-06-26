@@ -14,5 +14,5 @@ use Base\ShiftsQuery as BaseShiftsQuery;
  */
 class ShiftsQuery extends BaseShiftsQuery
 {
-
+    
 }

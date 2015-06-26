@@ -259,7 +259,7 @@
     </vendor>
   </table>
   <table name="members" idMethod="native" phpName="Members">
-    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" autoIncrement="true" required="true"/>
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="first_name" phpName="FirstName" type="LONGVARCHAR" required="true"/>
     <column name="middle_name" phpName="MiddleName" type="LONGVARCHAR"/>
     <column name="last_name" phpName="LastName" type="LONGVARCHAR" required="true"/>
@@ -417,7 +417,7 @@
     </vendor>
   </table>
   <table name="shifts" idMethod="native" phpName="Shifts">
-    <column name="id" phpName="Id" type="INTEGER" autoIncrement="true" required="true"/>
+    <column name="id" phpName="Id" type="INTEGER" autoIncrement="true" primaryKey="true" required="true"/>
     <column name="event" phpName="Event" type="INTEGER" required="true" defaultValue="0"/>
     <column name="start_time" phpName="StartTime" type="BIGINT" required="true" defaultValue="0"/>
     <column name="end_time" phpName="EndTime" type="BIGINT" required="true" defaultValue="0"/>
@@ -427,14 +427,12 @@
     <unique name="id">
       <unique-column name="id"/>
     </unique>
-    <foreign-key foreignTable="signups" phpName="Signups">
-      <reference local="id" foreign="shift"/>
-    </foreign-key>
     <vendor type="mysql">
       <parameter name="Engine" value="MyISAM"/>
     </vendor>
   </table>
   <table name="signups" idMethod="native" phpName="Signups">
+    <behavior name="auto_add_pk" />
     <column name="user" phpName="User" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
     <column name="shift" phpName="Shift" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
     <column name="event" phpName="Event" type="INTEGER" required="true" defaultValue="0"/>
@@ -444,9 +442,6 @@
     <column name="timestamp" phpName="Timestamp" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
     <foreign-key foreignTable="members" phpName="Members">
       <reference local="user" foreign="id"/>
-    </foreign-key>
-    <foreign-key foreignTable="shifts" phpName="Shifts">
-      <reference local="shift" foreign="id"/>
     </foreign-key>
     <vendor type="mysql">
       <parameter name="Engine" value="MyISAM"/>

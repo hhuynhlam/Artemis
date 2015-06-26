@@ -9,7 +9,6 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -252,7 +251,7 @@ class MembersTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('id', 'Id', 'INTEGER', true, 10, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, 10, null);
         $this->addColumn('first_name', 'FirstName', 'LONGVARCHAR', true, null, null);
         $this->addColumn('middle_name', 'MiddleName', 'LONGVARCHAR', false, null, null);
         $this->addColumn('last_name', 'LastName', 'LONGVARCHAR', true, null, null);
@@ -309,7 +308,12 @@ class MembersTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -326,7 +330,11 @@ class MembersTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return '';
+        return (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 0 + $offset
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+        ];
     }
 
     /**
@@ -526,10 +534,11 @@ class MembersTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \Members) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            throw new LogicException('The Members object has no primary key');
+            $criteria = new Criteria(MembersTableMap::DATABASE_NAME);
+            $criteria->add(MembersTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
         $query = MembersQuery::create()->mergeWith($criteria);
@@ -575,6 +584,10 @@ class MembersTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Members object
+        }
+
+        if ($criteria->containsKey(MembersTableMap::COL_ID) && $criteria->keyContainsValue(MembersTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.MembersTableMap::COL_ID.')');
         }
 
 

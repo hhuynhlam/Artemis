@@ -9,7 +9,6 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -157,7 +156,7 @@ class ShiftsTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addForeignKey('id', 'Id', 'INTEGER', 'signups', 'shift', true, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('event', 'Event', 'INTEGER', true, null, 0);
         $this->addColumn('start_time', 'StartTime', 'BIGINT', true, null, 0);
         $this->addColumn('end_time', 'EndTime', 'BIGINT', true, null, 0);
@@ -171,20 +170,6 @@ class ShiftsTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Signups', '\\Signups', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':id',
-    1 => ':shift',
-  ),
-), null, null, null, false);
-        $this->addRelation('SignupsRelatedByShift', '\\Signups', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':shift',
-    1 => ':id',
-  ),
-), null, null, 'SignupssRelatedByShift', false);
     } // buildRelations()
 
     /**
@@ -202,7 +187,12 @@ class ShiftsTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -219,7 +209,11 @@ class ShiftsTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return '';
+        return (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 0 + $offset
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+        ];
     }
 
     /**
@@ -381,10 +375,11 @@ class ShiftsTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \Shifts) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            throw new LogicException('The Shifts object has no primary key');
+            $criteria = new Criteria(ShiftsTableMap::DATABASE_NAME);
+            $criteria->add(ShiftsTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
         $query = ShiftsQuery::create()->mergeWith($criteria);
@@ -430,6 +425,10 @@ class ShiftsTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Shifts object
+        }
+
+        if ($criteria->containsKey(ShiftsTableMap::COL_ID) && $criteria->keyContainsValue(ShiftsTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ShiftsTableMap::COL_ID.')');
         }
 
 

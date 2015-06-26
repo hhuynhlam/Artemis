@@ -9,7 +9,6 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -60,7 +59,7 @@ class SignupsTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /**
      * The number of lazy-loaded columns
@@ -70,7 +69,7 @@ class SignupsTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /**
      * the column name for the user field
@@ -108,6 +107,11 @@ class SignupsTableMap extends TableMap
     const COL_TIMESTAMP = 'signups.timestamp';
 
     /**
+     * the column name for the id field
+     */
+    const COL_ID = 'signups.id';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -119,11 +123,11 @@ class SignupsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('User', 'Shift', 'Event', 'Driver', 'Chair', 'Credit', 'Timestamp', ),
-        self::TYPE_CAMELNAME     => array('user', 'shift', 'event', 'driver', 'chair', 'credit', 'timestamp', ),
-        self::TYPE_COLNAME       => array(SignupsTableMap::COL_USER, SignupsTableMap::COL_SHIFT, SignupsTableMap::COL_EVENT, SignupsTableMap::COL_DRIVER, SignupsTableMap::COL_CHAIR, SignupsTableMap::COL_CREDIT, SignupsTableMap::COL_TIMESTAMP, ),
-        self::TYPE_FIELDNAME     => array('user', 'shift', 'event', 'driver', 'chair', 'credit', 'timestamp', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('User', 'Shift', 'Event', 'Driver', 'Chair', 'Credit', 'Timestamp', 'Id', ),
+        self::TYPE_CAMELNAME     => array('user', 'shift', 'event', 'driver', 'chair', 'credit', 'timestamp', 'id', ),
+        self::TYPE_COLNAME       => array(SignupsTableMap::COL_USER, SignupsTableMap::COL_SHIFT, SignupsTableMap::COL_EVENT, SignupsTableMap::COL_DRIVER, SignupsTableMap::COL_CHAIR, SignupsTableMap::COL_CREDIT, SignupsTableMap::COL_TIMESTAMP, SignupsTableMap::COL_ID, ),
+        self::TYPE_FIELDNAME     => array('user', 'shift', 'event', 'driver', 'chair', 'credit', 'timestamp', 'id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -133,11 +137,11 @@ class SignupsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('User' => 0, 'Shift' => 1, 'Event' => 2, 'Driver' => 3, 'Chair' => 4, 'Credit' => 5, 'Timestamp' => 6, ),
-        self::TYPE_CAMELNAME     => array('user' => 0, 'shift' => 1, 'event' => 2, 'driver' => 3, 'chair' => 4, 'credit' => 5, 'timestamp' => 6, ),
-        self::TYPE_COLNAME       => array(SignupsTableMap::COL_USER => 0, SignupsTableMap::COL_SHIFT => 1, SignupsTableMap::COL_EVENT => 2, SignupsTableMap::COL_DRIVER => 3, SignupsTableMap::COL_CHAIR => 4, SignupsTableMap::COL_CREDIT => 5, SignupsTableMap::COL_TIMESTAMP => 6, ),
-        self::TYPE_FIELDNAME     => array('user' => 0, 'shift' => 1, 'event' => 2, 'driver' => 3, 'chair' => 4, 'credit' => 5, 'timestamp' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('User' => 0, 'Shift' => 1, 'Event' => 2, 'Driver' => 3, 'Chair' => 4, 'Credit' => 5, 'Timestamp' => 6, 'Id' => 7, ),
+        self::TYPE_CAMELNAME     => array('user' => 0, 'shift' => 1, 'event' => 2, 'driver' => 3, 'chair' => 4, 'credit' => 5, 'timestamp' => 6, 'id' => 7, ),
+        self::TYPE_COLNAME       => array(SignupsTableMap::COL_USER => 0, SignupsTableMap::COL_SHIFT => 1, SignupsTableMap::COL_EVENT => 2, SignupsTableMap::COL_DRIVER => 3, SignupsTableMap::COL_CHAIR => 4, SignupsTableMap::COL_CREDIT => 5, SignupsTableMap::COL_TIMESTAMP => 6, SignupsTableMap::COL_ID => 7, ),
+        self::TYPE_FIELDNAME     => array('user' => 0, 'shift' => 1, 'event' => 2, 'driver' => 3, 'chair' => 4, 'credit' => 5, 'timestamp' => 6, 'id' => 7, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -155,15 +159,16 @@ class SignupsTableMap extends TableMap
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\Signups');
         $this->setPackage('');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
         $this->addForeignKey('user', 'User', 'INTEGER', 'members', 'id', true, 10, 0);
-        $this->addForeignKey('shift', 'Shift', 'INTEGER', 'shifts', 'id', true, 10, 0);
+        $this->addColumn('shift', 'Shift', 'INTEGER', true, 10, 0);
         $this->addColumn('event', 'Event', 'INTEGER', true, null, 0);
         $this->addColumn('driver', 'Driver', 'SMALLINT', true, 2, 0);
         $this->addColumn('chair', 'Chair', 'SMALLINT', true, 1, 0);
         $this->addColumn('credit', 'Credit', 'FLOAT', true, null, -1);
         $this->addColumn('timestamp', 'Timestamp', 'INTEGER', true, 10, 0);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -178,21 +183,20 @@ class SignupsTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, null, false);
-        $this->addRelation('Shifts', '\\Shifts', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':shift',
-    1 => ':id',
-  ),
-), null, null, null, false);
-        $this->addRelation('ShiftsRelatedById', '\\Shifts', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':id',
-    1 => ':shift',
-  ),
-), null, null, 'ShiftssRelatedById', false);
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'auto_add_pk' => array('name' => 'id', 'autoIncrement' => 'true', 'type' => 'INTEGER', ),
+        );
+    } // getBehaviors()
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -209,7 +213,12 @@ class SignupsTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 7 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 7 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -226,7 +235,11 @@ class SignupsTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return '';
+        return (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 7 + $offset
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+        ];
     }
 
     /**
@@ -333,6 +346,7 @@ class SignupsTableMap extends TableMap
             $criteria->addSelectColumn(SignupsTableMap::COL_CHAIR);
             $criteria->addSelectColumn(SignupsTableMap::COL_CREDIT);
             $criteria->addSelectColumn(SignupsTableMap::COL_TIMESTAMP);
+            $criteria->addSelectColumn(SignupsTableMap::COL_ID);
         } else {
             $criteria->addSelectColumn($alias . '.user');
             $criteria->addSelectColumn($alias . '.shift');
@@ -341,6 +355,7 @@ class SignupsTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.chair');
             $criteria->addSelectColumn($alias . '.credit');
             $criteria->addSelectColumn($alias . '.timestamp');
+            $criteria->addSelectColumn($alias . '.id');
         }
     }
 
@@ -388,10 +403,11 @@ class SignupsTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \Signups) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            throw new LogicException('The Signups object has no primary key');
+            $criteria = new Criteria(SignupsTableMap::DATABASE_NAME);
+            $criteria->add(SignupsTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
         $query = SignupsQuery::create()->mergeWith($criteria);
@@ -437,6 +453,10 @@ class SignupsTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Signups object
+        }
+
+        if ($criteria->containsKey(SignupsTableMap::COL_ID) && $criteria->keyContainsValue(SignupsTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.SignupsTableMap::COL_ID.')');
         }
 
 

@@ -5,14 +5,13 @@ namespace Base;
 use \Shifts as ChildShifts;
 use \ShiftsQuery as ChildShiftsQuery;
 use \Exception;
+use \PDO;
 use Map\ShiftsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 
 /**
@@ -39,16 +38,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildShiftsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildShiftsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildShiftsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method     ChildShiftsQuery leftJoinSignups($relationAlias = null) Adds a LEFT JOIN clause to the query using the Signups relation
- * @method     ChildShiftsQuery rightJoinSignups($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Signups relation
- * @method     ChildShiftsQuery innerJoinSignups($relationAlias = null) Adds a INNER JOIN clause to the query using the Signups relation
- *
- * @method     ChildShiftsQuery leftJoinSignupsRelatedByShift($relationAlias = null) Adds a LEFT JOIN clause to the query using the SignupsRelatedByShift relation
- * @method     ChildShiftsQuery rightJoinSignupsRelatedByShift($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SignupsRelatedByShift relation
- * @method     ChildShiftsQuery innerJoinSignupsRelatedByShift($relationAlias = null) Adds a INNER JOIN clause to the query using the SignupsRelatedByShift relation
- *
- * @method     \SignupsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildShifts findOne(ConnectionInterface $con = null) Return the first ChildShifts matching the query
  * @method     ChildShifts findOneOrCreate(ConnectionInterface $con = null) Return the first ChildShifts matching the query, or a new ChildShifts object populated from the query conditions when no match is found
@@ -139,13 +128,83 @@ abstract class ShiftsQuery extends ModelCriteria
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
-        throw new LogicException('The Shifts object has no primary key');
+        if ($key === null) {
+            return null;
+        }
+        if ((null !== ($obj = ShiftsTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
+            // the object is already in the instance pool
+            return $obj;
+        }
+        if ($con === null) {
+            $con = Propel::getServiceContainer()->getReadConnection(ShiftsTableMap::DATABASE_NAME);
+        }
+        $this->basePreSelect($con);
+        if ($this->formatter || $this->modelAlias || $this->with || $this->select
+         || $this->selectColumns || $this->asColumns || $this->selectModifiers
+         || $this->map || $this->having || $this->joins) {
+            return $this->findPkComplex($key, $con);
+        } else {
+            return $this->findPkSimple($key, $con);
+        }
+    }
+
+    /**
+     * Find object by primary key using raw SQL to go fast.
+     * Bypass doSelect() and the object formatter by using generated code.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildShifts A model object, or null if the key is not found
+     */
+    protected function findPkSimple($key, ConnectionInterface $con)
+    {
+        $sql = 'SELECT id, event, start_time, end_time, open_to, cap, description FROM shifts WHERE id = :p0';
+        try {
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sql), 0, $e);
+        }
+        $obj = null;
+        if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
+            /** @var ChildShifts $obj */
+            $obj = new ChildShifts();
+            $obj->hydrate($row);
+            ShiftsTableMap::addInstanceToPool($obj, (string) $key);
+        }
+        $stmt->closeCursor();
+
+        return $obj;
+    }
+
+    /**
+     * Find object by primary key.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @return ChildShifts|array|mixed the result, formatted by the current formatter
+     */
+    protected function findPkComplex($key, ConnectionInterface $con)
+    {
+        // As the query uses a PK condition, no limit(1) is necessary.
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKey($key)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->formatOne($dataFetcher);
     }
 
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
+     * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     ConnectionInterface $con an optional connection object
@@ -154,7 +213,16 @@ abstract class ShiftsQuery extends ModelCriteria
      */
     public function findPks($keys, ConnectionInterface $con = null)
     {
-        throw new LogicException('The Shifts object has no primary key');
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
+        }
+        $this->basePreSelect($con);
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKeys($keys)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->format($dataFetcher);
     }
 
     /**
@@ -166,7 +234,8 @@ abstract class ShiftsQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        throw new LogicException('The Shifts object has no primary key');
+
+        return $this->addUsingAlias(ShiftsTableMap::COL_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -178,7 +247,8 @@ abstract class ShiftsQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        throw new LogicException('The Shifts object has no primary key');
+
+        return $this->addUsingAlias(ShiftsTableMap::COL_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -190,8 +260,6 @@ abstract class ShiftsQuery extends ModelCriteria
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
-     *
-     * @see       filterBySignups()
      *
      * @param     mixed $id The value to use as filter.
      *              Use scalar values for equality.
@@ -459,156 +527,6 @@ abstract class ShiftsQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Signups object
-     *
-     * @param \Signups|ObjectCollection $signups The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildShiftsQuery The current query, for fluid interface
-     */
-    public function filterBySignups($signups, $comparison = null)
-    {
-        if ($signups instanceof \Signups) {
-            return $this
-                ->addUsingAlias(ShiftsTableMap::COL_ID, $signups->getShift(), $comparison);
-        } elseif ($signups instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(ShiftsTableMap::COL_ID, $signups->toKeyValue('PrimaryKey', 'Shift'), $comparison);
-        } else {
-            throw new PropelException('filterBySignups() only accepts arguments of type \Signups or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Signups relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildShiftsQuery The current query, for fluid interface
-     */
-    public function joinSignups($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Signups');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Signups');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Signups relation Signups object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \SignupsQuery A secondary query class using the current class as primary query
-     */
-    public function useSignupsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinSignups($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Signups', '\SignupsQuery');
-    }
-
-    /**
-     * Filter the query by a related \Signups object
-     *
-     * @param \Signups|ObjectCollection $signups the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildShiftsQuery The current query, for fluid interface
-     */
-    public function filterBySignupsRelatedByShift($signups, $comparison = null)
-    {
-        if ($signups instanceof \Signups) {
-            return $this
-                ->addUsingAlias(ShiftsTableMap::COL_ID, $signups->getShift(), $comparison);
-        } elseif ($signups instanceof ObjectCollection) {
-            return $this
-                ->useSignupsRelatedByShiftQuery()
-                ->filterByPrimaryKeys($signups->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterBySignupsRelatedByShift() only accepts arguments of type \Signups or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the SignupsRelatedByShift relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildShiftsQuery The current query, for fluid interface
-     */
-    public function joinSignupsRelatedByShift($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('SignupsRelatedByShift');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'SignupsRelatedByShift');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the SignupsRelatedByShift relation Signups object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \SignupsQuery A secondary query class using the current class as primary query
-     */
-    public function useSignupsRelatedByShiftQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinSignupsRelatedByShift($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'SignupsRelatedByShift', '\SignupsQuery');
-    }
-
-    /**
      * Exclude object from result
      *
      * @param   ChildShifts $shifts Object to remove from the list of results
@@ -618,8 +536,7 @@ abstract class ShiftsQuery extends ModelCriteria
     public function prune($shifts = null)
     {
         if ($shifts) {
-            throw new LogicException('Shifts object has no primary key');
-
+            $this->addUsingAlias(ShiftsTableMap::COL_ID, $shifts->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
