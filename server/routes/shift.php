@@ -9,14 +9,21 @@ $app->get('/shift', function () use ($app) {
         echo json_encode('You are not allowed to see this page.');
         return;
     }
+
+    // check required params
+    if(is_null($app->request->get('event'))) {
+        $app->status(406); 
+        echo json_encode('You need to specify an event.');
+        return; 
+    }
     
     // get request parameters
     $eventId = $app->request->get('event');
     $select = $app->request->get('select');
 
     // construct query
-    $shifts = ShiftsQuery::create();
-    if(!is_null($eventId)) { $shifts = $shifts->filterByEvent($eventId); }
+    $shifts = ShiftsQuery::create()
+        ->filterByEvent($eventId);
     if(!is_null($select)) { $shifts = $shifts->select($select); }
 
     // execute query
