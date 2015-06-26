@@ -2,7 +2,10 @@
 
 namespace Base;
 
+use \Shifts as ChildShifts;
 use \ShiftsQuery as ChildShiftsQuery;
+use \Signups as ChildSignups;
+use \SignupsQuery as ChildSignupsQuery;
 use \Exception;
 use \PDO;
 use Map\ShiftsTableMap;
@@ -11,6 +14,7 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -108,12 +112,29 @@ abstract class Shifts implements ActiveRecordInterface
     protected $description;
 
     /**
+     * @var        ChildSignups
+     */
+    protected $aSignups;
+
+    /**
+     * @var        ObjectCollection|ChildSignups[] Collection to store aggregation of ChildSignups objects.
+     */
+    protected $collSignupssRelatedByShift;
+    protected $collSignupssRelatedByShiftPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildSignups[]
+     */
+    protected $signupssRelatedByShiftScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -437,6 +458,10 @@ abstract class Shifts implements ActiveRecordInterface
             $this->modifiedColumns[ShiftsTableMap::COL_ID] = true;
         }
 
+        if ($this->aSignups !== null && $this->aSignups->getShift() !== $v) {
+            $this->aSignups = null;
+        }
+
         return $this;
     } // setId()
 
@@ -670,6 +695,9 @@ abstract class Shifts implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aSignups !== null && $this->id !== $this->aSignups->getShift()) {
+            $this->aSignups = null;
+        }
     } // ensureConsistency
 
     /**
@@ -708,6 +736,9 @@ abstract class Shifts implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->aSignups = null;
+            $this->collSignupssRelatedByShift = null;
 
         } // if (deep)
     }
@@ -808,6 +839,18 @@ abstract class Shifts implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aSignups !== null) {
+                if ($this->aSignups->isModified() || $this->aSignups->isNew()) {
+                    $affectedRows += $this->aSignups->save($con);
+                }
+                $this->setSignups($this->aSignups);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -817,6 +860,23 @@ abstract class Shifts implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->signupssRelatedByShiftScheduledForDeletion !== null) {
+                if (!$this->signupssRelatedByShiftScheduledForDeletion->isEmpty()) {
+                    \SignupsQuery::create()
+                        ->filterByPrimaryKeys($this->signupssRelatedByShiftScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->signupssRelatedByShiftScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collSignupssRelatedByShift !== null) {
+                foreach ($this->collSignupssRelatedByShift as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -993,10 +1053,11 @@ abstract class Shifts implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Shifts'][$this->hashCode()])) {
@@ -1018,6 +1079,38 @@ abstract class Shifts implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aSignups) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'signups';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'signups';
+                        break;
+                    default:
+                        $key = 'Signups';
+                }
+
+                $result[$key] = $this->aSignups->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collSignupssRelatedByShift) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'signupss';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'signupss';
+                        break;
+                    default:
+                        $key = 'Signupss';
+                }
+
+                $result[$key] = $this->collSignupssRelatedByShift->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -1276,6 +1369,20 @@ abstract class Shifts implements ActiveRecordInterface
         $copyObj->setOpenTo($this->getOpenTo());
         $copyObj->setCap($this->getCap());
         $copyObj->setDescription($this->getDescription());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getSignupssRelatedByShift() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addSignupsRelatedByShift($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1305,12 +1412,327 @@ abstract class Shifts implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildSignups object.
+     *
+     * @param  ChildSignups $v
+     * @return $this|\Shifts The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setSignups(ChildSignups $v = null)
+    {
+        if ($v === null) {
+            $this->setId(NULL);
+        } else {
+            $this->setId($v->getShift());
+        }
+
+        $this->aSignups = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildSignups object, it will not be re-added.
+        if ($v !== null) {
+            $v->addShiftsRelatedById($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildSignups object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildSignups The associated ChildSignups object.
+     * @throws PropelException
+     */
+    public function getSignups(ConnectionInterface $con = null)
+    {
+        if ($this->aSignups === null && ($this->id !== null)) {
+            $this->aSignups = ChildSignupsQuery::create()
+                ->filterByShiftsRelatedById($this) // here
+                ->findOne($con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aSignups->addShiftssRelatedById($this);
+             */
+        }
+
+        return $this->aSignups;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('SignupsRelatedByShift' == $relationName) {
+            return $this->initSignupssRelatedByShift();
+        }
+    }
+
+    /**
+     * Clears out the collSignupssRelatedByShift collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addSignupssRelatedByShift()
+     */
+    public function clearSignupssRelatedByShift()
+    {
+        $this->collSignupssRelatedByShift = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collSignupssRelatedByShift collection loaded partially.
+     */
+    public function resetPartialSignupssRelatedByShift($v = true)
+    {
+        $this->collSignupssRelatedByShiftPartial = $v;
+    }
+
+    /**
+     * Initializes the collSignupssRelatedByShift collection.
+     *
+     * By default this just sets the collSignupssRelatedByShift collection to an empty array (like clearcollSignupssRelatedByShift());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initSignupssRelatedByShift($overrideExisting = true)
+    {
+        if (null !== $this->collSignupssRelatedByShift && !$overrideExisting) {
+            return;
+        }
+        $this->collSignupssRelatedByShift = new ObjectCollection();
+        $this->collSignupssRelatedByShift->setModel('\Signups');
+    }
+
+    /**
+     * Gets an array of ChildSignups objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildShifts is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildSignups[] List of ChildSignups objects
+     * @throws PropelException
+     */
+    public function getSignupssRelatedByShift(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSignupssRelatedByShiftPartial && !$this->isNew();
+        if (null === $this->collSignupssRelatedByShift || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSignupssRelatedByShift) {
+                // return empty collection
+                $this->initSignupssRelatedByShift();
+            } else {
+                $collSignupssRelatedByShift = ChildSignupsQuery::create(null, $criteria)
+                    ->filterByShifts($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collSignupssRelatedByShiftPartial && count($collSignupssRelatedByShift)) {
+                        $this->initSignupssRelatedByShift(false);
+
+                        foreach ($collSignupssRelatedByShift as $obj) {
+                            if (false == $this->collSignupssRelatedByShift->contains($obj)) {
+                                $this->collSignupssRelatedByShift->append($obj);
+                            }
+                        }
+
+                        $this->collSignupssRelatedByShiftPartial = true;
+                    }
+
+                    return $collSignupssRelatedByShift;
+                }
+
+                if ($partial && $this->collSignupssRelatedByShift) {
+                    foreach ($this->collSignupssRelatedByShift as $obj) {
+                        if ($obj->isNew()) {
+                            $collSignupssRelatedByShift[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSignupssRelatedByShift = $collSignupssRelatedByShift;
+                $this->collSignupssRelatedByShiftPartial = false;
+            }
+        }
+
+        return $this->collSignupssRelatedByShift;
+    }
+
+    /**
+     * Sets a collection of ChildSignups objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $signupssRelatedByShift A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildShifts The current object (for fluent API support)
+     */
+    public function setSignupssRelatedByShift(Collection $signupssRelatedByShift, ConnectionInterface $con = null)
+    {
+        /** @var ChildSignups[] $signupssRelatedByShiftToDelete */
+        $signupssRelatedByShiftToDelete = $this->getSignupssRelatedByShift(new Criteria(), $con)->diff($signupssRelatedByShift);
+
+
+        $this->signupssRelatedByShiftScheduledForDeletion = $signupssRelatedByShiftToDelete;
+
+        foreach ($signupssRelatedByShiftToDelete as $signupsRelatedByShiftRemoved) {
+            $signupsRelatedByShiftRemoved->setShifts(null);
+        }
+
+        $this->collSignupssRelatedByShift = null;
+        foreach ($signupssRelatedByShift as $signupsRelatedByShift) {
+            $this->addSignupsRelatedByShift($signupsRelatedByShift);
+        }
+
+        $this->collSignupssRelatedByShift = $signupssRelatedByShift;
+        $this->collSignupssRelatedByShiftPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Signups objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Signups objects.
+     * @throws PropelException
+     */
+    public function countSignupssRelatedByShift(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSignupssRelatedByShiftPartial && !$this->isNew();
+        if (null === $this->collSignupssRelatedByShift || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSignupssRelatedByShift) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getSignupssRelatedByShift());
+            }
+
+            $query = ChildSignupsQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByShifts($this)
+                ->count($con);
+        }
+
+        return count($this->collSignupssRelatedByShift);
+    }
+
+    /**
+     * Method called to associate a ChildSignups object to this object
+     * through the ChildSignups foreign key attribute.
+     *
+     * @param  ChildSignups $l ChildSignups
+     * @return $this|\Shifts The current object (for fluent API support)
+     */
+    public function addSignupsRelatedByShift(ChildSignups $l)
+    {
+        if ($this->collSignupssRelatedByShift === null) {
+            $this->initSignupssRelatedByShift();
+            $this->collSignupssRelatedByShiftPartial = true;
+        }
+
+        if (!$this->collSignupssRelatedByShift->contains($l)) {
+            $this->doAddSignupsRelatedByShift($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildSignups $signupsRelatedByShift The ChildSignups object to add.
+     */
+    protected function doAddSignupsRelatedByShift(ChildSignups $signupsRelatedByShift)
+    {
+        $this->collSignupssRelatedByShift[]= $signupsRelatedByShift;
+        $signupsRelatedByShift->setShifts($this);
+    }
+
+    /**
+     * @param  ChildSignups $signupsRelatedByShift The ChildSignups object to remove.
+     * @return $this|ChildShifts The current object (for fluent API support)
+     */
+    public function removeSignupsRelatedByShift(ChildSignups $signupsRelatedByShift)
+    {
+        if ($this->getSignupssRelatedByShift()->contains($signupsRelatedByShift)) {
+            $pos = $this->collSignupssRelatedByShift->search($signupsRelatedByShift);
+            $this->collSignupssRelatedByShift->remove($pos);
+            if (null === $this->signupssRelatedByShiftScheduledForDeletion) {
+                $this->signupssRelatedByShiftScheduledForDeletion = clone $this->collSignupssRelatedByShift;
+                $this->signupssRelatedByShiftScheduledForDeletion->clear();
+            }
+            $this->signupssRelatedByShiftScheduledForDeletion[]= clone $signupsRelatedByShift;
+            $signupsRelatedByShift->setShifts(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Shifts is new, it will return
+     * an empty collection; or if this Shifts has previously
+     * been saved, it will retrieve related SignupssRelatedByShift from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Shifts.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildSignups[] List of ChildSignups objects
+     */
+    public function getSignupssRelatedByShiftJoinMembers(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSignupsQuery::create(null, $criteria);
+        $query->joinWith('Members', $joinBehavior);
+
+        return $this->getSignupssRelatedByShift($query, $con);
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aSignups) {
+            $this->aSignups->removeShiftsRelatedById($this);
+        }
         $this->id = null;
         $this->event = null;
         $this->start_time = null;
@@ -1337,8 +1759,15 @@ abstract class Shifts implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collSignupssRelatedByShift) {
+                foreach ($this->collSignupssRelatedByShift as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collSignupssRelatedByShift = null;
+        $this->aSignups = null;
     }
 
     /**

@@ -157,8 +157,8 @@ class SignupsTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addColumn('user', 'User', 'INTEGER', true, 10, 0);
-        $this->addColumn('shift', 'Shift', 'INTEGER', true, 10, 0);
+        $this->addForeignKey('user', 'User', 'INTEGER', 'members', 'id', true, 10, 0);
+        $this->addForeignKey('shift', 'Shift', 'INTEGER', 'shifts', 'id', true, 10, 0);
         $this->addColumn('event', 'Event', 'INTEGER', true, null, 0);
         $this->addColumn('driver', 'Driver', 'SMALLINT', true, 2, 0);
         $this->addColumn('chair', 'Chair', 'SMALLINT', true, 1, 0);
@@ -171,6 +171,27 @@ class SignupsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Members', '\\Members', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':user',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Shifts', '\\Shifts', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':shift',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('ShiftsRelatedById', '\\Shifts', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':id',
+    1 => ':shift',
+  ),
+), null, null, 'ShiftssRelatedById', false);
     } // buildRelations()
 
     /**

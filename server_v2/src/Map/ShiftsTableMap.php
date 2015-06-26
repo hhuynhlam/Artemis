@@ -157,7 +157,7 @@ class ShiftsTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('id', 'Id', 'INTEGER', 'signups', 'shift', true, null, null);
         $this->addColumn('event', 'Event', 'INTEGER', true, null, 0);
         $this->addColumn('start_time', 'StartTime', 'BIGINT', true, null, 0);
         $this->addColumn('end_time', 'EndTime', 'BIGINT', true, null, 0);
@@ -171,6 +171,20 @@ class ShiftsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Signups', '\\Signups', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':id',
+    1 => ':shift',
+  ),
+), null, null, null, false);
+        $this->addRelation('SignupsRelatedByShift', '\\Signups', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':shift',
+    1 => ':id',
+  ),
+), null, null, 'SignupssRelatedByShift', false);
     } // buildRelations()
 
     /**

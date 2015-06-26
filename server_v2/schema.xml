@@ -427,6 +427,9 @@
     <unique name="id">
       <unique-column name="id"/>
     </unique>
+    <foreign-key foreignTable="signups" phpName="Signups">
+      <reference local="id" foreign="shift"/>
+    </foreign-key>
     <vendor type="mysql">
       <parameter name="Engine" value="MyISAM"/>
     </vendor>
@@ -439,6 +442,12 @@
     <column name="chair" phpName="Chair" type="SMALLINT" size="1" sqlType="smallint(1) unsigned" required="true" defaultValue="0"/>
     <column name="credit" phpName="Credit" type="FLOAT" required="true" defaultValue="-1"/>
     <column name="timestamp" phpName="Timestamp" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true" defaultValue="0"/>
+    <foreign-key foreignTable="members" phpName="Members">
+      <reference local="user" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="shifts" phpName="Shifts">
+      <reference local="shift" foreign="id"/>
+    </foreign-key>
     <vendor type="mysql">
       <parameter name="Engine" value="MyISAM"/>
     </vendor>
