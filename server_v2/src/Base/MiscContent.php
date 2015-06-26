@@ -798,29 +798,29 @@ abstract class MiscContent implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(MiscContentTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(MiscContentTableMap::COL_PAGE)) {
-            $modifiedColumns[':p' . $index++]  = 'page';
+            $modifiedColumns[':p' . $index++]  = '`page`';
         }
         if ($this->isColumnModified(MiscContentTableMap::COL_LINK)) {
-            $modifiedColumns[':p' . $index++]  = 'link';
+            $modifiedColumns[':p' . $index++]  = '`link`';
         }
         if ($this->isColumnModified(MiscContentTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(MiscContentTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(MiscContentTableMap::COL_CONTENT)) {
-            $modifiedColumns[':p' . $index++]  = 'content';
+            $modifiedColumns[':p' . $index++]  = '`content`';
         }
         if ($this->isColumnModified(MiscContentTableMap::COL_LAST_EDITED)) {
-            $modifiedColumns[':p' . $index++]  = 'last_edited';
+            $modifiedColumns[':p' . $index++]  = '`last_edited`';
         }
 
         $sql = sprintf(
-            'INSERT INTO misc_content (%s) VALUES (%s)',
+            'INSERT INTO `misc_content` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -829,25 +829,25 @@ abstract class MiscContent implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'page':
+                    case '`page`':
                         $stmt->bindValue($identifier, $this->page, PDO::PARAM_STR);
                         break;
-                    case 'link':
+                    case '`link`':
                         $stmt->bindValue($identifier, $this->link, PDO::PARAM_STR);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'content':
+                    case '`content`':
                         $stmt->bindValue($identifier, $this->content, PDO::PARAM_STR);
                         break;
-                    case 'last_edited':
+                    case '`last_edited`':
                         $stmt->bindValue($identifier, $this->last_edited, PDO::PARAM_INT);
                         break;
                 }

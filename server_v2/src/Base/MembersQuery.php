@@ -263,7 +263,7 @@ abstract class MembersQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, first_name, middle_name, last_name, position, mail_list, email, aim, website, phone, perm_address, temp_address, avatar, signature, class, username, password, family, birthday, shirt_size, total_service, total_fellowship, notes, fees_owed, email_list, reminder FROM members WHERE id = :p0';
+        $sql = 'SELECT `id`, `first_name`, `middle_name`, `last_name`, `position`, `mail_list`, `email`, `aim`, `website`, `phone`, `perm_address`, `temp_address`, `avatar`, `signature`, `class`, `username`, `password`, `family`, `birthday`, `shirt_size`, `total_service`, `total_fellowship`, `notes`, `fees_owed`, `email_list`, `reminder` FROM `members` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

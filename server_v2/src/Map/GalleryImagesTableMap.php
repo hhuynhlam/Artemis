@@ -137,7 +137,7 @@ class GalleryImagesTableMap extends TableMap
         // attributes
         $this->setName('gallery_images');
         $this->setPhpName('GalleryImages');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\GalleryImages');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

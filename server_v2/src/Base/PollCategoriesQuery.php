@@ -156,7 +156,7 @@ abstract class PollCategoriesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, description, open_date, close_date, term FROM poll_categories WHERE id = :p0';
+        $sql = 'SELECT `id`, `name`, `description`, `open_date`, `close_date`, `term` FROM `poll_categories` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

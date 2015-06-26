@@ -668,17 +668,17 @@ abstract class SurveyResponses implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(SurveyResponsesTableMap::COL_USER_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'user_id';
+            $modifiedColumns[':p' . $index++]  = '`user_id`';
         }
         if ($this->isColumnModified(SurveyResponsesTableMap::COL_QUESTION_NUMBER)) {
-            $modifiedColumns[':p' . $index++]  = 'question_number';
+            $modifiedColumns[':p' . $index++]  = '`question_number`';
         }
         if ($this->isColumnModified(SurveyResponsesTableMap::COL_RESPONSE)) {
-            $modifiedColumns[':p' . $index++]  = 'response';
+            $modifiedColumns[':p' . $index++]  = '`response`';
         }
 
         $sql = sprintf(
-            'INSERT INTO survey_responses (%s) VALUES (%s)',
+            'INSERT INTO `survey_responses` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -687,13 +687,13 @@ abstract class SurveyResponses implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'user_id':
+                    case '`user_id`':
                         $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case 'question_number':
+                    case '`question_number`':
                         $stmt->bindValue($identifier, $this->question_number, PDO::PARAM_INT);
                         break;
-                    case 'response':
+                    case '`response`':
                         $stmt->bindValue($identifier, $this->response, PDO::PARAM_STR);
                         break;
                 }

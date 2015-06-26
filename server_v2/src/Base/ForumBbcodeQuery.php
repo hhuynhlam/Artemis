@@ -156,7 +156,7 @@ abstract class ForumBbcodeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, bbcode_expr, html_rep, html_expr, bbcode_rep FROM forum_bbcode WHERE id = :p0';
+        $sql = 'SELECT `id`, `name`, `bbcode_expr`, `html_rep`, `html_expr`, `bbcode_rep` FROM `forum_bbcode` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

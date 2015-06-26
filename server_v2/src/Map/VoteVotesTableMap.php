@@ -122,7 +122,7 @@ class VoteVotesTableMap extends TableMap
         // attributes
         $this->setName('vote_votes');
         $this->setPhpName('VoteVotes');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\VoteVotes');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

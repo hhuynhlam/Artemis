@@ -132,7 +132,7 @@ class SurveyResponsesTableMap extends TableMap
         // attributes
         $this->setName('survey_responses');
         $this->setPhpName('SurveyResponses');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\SurveyResponses');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

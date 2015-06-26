@@ -156,7 +156,7 @@ class SignupsTableMap extends TableMap
         // attributes
         $this->setName('signups');
         $this->setPhpName('Signups');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Signups');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

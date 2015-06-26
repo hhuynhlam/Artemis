@@ -146,7 +146,7 @@ abstract class SurveyQuestionsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT question_number, question, num_of_responses, family FROM survey_questions WHERE question_number = :p0';
+        $sql = 'SELECT `question_number`, `question`, `num_of_responses`, `family` FROM `survey_questions` WHERE `question_number` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

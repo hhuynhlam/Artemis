@@ -146,7 +146,7 @@ class NewslettersTableMap extends TableMap
         // attributes
         $this->setName('newsletters');
         $this->setPhpName('Newsletters');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Newsletters');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

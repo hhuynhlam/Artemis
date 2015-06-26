@@ -578,11 +578,11 @@ abstract class VoteVotes implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(VoteVotesTableMap::COL_VOTE)) {
-            $modifiedColumns[':p' . $index++]  = 'vote';
+            $modifiedColumns[':p' . $index++]  = '`vote`';
         }
 
         $sql = sprintf(
-            'INSERT INTO vote_votes (%s) VALUES (%s)',
+            'INSERT INTO `vote_votes` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -591,7 +591,7 @@ abstract class VoteVotes implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'vote':
+                    case '`vote`':
                         $stmt->bindValue($identifier, $this->vote, PDO::PARAM_INT);
                         break;
                 }

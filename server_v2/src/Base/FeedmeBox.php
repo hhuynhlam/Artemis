@@ -867,32 +867,32 @@ abstract class FeedmeBox implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(FeedmeBoxTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(FeedmeBoxTableMap::COL_TOPIC)) {
-            $modifiedColumns[':p' . $index++]  = 'topic';
+            $modifiedColumns[':p' . $index++]  = '`topic`';
         }
         if ($this->isColumnModified(FeedmeBoxTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'date';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(FeedmeBoxTableMap::COL_MESSAGE)) {
-            $modifiedColumns[':p' . $index++]  = 'message';
+            $modifiedColumns[':p' . $index++]  = '`message`';
         }
         if ($this->isColumnModified(FeedmeBoxTableMap::COL_TYPE)) {
-            $modifiedColumns[':p' . $index++]  = 'type';
+            $modifiedColumns[':p' . $index++]  = '`type`';
         }
         if ($this->isColumnModified(FeedmeBoxTableMap::COL_READ_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'read_by';
+            $modifiedColumns[':p' . $index++]  = '`read_by`';
         }
         if ($this->isColumnModified(FeedmeBoxTableMap::COL_RELEASED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'released_by';
+            $modifiedColumns[':p' . $index++]  = '`released_by`';
         }
         if ($this->isColumnModified(FeedmeBoxTableMap::COL_REPLY)) {
-            $modifiedColumns[':p' . $index++]  = 'reply';
+            $modifiedColumns[':p' . $index++]  = '`reply`';
         }
 
         $sql = sprintf(
-            'INSERT INTO feedme_box (%s) VALUES (%s)',
+            'INSERT INTO `feedme_box` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -901,28 +901,28 @@ abstract class FeedmeBox implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'topic':
+                    case '`topic`':
                         $stmt->bindValue($identifier, $this->topic, PDO::PARAM_STR);
                         break;
-                    case 'date':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_INT);
                         break;
-                    case 'message':
+                    case '`message`':
                         $stmt->bindValue($identifier, $this->message, PDO::PARAM_STR);
                         break;
-                    case 'type':
+                    case '`type`':
                         $stmt->bindValue($identifier, $this->type, PDO::PARAM_STR);
                         break;
-                    case 'read_by':
+                    case '`read_by`':
                         $stmt->bindValue($identifier, $this->read_by, PDO::PARAM_STR);
                         break;
-                    case 'released_by':
+                    case '`released_by`':
                         $stmt->bindValue($identifier, $this->released_by, PDO::PARAM_INT);
                         break;
-                    case 'reply':
+                    case '`reply`':
                         $stmt->bindValue($identifier, $this->reply, PDO::PARAM_STR);
                         break;
                 }

@@ -789,26 +789,26 @@ abstract class ForumPosts implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ForumPostsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ForumPostsTableMap::COL_TOPIC)) {
-            $modifiedColumns[':p' . $index++]  = 'topic';
+            $modifiedColumns[':p' . $index++]  = '`topic`';
         }
         if ($this->isColumnModified(ForumPostsTableMap::COL_CONTENT)) {
-            $modifiedColumns[':p' . $index++]  = 'content';
+            $modifiedColumns[':p' . $index++]  = '`content`';
         }
         if ($this->isColumnModified(ForumPostsTableMap::COL_AUTHOR)) {
-            $modifiedColumns[':p' . $index++]  = 'author';
+            $modifiedColumns[':p' . $index++]  = '`author`';
         }
         if ($this->isColumnModified(ForumPostsTableMap::COL_POST_TIME)) {
-            $modifiedColumns[':p' . $index++]  = 'post_time';
+            $modifiedColumns[':p' . $index++]  = '`post_time`';
         }
         if ($this->isColumnModified(ForumPostsTableMap::COL_EDIT_TIME)) {
-            $modifiedColumns[':p' . $index++]  = 'edit_time';
+            $modifiedColumns[':p' . $index++]  = '`edit_time`';
         }
 
         $sql = sprintf(
-            'INSERT INTO forum_posts (%s) VALUES (%s)',
+            'INSERT INTO `forum_posts` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -817,22 +817,22 @@ abstract class ForumPosts implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'topic':
+                    case '`topic`':
                         $stmt->bindValue($identifier, $this->topic, PDO::PARAM_INT);
                         break;
-                    case 'content':
+                    case '`content`':
                         $stmt->bindValue($identifier, $this->content, PDO::PARAM_STR);
                         break;
-                    case 'author':
+                    case '`author`':
                         $stmt->bindValue($identifier, $this->author, PDO::PARAM_INT);
                         break;
-                    case 'post_time':
+                    case '`post_time`':
                         $stmt->bindValue($identifier, $this->post_time, PDO::PARAM_INT);
                         break;
-                    case 'edit_time':
+                    case '`edit_time`':
                         $stmt->bindValue($identifier, $this->edit_time, PDO::PARAM_INT);
                         break;
                 }

@@ -1038,41 +1038,41 @@ abstract class InterchapterSignups implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_EVENT_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'event_id';
+            $modifiedColumns[':p' . $index++]  = '`event_id`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_CHAPTER)) {
-            $modifiedColumns[':p' . $index++]  = 'chapter';
+            $modifiedColumns[':p' . $index++]  = '`chapter`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_EMAIL)) {
-            $modifiedColumns[':p' . $index++]  = 'email';
+            $modifiedColumns[':p' . $index++]  = '`email`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_PHONE)) {
-            $modifiedColumns[':p' . $index++]  = 'phone';
+            $modifiedColumns[':p' . $index++]  = '`phone`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'date';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_SHIRT_SIZE)) {
-            $modifiedColumns[':p' . $index++]  = 'shirt_size';
+            $modifiedColumns[':p' . $index++]  = '`shirt_size`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_VEGETARIAN)) {
-            $modifiedColumns[':p' . $index++]  = 'vegetarian';
+            $modifiedColumns[':p' . $index++]  = '`vegetarian`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_HOUSING_NEEDED)) {
-            $modifiedColumns[':p' . $index++]  = 'housing_needed';
+            $modifiedColumns[':p' . $index++]  = '`housing_needed`';
         }
         if ($this->isColumnModified(InterchapterSignupsTableMap::COL_DELETED)) {
-            $modifiedColumns[':p' . $index++]  = 'deleted';
+            $modifiedColumns[':p' . $index++]  = '`deleted`';
         }
 
         $sql = sprintf(
-            'INSERT INTO interchapter_signups (%s) VALUES (%s)',
+            'INSERT INTO `interchapter_signups` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1081,37 +1081,37 @@ abstract class InterchapterSignups implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'event_id':
+                    case '`event_id`':
                         $stmt->bindValue($identifier, $this->event_id, PDO::PARAM_INT);
                         break;
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'chapter':
+                    case '`chapter`':
                         $stmt->bindValue($identifier, $this->chapter, PDO::PARAM_STR);
                         break;
-                    case 'email':
+                    case '`email`':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case 'phone':
+                    case '`phone`':
                         $stmt->bindValue($identifier, $this->phone, PDO::PARAM_STR);
                         break;
-                    case 'date':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_INT);
                         break;
-                    case 'shirt_size':
+                    case '`shirt_size`':
                         $stmt->bindValue($identifier, $this->shirt_size, PDO::PARAM_STR);
                         break;
-                    case 'vegetarian':
+                    case '`vegetarian`':
                         $stmt->bindValue($identifier, (int) $this->vegetarian, PDO::PARAM_INT);
                         break;
-                    case 'housing_needed':
+                    case '`housing_needed`':
                         $stmt->bindValue($identifier, $this->housing_needed, PDO::PARAM_INT);
                         break;
-                    case 'deleted':
+                    case '`deleted`':
                         $stmt->bindValue($identifier, $this->deleted, PDO::PARAM_INT);
                         break;
                 }

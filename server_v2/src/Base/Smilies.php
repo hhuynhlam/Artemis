@@ -621,14 +621,14 @@ abstract class Smilies implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(SmiliesTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(SmiliesTableMap::COL_CODE)) {
-            $modifiedColumns[':p' . $index++]  = 'code';
+            $modifiedColumns[':p' . $index++]  = '`code`';
         }
 
         $sql = sprintf(
-            'INSERT INTO smilies (%s) VALUES (%s)',
+            'INSERT INTO `smilies` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -637,10 +637,10 @@ abstract class Smilies implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'code':
+                    case '`code`':
                         $stmt->bindValue($identifier, $this->code, PDO::PARAM_STR);
                         break;
                 }

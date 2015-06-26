@@ -161,7 +161,7 @@ abstract class MiscCommitteeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, page, link, name, description, content, last_edited FROM misc_committee WHERE id = :p0';
+        $sql = 'SELECT `id`, `page`, `link`, `name`, `description`, `content`, `last_edited` FROM `misc_committee` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

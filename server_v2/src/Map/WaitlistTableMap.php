@@ -137,7 +137,7 @@ class WaitlistTableMap extends TableMap
         // attributes
         $this->setName('waitlist');
         $this->setPhpName('Waitlist');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Waitlist');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

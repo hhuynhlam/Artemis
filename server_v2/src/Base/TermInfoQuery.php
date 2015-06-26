@@ -161,7 +161,7 @@ abstract class TermInfoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, start_date, quarter, year, pledge_start_date, current FROM term_info WHERE id = :p0';
+        $sql = 'SELECT `id`, `name`, `start_date`, `quarter`, `year`, `pledge_start_date`, `current` FROM `term_info` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

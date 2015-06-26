@@ -848,29 +848,29 @@ abstract class SignupsBkup implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(SignupsBkupTableMap::COL_USER)) {
-            $modifiedColumns[':p' . $index++]  = 'user';
+            $modifiedColumns[':p' . $index++]  = '`user`';
         }
         if ($this->isColumnModified(SignupsBkupTableMap::COL_SHIFT)) {
-            $modifiedColumns[':p' . $index++]  = 'shift';
+            $modifiedColumns[':p' . $index++]  = '`shift`';
         }
         if ($this->isColumnModified(SignupsBkupTableMap::COL_EVENT)) {
-            $modifiedColumns[':p' . $index++]  = 'event';
+            $modifiedColumns[':p' . $index++]  = '`event`';
         }
         if ($this->isColumnModified(SignupsBkupTableMap::COL_DRIVER)) {
-            $modifiedColumns[':p' . $index++]  = 'driver';
+            $modifiedColumns[':p' . $index++]  = '`driver`';
         }
         if ($this->isColumnModified(SignupsBkupTableMap::COL_CHAIR)) {
-            $modifiedColumns[':p' . $index++]  = 'chair';
+            $modifiedColumns[':p' . $index++]  = '`chair`';
         }
         if ($this->isColumnModified(SignupsBkupTableMap::COL_CREDIT)) {
-            $modifiedColumns[':p' . $index++]  = 'credit';
+            $modifiedColumns[':p' . $index++]  = '`credit`';
         }
         if ($this->isColumnModified(SignupsBkupTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'timestamp';
+            $modifiedColumns[':p' . $index++]  = '`timestamp`';
         }
 
         $sql = sprintf(
-            'INSERT INTO signups_bkup (%s) VALUES (%s)',
+            'INSERT INTO `signups_bkup` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -879,25 +879,25 @@ abstract class SignupsBkup implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'user':
+                    case '`user`':
                         $stmt->bindValue($identifier, $this->user, PDO::PARAM_INT);
                         break;
-                    case 'shift':
+                    case '`shift`':
                         $stmt->bindValue($identifier, $this->shift, PDO::PARAM_INT);
                         break;
-                    case 'event':
+                    case '`event`':
                         $stmt->bindValue($identifier, $this->event, PDO::PARAM_INT);
                         break;
-                    case 'driver':
+                    case '`driver`':
                         $stmt->bindValue($identifier, $this->driver, PDO::PARAM_INT);
                         break;
-                    case 'chair':
+                    case '`chair`':
                         $stmt->bindValue($identifier, $this->chair, PDO::PARAM_INT);
                         break;
-                    case 'credit':
+                    case '`credit`':
                         $stmt->bindValue($identifier, $this->credit, PDO::PARAM_STR);
                         break;
-                    case 'timestamp':
+                    case '`timestamp`':
                         $stmt->bindValue($identifier, $this->timestamp, PDO::PARAM_INT);
                         break;
                 }

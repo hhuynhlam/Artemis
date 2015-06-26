@@ -156,7 +156,7 @@ abstract class ImportantDatesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, date, title, description, posted_by, permissions FROM important_dates WHERE id = :p0';
+        $sql = 'SELECT `id`, `date`, `title`, `description`, `posted_by`, `permissions` FROM `important_dates` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

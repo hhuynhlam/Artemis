@@ -132,7 +132,7 @@ class PollVotesTableMap extends TableMap
         // attributes
         $this->setName('poll_votes');
         $this->setPhpName('PollVotes');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\PollVotes');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

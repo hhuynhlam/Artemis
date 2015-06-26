@@ -789,26 +789,26 @@ abstract class ForumTopics implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ForumTopicsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ForumTopicsTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(ForumTopicsTableMap::COL_FORUM)) {
-            $modifiedColumns[':p' . $index++]  = 'forum';
+            $modifiedColumns[':p' . $index++]  = '`forum`';
         }
         if ($this->isColumnModified(ForumTopicsTableMap::COL_TYPE)) {
-            $modifiedColumns[':p' . $index++]  = 'type';
+            $modifiedColumns[':p' . $index++]  = '`type`';
         }
         if ($this->isColumnModified(ForumTopicsTableMap::COL_CREATOR)) {
-            $modifiedColumns[':p' . $index++]  = 'creator';
+            $modifiedColumns[':p' . $index++]  = '`creator`';
         }
         if ($this->isColumnModified(ForumTopicsTableMap::COL_VIEWED_LIST)) {
-            $modifiedColumns[':p' . $index++]  = 'viewed_list';
+            $modifiedColumns[':p' . $index++]  = '`viewed_list`';
         }
 
         $sql = sprintf(
-            'INSERT INTO forum_topics (%s) VALUES (%s)',
+            'INSERT INTO `forum_topics` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -817,22 +817,22 @@ abstract class ForumTopics implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'forum':
+                    case '`forum`':
                         $stmt->bindValue($identifier, $this->forum, PDO::PARAM_INT);
                         break;
-                    case 'type':
+                    case '`type`':
                         $stmt->bindValue($identifier, $this->type, PDO::PARAM_INT);
                         break;
-                    case 'creator':
+                    case '`creator`':
                         $stmt->bindValue($identifier, $this->creator, PDO::PARAM_INT);
                         break;
-                    case 'viewed_list':
+                    case '`viewed_list`':
                         $stmt->bindValue($identifier, $this->viewed_list, PDO::PARAM_STR);
                         break;
                 }

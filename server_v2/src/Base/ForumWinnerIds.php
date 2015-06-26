@@ -578,11 +578,11 @@ abstract class ForumWinnerIds implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ForumWinnerIdsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
 
         $sql = sprintf(
-            'INSERT INTO forum_winner_ids (%s) VALUES (%s)',
+            'INSERT INTO `forum_winner_ids` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -591,7 +591,7 @@ abstract class ForumWinnerIds implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                 }

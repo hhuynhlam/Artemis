@@ -152,7 +152,7 @@ class SignupsBkupTableMap extends TableMap
         // attributes
         $this->setName('signups_bkup');
         $this->setPhpName('SignupsBkup');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\SignupsBkup');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

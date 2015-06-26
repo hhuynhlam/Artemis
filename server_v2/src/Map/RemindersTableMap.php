@@ -146,7 +146,7 @@ class RemindersTableMap extends TableMap
         // attributes
         $this->setName('reminders');
         $this->setPhpName('Reminders');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Reminders');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

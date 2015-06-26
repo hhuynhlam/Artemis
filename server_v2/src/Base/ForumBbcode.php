@@ -801,26 +801,26 @@ abstract class ForumBbcode implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ForumBbcodeTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ForumBbcodeTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(ForumBbcodeTableMap::COL_BBCODE_EXPR)) {
-            $modifiedColumns[':p' . $index++]  = 'bbcode_expr';
+            $modifiedColumns[':p' . $index++]  = '`bbcode_expr`';
         }
         if ($this->isColumnModified(ForumBbcodeTableMap::COL_HTML_REP)) {
-            $modifiedColumns[':p' . $index++]  = 'html_rep';
+            $modifiedColumns[':p' . $index++]  = '`html_rep`';
         }
         if ($this->isColumnModified(ForumBbcodeTableMap::COL_HTML_EXPR)) {
-            $modifiedColumns[':p' . $index++]  = 'html_expr';
+            $modifiedColumns[':p' . $index++]  = '`html_expr`';
         }
         if ($this->isColumnModified(ForumBbcodeTableMap::COL_BBCODE_REP)) {
-            $modifiedColumns[':p' . $index++]  = 'bbcode_rep';
+            $modifiedColumns[':p' . $index++]  = '`bbcode_rep`';
         }
 
         $sql = sprintf(
-            'INSERT INTO forum_bbcode (%s) VALUES (%s)',
+            'INSERT INTO `forum_bbcode` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -829,22 +829,22 @@ abstract class ForumBbcode implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'bbcode_expr':
+                    case '`bbcode_expr`':
                         $stmt->bindValue($identifier, $this->bbcode_expr, PDO::PARAM_STR);
                         break;
-                    case 'html_rep':
+                    case '`html_rep`':
                         $stmt->bindValue($identifier, $this->html_rep, PDO::PARAM_STR);
                         break;
-                    case 'html_expr':
+                    case '`html_expr`':
                         $stmt->bindValue($identifier, $this->html_expr, PDO::PARAM_STR);
                         break;
-                    case 'bbcode_rep':
+                    case '`bbcode_rep`':
                         $stmt->bindValue($identifier, $this->bbcode_rep, PDO::PARAM_STR);
                         break;
                 }

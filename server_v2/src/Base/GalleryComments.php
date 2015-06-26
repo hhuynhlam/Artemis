@@ -756,23 +756,23 @@ abstract class GalleryComments implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(GalleryCommentsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(GalleryCommentsTableMap::COL_IMAGE)) {
-            $modifiedColumns[':p' . $index++]  = 'image';
+            $modifiedColumns[':p' . $index++]  = '`image`';
         }
         if ($this->isColumnModified(GalleryCommentsTableMap::COL_POSTED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'posted_by';
+            $modifiedColumns[':p' . $index++]  = '`posted_by`';
         }
         if ($this->isColumnModified(GalleryCommentsTableMap::COL_TIME)) {
-            $modifiedColumns[':p' . $index++]  = 'time';
+            $modifiedColumns[':p' . $index++]  = '`time`';
         }
         if ($this->isColumnModified(GalleryCommentsTableMap::COL_COMMENT)) {
-            $modifiedColumns[':p' . $index++]  = 'comment';
+            $modifiedColumns[':p' . $index++]  = '`comment`';
         }
 
         $sql = sprintf(
-            'INSERT INTO gallery_comments (%s) VALUES (%s)',
+            'INSERT INTO `gallery_comments` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -781,19 +781,19 @@ abstract class GalleryComments implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'image':
+                    case '`image`':
                         $stmt->bindValue($identifier, $this->image, PDO::PARAM_INT);
                         break;
-                    case 'posted_by':
+                    case '`posted_by`':
                         $stmt->bindValue($identifier, $this->posted_by, PDO::PARAM_INT);
                         break;
-                    case 'time':
+                    case '`time`':
                         $stmt->bindValue($identifier, $this->time, PDO::PARAM_INT);
                         break;
-                    case 'comment':
+                    case '`comment`':
                         $stmt->bindValue($identifier, $this->comment, PDO::PARAM_STR);
                         break;
                 }

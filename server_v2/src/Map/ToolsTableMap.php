@@ -141,7 +141,7 @@ class ToolsTableMap extends TableMap
         // attributes
         $this->setName('tools');
         $this->setPhpName('Tools');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Tools');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

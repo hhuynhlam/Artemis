@@ -142,7 +142,7 @@ class BrotherOfTheWeekTableMap extends TableMap
         // attributes
         $this->setName('brother_of_the_week');
         $this->setPhpName('BrotherOfTheWeek');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\BrotherOfTheWeek');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

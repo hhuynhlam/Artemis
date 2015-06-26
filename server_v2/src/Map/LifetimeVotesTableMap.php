@@ -127,7 +127,7 @@ class LifetimeVotesTableMap extends TableMap
         // attributes
         $this->setName('lifetime_votes');
         $this->setPhpName('LifetimeVotes');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\LifetimeVotes');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

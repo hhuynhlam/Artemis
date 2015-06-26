@@ -789,26 +789,26 @@ abstract class ImportantDates implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ImportantDatesTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ImportantDatesTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'date';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(ImportantDatesTableMap::COL_TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'title';
+            $modifiedColumns[':p' . $index++]  = '`title`';
         }
         if ($this->isColumnModified(ImportantDatesTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(ImportantDatesTableMap::COL_POSTED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'posted_by';
+            $modifiedColumns[':p' . $index++]  = '`posted_by`';
         }
         if ($this->isColumnModified(ImportantDatesTableMap::COL_PERMISSIONS)) {
-            $modifiedColumns[':p' . $index++]  = 'permissions';
+            $modifiedColumns[':p' . $index++]  = '`permissions`';
         }
 
         $sql = sprintf(
-            'INSERT INTO important_dates (%s) VALUES (%s)',
+            'INSERT INTO `important_dates` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -817,22 +817,22 @@ abstract class ImportantDates implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'date':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_INT);
                         break;
-                    case 'title':
+                    case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'posted_by':
+                    case '`posted_by`':
                         $stmt->bindValue($identifier, $this->posted_by, PDO::PARAM_INT);
                         break;
-                    case 'permissions':
+                    case '`permissions`':
                         $stmt->bindValue($identifier, $this->permissions, PDO::PARAM_INT);
                         break;
                 }

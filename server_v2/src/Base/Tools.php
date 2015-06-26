@@ -750,23 +750,23 @@ abstract class Tools implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ToolsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ToolsTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(ToolsTableMap::COL_PERMISSIONS)) {
-            $modifiedColumns[':p' . $index++]  = 'permissions';
+            $modifiedColumns[':p' . $index++]  = '`permissions`';
         }
         if ($this->isColumnModified(ToolsTableMap::COL_RESTRICTIONS)) {
-            $modifiedColumns[':p' . $index++]  = 'restrictions';
+            $modifiedColumns[':p' . $index++]  = '`restrictions`';
         }
         if ($this->isColumnModified(ToolsTableMap::COL_LINK)) {
-            $modifiedColumns[':p' . $index++]  = 'link';
+            $modifiedColumns[':p' . $index++]  = '`link`';
         }
 
         $sql = sprintf(
-            'INSERT INTO tools (%s) VALUES (%s)',
+            'INSERT INTO `tools` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -775,19 +775,19 @@ abstract class Tools implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'permissions':
+                    case '`permissions`':
                         $stmt->bindValue($identifier, $this->permissions, PDO::PARAM_INT);
                         break;
-                    case 'restrictions':
+                    case '`restrictions`':
                         $stmt->bindValue($identifier, $this->restrictions, PDO::PARAM_INT);
                         break;
-                    case 'link':
+                    case '`link`':
                         $stmt->bindValue($identifier, $this->link, PDO::PARAM_STR);
                         break;
                 }

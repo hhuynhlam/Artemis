@@ -181,7 +181,7 @@ abstract class InterchapterSignupsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT event_id, id, name, chapter, email, phone, date, shirt_size, vegetarian, housing_needed, deleted FROM interchapter_signups WHERE id = :p0';
+        $sql = 'SELECT `event_id`, `id`, `name`, `chapter`, `email`, `phone`, `date`, `shirt_size`, `vegetarian`, `housing_needed`, `deleted` FROM `interchapter_signups` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

@@ -156,7 +156,7 @@ class FeedmeBoxTableMap extends TableMap
         // attributes
         $this->setName('feedme_box');
         $this->setPhpName('FeedmeBox');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\FeedmeBox');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

@@ -151,7 +151,7 @@ class ShiftsTableMap extends TableMap
         // attributes
         $this->setName('shifts');
         $this->setPhpName('Shifts');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Shifts');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

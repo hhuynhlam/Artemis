@@ -933,38 +933,38 @@ abstract class Polls implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(PollsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_CATEGORY)) {
-            $modifiedColumns[':p' . $index++]  = 'category';
+            $modifiedColumns[':p' . $index++]  = '`category`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'title';
+            $modifiedColumns[':p' . $index++]  = '`title`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_OPEN_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'open_date';
+            $modifiedColumns[':p' . $index++]  = '`open_date`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_CLOSE_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'close_date';
+            $modifiedColumns[':p' . $index++]  = '`close_date`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_OPTION_GROUP)) {
-            $modifiedColumns[':p' . $index++]  = 'option_group';
+            $modifiedColumns[':p' . $index++]  = '`option_group`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_MAX_VOTES)) {
-            $modifiedColumns[':p' . $index++]  = 'max_votes';
+            $modifiedColumns[':p' . $index++]  = '`max_votes`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_TERM)) {
-            $modifiedColumns[':p' . $index++]  = 'term';
+            $modifiedColumns[':p' . $index++]  = '`term`';
         }
         if ($this->isColumnModified(PollsTableMap::COL_WINNER)) {
-            $modifiedColumns[':p' . $index++]  = 'winner';
+            $modifiedColumns[':p' . $index++]  = '`winner`';
         }
 
         $sql = sprintf(
-            'INSERT INTO polls (%s) VALUES (%s)',
+            'INSERT INTO `polls` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -973,34 +973,34 @@ abstract class Polls implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'category':
+                    case '`category`':
                         $stmt->bindValue($identifier, $this->category, PDO::PARAM_INT);
                         break;
-                    case 'title':
+                    case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'open_date':
+                    case '`open_date`':
                         $stmt->bindValue($identifier, $this->open_date, PDO::PARAM_INT);
                         break;
-                    case 'close_date':
+                    case '`close_date`':
                         $stmt->bindValue($identifier, $this->close_date, PDO::PARAM_INT);
                         break;
-                    case 'option_group':
+                    case '`option_group`':
                         $stmt->bindValue($identifier, $this->option_group, PDO::PARAM_INT);
                         break;
-                    case 'max_votes':
+                    case '`max_votes`':
                         $stmt->bindValue($identifier, $this->max_votes, PDO::PARAM_INT);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'term':
+                    case '`term`':
                         $stmt->bindValue($identifier, $this->term, PDO::PARAM_INT);
                         break;
-                    case 'winner':
+                    case '`winner`':
                         $stmt->bindValue($identifier, $this->winner, PDO::PARAM_STR);
                         break;
                 }

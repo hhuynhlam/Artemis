@@ -864,29 +864,29 @@ abstract class TermInfo implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(TermInfoTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(TermInfoTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(TermInfoTableMap::COL_START_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'start_date';
+            $modifiedColumns[':p' . $index++]  = '`start_date`';
         }
         if ($this->isColumnModified(TermInfoTableMap::COL_QUARTER)) {
-            $modifiedColumns[':p' . $index++]  = 'quarter';
+            $modifiedColumns[':p' . $index++]  = '`quarter`';
         }
         if ($this->isColumnModified(TermInfoTableMap::COL_YEAR)) {
-            $modifiedColumns[':p' . $index++]  = 'year';
+            $modifiedColumns[':p' . $index++]  = '`year`';
         }
         if ($this->isColumnModified(TermInfoTableMap::COL_PLEDGE_START_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'pledge_start_date';
+            $modifiedColumns[':p' . $index++]  = '`pledge_start_date`';
         }
         if ($this->isColumnModified(TermInfoTableMap::COL_CURRENT)) {
-            $modifiedColumns[':p' . $index++]  = 'current';
+            $modifiedColumns[':p' . $index++]  = '`current`';
         }
 
         $sql = sprintf(
-            'INSERT INTO term_info (%s) VALUES (%s)',
+            'INSERT INTO `term_info` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -895,25 +895,25 @@ abstract class TermInfo implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'start_date':
+                    case '`start_date`':
                         $stmt->bindValue($identifier, $this->start_date, PDO::PARAM_INT);
                         break;
-                    case 'quarter':
+                    case '`quarter`':
                         $stmt->bindValue($identifier, $this->quarter, PDO::PARAM_STR);
                         break;
-                    case 'year':
+                    case '`year`':
                         $stmt->bindValue($identifier, $this->year, PDO::PARAM_INT);
                         break;
-                    case 'pledge_start_date':
+                    case '`pledge_start_date`':
                         $stmt->bindValue($identifier, $this->pledge_start_date, PDO::PARAM_INT);
                         break;
-                    case 'current':
+                    case '`current`':
                         $stmt->bindValue($identifier, (int) $this->current, PDO::PARAM_INT);
                         break;
                 }

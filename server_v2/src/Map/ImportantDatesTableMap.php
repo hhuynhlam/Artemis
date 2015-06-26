@@ -146,7 +146,7 @@ class ImportantDatesTableMap extends TableMap
         // attributes
         $this->setName('important_dates');
         $this->setPhpName('ImportantDates');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ImportantDates');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

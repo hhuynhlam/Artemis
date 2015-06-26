@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<database name="aphio" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+<database name="aphio" defaultIdMethod="native" defaultPhpNamingMethod="underscore" identifierQuoting="true">
   <table name="bbcode" idMethod="native" phpName="Bbcode">
     <column name="name" phpName="Name" type="VARCHAR" size="15" required="true" defaultValue=""/>
     <column name="bbcode_expr" phpName="BbcodeExpr" type="VARCHAR" size="200" required="true" defaultValue=""/>

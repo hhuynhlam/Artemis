@@ -146,7 +146,7 @@ class FinanceItemsTableMap extends TableMap
         // attributes
         $this->setName('finance_items');
         $this->setPhpName('FinanceItems');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\FinanceItems');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

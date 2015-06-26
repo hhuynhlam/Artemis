@@ -1026,41 +1026,41 @@ abstract class FinanceTransactions implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_AMOUNT)) {
-            $modifiedColumns[':p' . $index++]  = 'amount';
+            $modifiedColumns[':p' . $index++]  = '`amount`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_ACCOUNT)) {
-            $modifiedColumns[':p' . $index++]  = 'account';
+            $modifiedColumns[':p' . $index++]  = '`account`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_ENTERED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'entered_by';
+            $modifiedColumns[':p' . $index++]  = '`entered_by`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_ITEM)) {
-            $modifiedColumns[':p' . $index++]  = 'item';
+            $modifiedColumns[':p' . $index++]  = '`item`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_STATUS)) {
-            $modifiedColumns[':p' . $index++]  = 'status';
+            $modifiedColumns[':p' . $index++]  = '`status`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_TYPE)) {
-            $modifiedColumns[':p' . $index++]  = 'type';
+            $modifiedColumns[':p' . $index++]  = '`type`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_SRC_DST)) {
-            $modifiedColumns[':p' . $index++]  = 'src_dst';
+            $modifiedColumns[':p' . $index++]  = '`src_dst`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_NOTES)) {
-            $modifiedColumns[':p' . $index++]  = 'notes';
+            $modifiedColumns[':p' . $index++]  = '`notes`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_REQUEST_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'request_date';
+            $modifiedColumns[':p' . $index++]  = '`request_date`';
         }
         if ($this->isColumnModified(FinanceTransactionsTableMap::COL_COMPLETE_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'complete_date';
+            $modifiedColumns[':p' . $index++]  = '`complete_date`';
         }
 
         $sql = sprintf(
-            'INSERT INTO finance_transactions (%s) VALUES (%s)',
+            'INSERT INTO `finance_transactions` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1069,37 +1069,37 @@ abstract class FinanceTransactions implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'amount':
+                    case '`amount`':
                         $stmt->bindValue($identifier, $this->amount, PDO::PARAM_STR);
                         break;
-                    case 'account':
+                    case '`account`':
                         $stmt->bindValue($identifier, $this->account, PDO::PARAM_INT);
                         break;
-                    case 'entered_by':
+                    case '`entered_by`':
                         $stmt->bindValue($identifier, $this->entered_by, PDO::PARAM_STR);
                         break;
-                    case 'item':
+                    case '`item`':
                         $stmt->bindValue($identifier, $this->item, PDO::PARAM_INT);
                         break;
-                    case 'status':
+                    case '`status`':
                         $stmt->bindValue($identifier, $this->status, PDO::PARAM_INT);
                         break;
-                    case 'type':
+                    case '`type`':
                         $stmt->bindValue($identifier, $this->type, PDO::PARAM_INT);
                         break;
-                    case 'src_dst':
+                    case '`src_dst`':
                         $stmt->bindValue($identifier, $this->src_dst, PDO::PARAM_STR);
                         break;
-                    case 'notes':
+                    case '`notes`':
                         $stmt->bindValue($identifier, $this->notes, PDO::PARAM_STR);
                         break;
-                    case 'request_date':
+                    case '`request_date`':
                         $stmt->bindValue($identifier, $this->request_date, PDO::PARAM_INT);
                         break;
-                    case 'complete_date':
+                    case '`complete_date`':
                         $stmt->bindValue($identifier, $this->complete_date, PDO::PARAM_INT);
                         break;
                 }

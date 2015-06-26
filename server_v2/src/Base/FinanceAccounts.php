@@ -729,20 +729,20 @@ abstract class FinanceAccounts implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(FinanceAccountsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(FinanceAccountsTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(FinanceAccountsTableMap::COL_ACTIVE)) {
-            $modifiedColumns[':p' . $index++]  = 'active';
+            $modifiedColumns[':p' . $index++]  = '`active`';
         }
         if ($this->isColumnModified(FinanceAccountsTableMap::COL_LIST_POSITION)) {
-            $modifiedColumns[':p' . $index++]  = 'list_position';
+            $modifiedColumns[':p' . $index++]  = '`list_position`';
         }
 
         $sql = sprintf(
-            'INSERT INTO finance_accounts (%s) VALUES (%s)',
+            'INSERT INTO `finance_accounts` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -751,16 +751,16 @@ abstract class FinanceAccounts implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'active':
+                    case '`active`':
                         $stmt->bindValue($identifier, (int) $this->active, PDO::PARAM_INT);
                         break;
-                    case 'list_position':
+                    case '`list_position`':
                         $stmt->bindValue($identifier, $this->list_position, PDO::PARAM_INT);
                         break;
                 }

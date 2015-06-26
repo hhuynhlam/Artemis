@@ -750,23 +750,23 @@ abstract class ForumForums implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ForumForumsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ForumForumsTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(ForumForumsTableMap::COL_MODERATOR)) {
-            $modifiedColumns[':p' . $index++]  = 'moderator';
+            $modifiedColumns[':p' . $index++]  = '`moderator`';
         }
         if ($this->isColumnModified(ForumForumsTableMap::COL_VIEW_PERMISSION)) {
-            $modifiedColumns[':p' . $index++]  = 'view_permission';
+            $modifiedColumns[':p' . $index++]  = '`view_permission`';
         }
         if ($this->isColumnModified(ForumForumsTableMap::COL_LIST_POS)) {
-            $modifiedColumns[':p' . $index++]  = 'list_pos';
+            $modifiedColumns[':p' . $index++]  = '`list_pos`';
         }
 
         $sql = sprintf(
-            'INSERT INTO forum_forums (%s) VALUES (%s)',
+            'INSERT INTO `forum_forums` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -775,19 +775,19 @@ abstract class ForumForums implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'moderator':
+                    case '`moderator`':
                         $stmt->bindValue($identifier, $this->moderator, PDO::PARAM_INT);
                         break;
-                    case 'view_permission':
+                    case '`view_permission`':
                         $stmt->bindValue($identifier, $this->view_permission, PDO::PARAM_INT);
                         break;
-                    case 'list_pos':
+                    case '`list_pos`':
                         $stmt->bindValue($identifier, $this->list_pos, PDO::PARAM_INT);
                         break;
                 }

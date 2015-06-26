@@ -638,17 +638,17 @@ abstract class PollVotes implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(PollVotesTableMap::COL_USERID)) {
-            $modifiedColumns[':p' . $index++]  = 'userid';
+            $modifiedColumns[':p' . $index++]  = '`userid`';
         }
         if ($this->isColumnModified(PollVotesTableMap::COL_POLL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'poll_id';
+            $modifiedColumns[':p' . $index++]  = '`poll_id`';
         }
         if ($this->isColumnModified(PollVotesTableMap::COL_OPTION_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'option_id';
+            $modifiedColumns[':p' . $index++]  = '`option_id`';
         }
 
         $sql = sprintf(
-            'INSERT INTO poll_votes (%s) VALUES (%s)',
+            'INSERT INTO `poll_votes` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -657,13 +657,13 @@ abstract class PollVotes implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'userid':
+                    case '`userid`':
                         $stmt->bindValue($identifier, $this->userid, PDO::PARAM_INT);
                         break;
-                    case 'poll_id':
+                    case '`poll_id`':
                         $stmt->bindValue($identifier, $this->poll_id, PDO::PARAM_INT);
                         break;
-                    case 'option_id':
+                    case '`option_id`':
                         $stmt->bindValue($identifier, $this->option_id, PDO::PARAM_INT);
                         break;
                 }

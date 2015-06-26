@@ -617,14 +617,14 @@ abstract class ExcommContactInfo implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ExcommContactInfoTableMap::COL_POSITION)) {
-            $modifiedColumns[':p' . $index++]  = 'position';
+            $modifiedColumns[':p' . $index++]  = '`position`';
         }
         if ($this->isColumnModified(ExcommContactInfoTableMap::COL_ADDRESS)) {
-            $modifiedColumns[':p' . $index++]  = 'address';
+            $modifiedColumns[':p' . $index++]  = '`address`';
         }
 
         $sql = sprintf(
-            'INSERT INTO excomm_contact_info (%s) VALUES (%s)',
+            'INSERT INTO `excomm_contact_info` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -633,10 +633,10 @@ abstract class ExcommContactInfo implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'position':
+                    case '`position`':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
                         break;
-                    case 'address':
+                    case '`address`':
                         $stmt->bindValue($identifier, $this->address, PDO::PARAM_STR);
                         break;
                 }

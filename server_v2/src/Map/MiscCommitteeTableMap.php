@@ -151,7 +151,7 @@ class MiscCommitteeTableMap extends TableMap
         // attributes
         $this->setName('misc_committee');
         $this->setPhpName('MiscCommittee');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\MiscCommittee');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

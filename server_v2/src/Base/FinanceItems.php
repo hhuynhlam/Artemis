@@ -837,26 +837,26 @@ abstract class FinanceItems implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(FinanceItemsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(FinanceItemsTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(FinanceItemsTableMap::COL_PRICE)) {
-            $modifiedColumns[':p' . $index++]  = 'price';
+            $modifiedColumns[':p' . $index++]  = '`price`';
         }
         if ($this->isColumnModified(FinanceItemsTableMap::COL_ACCOUNT)) {
-            $modifiedColumns[':p' . $index++]  = 'account';
+            $modifiedColumns[':p' . $index++]  = '`account`';
         }
         if ($this->isColumnModified(FinanceItemsTableMap::COL_FEES)) {
-            $modifiedColumns[':p' . $index++]  = 'fees';
+            $modifiedColumns[':p' . $index++]  = '`fees`';
         }
         if ($this->isColumnModified(FinanceItemsTableMap::COL_ACTIVE)) {
-            $modifiedColumns[':p' . $index++]  = 'active';
+            $modifiedColumns[':p' . $index++]  = '`active`';
         }
 
         $sql = sprintf(
-            'INSERT INTO finance_items (%s) VALUES (%s)',
+            'INSERT INTO `finance_items` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -865,22 +865,22 @@ abstract class FinanceItems implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'price':
+                    case '`price`':
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
                         break;
-                    case 'account':
+                    case '`account`':
                         $stmt->bindValue($identifier, $this->account, PDO::PARAM_INT);
                         break;
-                    case 'fees':
+                    case '`fees`':
                         $stmt->bindValue($identifier, (int) $this->fees, PDO::PARAM_INT);
                         break;
-                    case 'active':
+                    case '`active`':
                         $stmt->bindValue($identifier, (int) $this->active, PDO::PARAM_INT);
                         break;
                 }

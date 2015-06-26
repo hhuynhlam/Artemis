@@ -623,14 +623,14 @@ abstract class ForumWinner implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ForumWinnerTableMap::COL_SET_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'set_date';
+            $modifiedColumns[':p' . $index++]  = '`set_date`';
         }
         if ($this->isColumnModified(ForumWinnerTableMap::COL_POST_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'post_id';
+            $modifiedColumns[':p' . $index++]  = '`post_id`';
         }
 
         $sql = sprintf(
-            'INSERT INTO forum_winner (%s) VALUES (%s)',
+            'INSERT INTO `forum_winner` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -639,10 +639,10 @@ abstract class ForumWinner implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'set_date':
+                    case '`set_date`':
                         $stmt->bindValue($identifier, $this->set_date, PDO::PARAM_INT);
                         break;
-                    case 'post_id':
+                    case '`post_id`':
                         $stmt->bindValue($identifier, $this->post_id, PDO::PARAM_INT);
                         break;
                 }

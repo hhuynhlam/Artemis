@@ -141,7 +141,7 @@ class GalleryCommentsTableMap extends TableMap
         // attributes
         $this->setName('gallery_comments');
         $this->setPhpName('GalleryComments');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\GalleryComments');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

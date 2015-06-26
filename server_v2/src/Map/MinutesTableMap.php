@@ -137,7 +137,7 @@ class MinutesTableMap extends TableMap
         // attributes
         $this->setName('minutes');
         $this->setPhpName('Minutes');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Minutes');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

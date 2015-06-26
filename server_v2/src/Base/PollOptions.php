@@ -720,23 +720,23 @@ abstract class PollOptions implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(PollOptionsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(PollOptionsTableMap::COL_POLL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'poll_id';
+            $modifiedColumns[':p' . $index++]  = '`poll_id`';
         }
         if ($this->isColumnModified(PollOptionsTableMap::COL_GROUP_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'group_id';
+            $modifiedColumns[':p' . $index++]  = '`group_id`';
         }
         if ($this->isColumnModified(PollOptionsTableMap::COL_TEXT)) {
-            $modifiedColumns[':p' . $index++]  = 'text';
+            $modifiedColumns[':p' . $index++]  = '`text`';
         }
         if ($this->isColumnModified(PollOptionsTableMap::COL_POSITION)) {
-            $modifiedColumns[':p' . $index++]  = 'position';
+            $modifiedColumns[':p' . $index++]  = '`position`';
         }
 
         $sql = sprintf(
-            'INSERT INTO poll_options (%s) VALUES (%s)',
+            'INSERT INTO `poll_options` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -745,19 +745,19 @@ abstract class PollOptions implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'poll_id':
+                    case '`poll_id`':
                         $stmt->bindValue($identifier, $this->poll_id, PDO::PARAM_INT);
                         break;
-                    case 'group_id':
+                    case '`group_id`':
                         $stmt->bindValue($identifier, $this->group_id, PDO::PARAM_INT);
                         break;
-                    case 'text':
+                    case '`text`':
                         $stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
                         break;
-                    case 'position':
+                    case '`position`':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
                         break;
                 }

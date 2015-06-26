@@ -146,7 +146,7 @@ class ForumTopicsTableMap extends TableMap
         // attributes
         $this->setName('forum_topics');
         $this->setPhpName('ForumTopics');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ForumTopics');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

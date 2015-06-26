@@ -122,7 +122,7 @@ class ForumWinnerIdsTableMap extends TableMap
         // attributes
         $this->setName('forum_winner_ids');
         $this->setPhpName('ForumWinnerIds');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ForumWinnerIds');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

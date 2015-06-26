@@ -246,7 +246,7 @@ class MembersTableMap extends TableMap
         // attributes
         $this->setName('members');
         $this->setPhpName('Members');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Members');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

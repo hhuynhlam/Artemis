@@ -127,7 +127,7 @@ class ExcommContactInfoTableMap extends TableMap
         // attributes
         $this->setName('excomm_contact_info');
         $this->setPhpName('ExcommContactInfo');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ExcommContactInfo');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

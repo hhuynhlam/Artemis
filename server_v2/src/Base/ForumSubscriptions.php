@@ -599,14 +599,14 @@ abstract class ForumSubscriptions implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ForumSubscriptionsTableMap::COL_TOPIC_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'topic_id';
+            $modifiedColumns[':p' . $index++]  = '`topic_id`';
         }
         if ($this->isColumnModified(ForumSubscriptionsTableMap::COL_MEMBER_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'member_id';
+            $modifiedColumns[':p' . $index++]  = '`member_id`';
         }
 
         $sql = sprintf(
-            'INSERT INTO forum_subscriptions (%s) VALUES (%s)',
+            'INSERT INTO `forum_subscriptions` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -615,10 +615,10 @@ abstract class ForumSubscriptions implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'topic_id':
+                    case '`topic_id`':
                         $stmt->bindValue($identifier, $this->topic_id, PDO::PARAM_INT);
                         break;
-                    case 'member_id':
+                    case '`member_id`':
                         $stmt->bindValue($identifier, $this->member_id, PDO::PARAM_INT);
                         break;
                 }

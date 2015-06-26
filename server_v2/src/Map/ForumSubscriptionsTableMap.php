@@ -127,7 +127,7 @@ class ForumSubscriptionsTableMap extends TableMap
         // attributes
         $this->setName('forum_subscriptions');
         $this->setPhpName('ForumSubscriptions');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ForumSubscriptions');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

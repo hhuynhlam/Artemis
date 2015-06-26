@@ -903,32 +903,32 @@ abstract class ChatLogs implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ChatLogsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ChatLogsTableMap::COL_START_TIME)) {
-            $modifiedColumns[':p' . $index++]  = 'start_time';
+            $modifiedColumns[':p' . $index++]  = '`start_time`';
         }
         if ($this->isColumnModified(ChatLogsTableMap::COL_TERM)) {
-            $modifiedColumns[':p' . $index++]  = 'term';
+            $modifiedColumns[':p' . $index++]  = '`term`';
         }
         if ($this->isColumnModified(ChatLogsTableMap::COL_TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'title';
+            $modifiedColumns[':p' . $index++]  = '`title`';
         }
         if ($this->isColumnModified(ChatLogsTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(ChatLogsTableMap::COL_LOG_LOCATION)) {
-            $modifiedColumns[':p' . $index++]  = 'log_location';
+            $modifiedColumns[':p' . $index++]  = '`log_location`';
         }
         if ($this->isColumnModified(ChatLogsTableMap::COL_STATUS)) {
-            $modifiedColumns[':p' . $index++]  = 'status';
+            $modifiedColumns[':p' . $index++]  = '`status`';
         }
         if ($this->isColumnModified(ChatLogsTableMap::COL_RESTRICTED)) {
-            $modifiedColumns[':p' . $index++]  = 'restricted';
+            $modifiedColumns[':p' . $index++]  = '`restricted`';
         }
 
         $sql = sprintf(
-            'INSERT INTO chat_logs (%s) VALUES (%s)',
+            'INSERT INTO `chat_logs` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -937,28 +937,28 @@ abstract class ChatLogs implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'start_time':
+                    case '`start_time`':
                         $stmt->bindValue($identifier, $this->start_time, PDO::PARAM_INT);
                         break;
-                    case 'term':
+                    case '`term`':
                         $stmt->bindValue($identifier, $this->term, PDO::PARAM_INT);
                         break;
-                    case 'title':
+                    case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'log_location':
+                    case '`log_location`':
                         $stmt->bindValue($identifier, $this->log_location, PDO::PARAM_STR);
                         break;
-                    case 'status':
+                    case '`status`':
                         $stmt->bindValue($identifier, (int) $this->status, PDO::PARAM_INT);
                         break;
-                    case 'restricted':
+                    case '`restricted`':
                         $stmt->bindValue($identifier, $this->restricted, PDO::PARAM_STR);
                         break;
                 }

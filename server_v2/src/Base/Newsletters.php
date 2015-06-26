@@ -795,26 +795,26 @@ abstract class Newsletters implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(NewslettersTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(NewslettersTableMap::COL_TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'title';
+            $modifiedColumns[':p' . $index++]  = '`title`';
         }
         if ($this->isColumnModified(NewslettersTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'date';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(NewslettersTableMap::COL_TERM)) {
-            $modifiedColumns[':p' . $index++]  = 'term';
+            $modifiedColumns[':p' . $index++]  = '`term`';
         }
         if ($this->isColumnModified(NewslettersTableMap::COL_FILENAME)) {
-            $modifiedColumns[':p' . $index++]  = 'filename';
+            $modifiedColumns[':p' . $index++]  = '`filename`';
         }
         if ($this->isColumnModified(NewslettersTableMap::COL_UPLOADED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'uploaded_by';
+            $modifiedColumns[':p' . $index++]  = '`uploaded_by`';
         }
 
         $sql = sprintf(
-            'INSERT INTO newsletters (%s) VALUES (%s)',
+            'INSERT INTO `newsletters` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -823,22 +823,22 @@ abstract class Newsletters implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'title':
+                    case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'date':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_INT);
                         break;
-                    case 'term':
+                    case '`term`':
                         $stmt->bindValue($identifier, $this->term, PDO::PARAM_INT);
                         break;
-                    case 'filename':
+                    case '`filename`':
                         $stmt->bindValue($identifier, $this->filename, PDO::PARAM_STR);
                         break;
-                    case 'uploaded_by':
+                    case '`uploaded_by`':
                         $stmt->bindValue($identifier, $this->uploaded_by, PDO::PARAM_INT);
                         break;
                 }

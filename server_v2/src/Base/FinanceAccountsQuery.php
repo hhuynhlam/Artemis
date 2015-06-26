@@ -146,7 +146,7 @@ abstract class FinanceAccountsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, active, list_position FROM finance_accounts WHERE id = :p0';
+        $sql = 'SELECT `id`, `name`, `active`, `list_position` FROM `finance_accounts` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

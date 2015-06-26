@@ -141,7 +141,7 @@ class ForumForumsTableMap extends TableMap
         // attributes
         $this->setName('forum_forums');
         $this->setPhpName('ForumForums');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ForumForums');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

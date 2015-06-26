@@ -623,14 +623,14 @@ abstract class LifetimeVotes implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(LifetimeVotesTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(LifetimeVotesTableMap::COL_VOTE)) {
-            $modifiedColumns[':p' . $index++]  = 'vote';
+            $modifiedColumns[':p' . $index++]  = '`vote`';
         }
 
         $sql = sprintf(
-            'INSERT INTO lifetime_votes (%s) VALUES (%s)',
+            'INSERT INTO `lifetime_votes` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -639,10 +639,10 @@ abstract class LifetimeVotes implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'vote':
+                    case '`vote`':
                         $stmt->bindValue($identifier, $this->vote, PDO::PARAM_INT);
                         break;
                 }

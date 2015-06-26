@@ -151,7 +151,7 @@ abstract class ForumForumsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, moderator, view_permission, list_pos FROM forum_forums WHERE id = :p0';
+        $sql = 'SELECT `id`, `name`, `moderator`, `view_permission`, `list_pos` FROM `forum_forums` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

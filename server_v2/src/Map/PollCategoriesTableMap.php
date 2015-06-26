@@ -146,7 +146,7 @@ class PollCategoriesTableMap extends TableMap
         // attributes
         $this->setName('poll_categories');
         $this->setPhpName('PollCategories');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\PollCategories');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

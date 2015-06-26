@@ -136,7 +136,7 @@ class SurveyQuestionsTableMap extends TableMap
         // attributes
         $this->setName('survey_questions');
         $this->setPhpName('SurveyQuestions');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\SurveyQuestions');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

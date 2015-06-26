@@ -142,7 +142,7 @@ class BbcodeTableMap extends TableMap
         // attributes
         $this->setName('bbcode');
         $this->setPhpName('Bbcode');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Bbcode');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

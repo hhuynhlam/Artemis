@@ -695,20 +695,20 @@ abstract class Minutes implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(MinutesTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'date';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(MinutesTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(MinutesTableMap::COL_FILENAME)) {
-            $modifiedColumns[':p' . $index++]  = 'filename';
+            $modifiedColumns[':p' . $index++]  = '`filename`';
         }
         if ($this->isColumnModified(MinutesTableMap::COL_UPLOADED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'uploaded_by';
+            $modifiedColumns[':p' . $index++]  = '`uploaded_by`';
         }
 
         $sql = sprintf(
-            'INSERT INTO minutes (%s) VALUES (%s)',
+            'INSERT INTO `minutes` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -717,16 +717,16 @@ abstract class Minutes implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'date':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_INT);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'filename':
+                    case '`filename`':
                         $stmt->bindValue($identifier, $this->filename, PDO::PARAM_STR);
                         break;
-                    case 'uploaded_by':
+                    case '`uploaded_by`':
                         $stmt->bindValue($identifier, $this->uploaded_by, PDO::PARAM_INT);
                         break;
                 }

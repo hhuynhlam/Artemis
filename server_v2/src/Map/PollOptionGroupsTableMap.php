@@ -126,7 +126,7 @@ class PollOptionGroupsTableMap extends TableMap
         // attributes
         $this->setName('poll_option_groups');
         $this->setPhpName('PollOptionGroups');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\PollOptionGroups');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

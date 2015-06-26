@@ -171,7 +171,7 @@ class InterchapterSignupsTableMap extends TableMap
         // attributes
         $this->setName('interchapter_signups');
         $this->setPhpName('InterchapterSignups');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\InterchapterSignups');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

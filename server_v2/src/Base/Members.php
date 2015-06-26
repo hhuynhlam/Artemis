@@ -1676,86 +1676,86 @@ abstract class Members implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(MembersTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_FIRST_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'first_name';
+            $modifiedColumns[':p' . $index++]  = '`first_name`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_MIDDLE_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'middle_name';
+            $modifiedColumns[':p' . $index++]  = '`middle_name`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_LAST_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'last_name';
+            $modifiedColumns[':p' . $index++]  = '`last_name`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_POSITION)) {
-            $modifiedColumns[':p' . $index++]  = 'position';
+            $modifiedColumns[':p' . $index++]  = '`position`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_MAIL_LIST)) {
-            $modifiedColumns[':p' . $index++]  = 'mail_list';
+            $modifiedColumns[':p' . $index++]  = '`mail_list`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_EMAIL)) {
-            $modifiedColumns[':p' . $index++]  = 'email';
+            $modifiedColumns[':p' . $index++]  = '`email`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_AIM)) {
-            $modifiedColumns[':p' . $index++]  = 'aim';
+            $modifiedColumns[':p' . $index++]  = '`aim`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_WEBSITE)) {
-            $modifiedColumns[':p' . $index++]  = 'website';
+            $modifiedColumns[':p' . $index++]  = '`website`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_PHONE)) {
-            $modifiedColumns[':p' . $index++]  = 'phone';
+            $modifiedColumns[':p' . $index++]  = '`phone`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_PERM_ADDRESS)) {
-            $modifiedColumns[':p' . $index++]  = 'perm_address';
+            $modifiedColumns[':p' . $index++]  = '`perm_address`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_TEMP_ADDRESS)) {
-            $modifiedColumns[':p' . $index++]  = 'temp_address';
+            $modifiedColumns[':p' . $index++]  = '`temp_address`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_AVATAR)) {
-            $modifiedColumns[':p' . $index++]  = 'avatar';
+            $modifiedColumns[':p' . $index++]  = '`avatar`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_SIGNATURE)) {
-            $modifiedColumns[':p' . $index++]  = 'signature';
+            $modifiedColumns[':p' . $index++]  = '`signature`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_CLASS)) {
-            $modifiedColumns[':p' . $index++]  = 'class';
+            $modifiedColumns[':p' . $index++]  = '`class`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_USERNAME)) {
-            $modifiedColumns[':p' . $index++]  = 'username';
+            $modifiedColumns[':p' . $index++]  = '`username`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_PASSWORD)) {
-            $modifiedColumns[':p' . $index++]  = 'password';
+            $modifiedColumns[':p' . $index++]  = '`password`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_FAMILY)) {
-            $modifiedColumns[':p' . $index++]  = 'family';
+            $modifiedColumns[':p' . $index++]  = '`family`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_BIRTHDAY)) {
-            $modifiedColumns[':p' . $index++]  = 'birthday';
+            $modifiedColumns[':p' . $index++]  = '`birthday`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_SHIRT_SIZE)) {
-            $modifiedColumns[':p' . $index++]  = 'shirt_size';
+            $modifiedColumns[':p' . $index++]  = '`shirt_size`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_TOTAL_SERVICE)) {
-            $modifiedColumns[':p' . $index++]  = 'total_service';
+            $modifiedColumns[':p' . $index++]  = '`total_service`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_TOTAL_FELLOWSHIP)) {
-            $modifiedColumns[':p' . $index++]  = 'total_fellowship';
+            $modifiedColumns[':p' . $index++]  = '`total_fellowship`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_NOTES)) {
-            $modifiedColumns[':p' . $index++]  = 'notes';
+            $modifiedColumns[':p' . $index++]  = '`notes`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_FEES_OWED)) {
-            $modifiedColumns[':p' . $index++]  = 'fees_owed';
+            $modifiedColumns[':p' . $index++]  = '`fees_owed`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_EMAIL_LIST)) {
-            $modifiedColumns[':p' . $index++]  = 'email_list';
+            $modifiedColumns[':p' . $index++]  = '`email_list`';
         }
         if ($this->isColumnModified(MembersTableMap::COL_REMINDER)) {
-            $modifiedColumns[':p' . $index++]  = 'reminder';
+            $modifiedColumns[':p' . $index++]  = '`reminder`';
         }
 
         $sql = sprintf(
-            'INSERT INTO members (%s) VALUES (%s)',
+            'INSERT INTO `members` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1764,82 +1764,82 @@ abstract class Members implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'first_name':
+                    case '`first_name`':
                         $stmt->bindValue($identifier, $this->first_name, PDO::PARAM_STR);
                         break;
-                    case 'middle_name':
+                    case '`middle_name`':
                         $stmt->bindValue($identifier, $this->middle_name, PDO::PARAM_STR);
                         break;
-                    case 'last_name':
+                    case '`last_name`':
                         $stmt->bindValue($identifier, $this->last_name, PDO::PARAM_STR);
                         break;
-                    case 'position':
+                    case '`position`':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
                         break;
-                    case 'mail_list':
+                    case '`mail_list`':
                         $stmt->bindValue($identifier, (int) $this->mail_list, PDO::PARAM_INT);
                         break;
-                    case 'email':
+                    case '`email`':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case 'aim':
+                    case '`aim`':
                         $stmt->bindValue($identifier, $this->aim, PDO::PARAM_STR);
                         break;
-                    case 'website':
+                    case '`website`':
                         $stmt->bindValue($identifier, $this->website, PDO::PARAM_STR);
                         break;
-                    case 'phone':
+                    case '`phone`':
                         $stmt->bindValue($identifier, $this->phone, PDO::PARAM_STR);
                         break;
-                    case 'perm_address':
+                    case '`perm_address`':
                         $stmt->bindValue($identifier, $this->perm_address, PDO::PARAM_STR);
                         break;
-                    case 'temp_address':
+                    case '`temp_address`':
                         $stmt->bindValue($identifier, $this->temp_address, PDO::PARAM_STR);
                         break;
-                    case 'avatar':
+                    case '`avatar`':
                         $stmt->bindValue($identifier, $this->avatar, PDO::PARAM_STR);
                         break;
-                    case 'signature':
+                    case '`signature`':
                         $stmt->bindValue($identifier, $this->signature, PDO::PARAM_STR);
                         break;
-                    case 'class':
+                    case '`class`':
                         $stmt->bindValue($identifier, $this->class, PDO::PARAM_STR);
                         break;
-                    case 'username':
+                    case '`username`':
                         $stmt->bindValue($identifier, $this->username, PDO::PARAM_STR);
                         break;
-                    case 'password':
+                    case '`password`':
                         $stmt->bindValue($identifier, $this->password, PDO::PARAM_STR);
                         break;
-                    case 'family':
+                    case '`family`':
                         $stmt->bindValue($identifier, $this->family, PDO::PARAM_STR);
                         break;
-                    case 'birthday':
+                    case '`birthday`':
                         $stmt->bindValue($identifier, $this->birthday, PDO::PARAM_INT);
                         break;
-                    case 'shirt_size':
+                    case '`shirt_size`':
                         $stmt->bindValue($identifier, $this->shirt_size, PDO::PARAM_STR);
                         break;
-                    case 'total_service':
+                    case '`total_service`':
                         $stmt->bindValue($identifier, $this->total_service, PDO::PARAM_STR);
                         break;
-                    case 'total_fellowship':
+                    case '`total_fellowship`':
                         $stmt->bindValue($identifier, $this->total_fellowship, PDO::PARAM_STR);
                         break;
-                    case 'notes':
+                    case '`notes`':
                         $stmt->bindValue($identifier, $this->notes, PDO::PARAM_STR);
                         break;
-                    case 'fees_owed':
+                    case '`fees_owed`':
                         $stmt->bindValue($identifier, $this->fees_owed, PDO::PARAM_STR);
                         break;
-                    case 'email_list':
+                    case '`email_list`':
                         $stmt->bindValue($identifier, (int) $this->email_list, PDO::PARAM_INT);
                         break;
-                    case 'reminder':
+                    case '`reminder`':
                         $stmt->bindValue($identifier, $this->reminder, PDO::PARAM_INT);
                         break;
                 }

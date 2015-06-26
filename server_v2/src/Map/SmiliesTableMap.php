@@ -126,7 +126,7 @@ class SmiliesTableMap extends TableMap
         // attributes
         $this->setName('smilies');
         $this->setPhpName('Smilies');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Smilies');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

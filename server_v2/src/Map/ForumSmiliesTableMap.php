@@ -126,7 +126,7 @@ class ForumSmiliesTableMap extends TableMap
         // attributes
         $this->setName('forum_smilies');
         $this->setPhpName('ForumSmilies');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ForumSmilies');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

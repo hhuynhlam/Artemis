@@ -167,7 +167,7 @@ class SectRegTableMap extends TableMap
         // attributes
         $this->setName('sect_reg');
         $this->setPhpName('SectReg');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\SectReg');
         $this->setPackage('');
         $this->setUseIdGenerator(false);

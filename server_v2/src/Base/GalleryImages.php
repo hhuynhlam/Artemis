@@ -701,20 +701,20 @@ abstract class GalleryImages implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(GalleryImagesTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(GalleryImagesTableMap::COL_GALLERY)) {
-            $modifiedColumns[':p' . $index++]  = 'gallery';
+            $modifiedColumns[':p' . $index++]  = '`gallery`';
         }
         if ($this->isColumnModified(GalleryImagesTableMap::COL_POSTED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'posted_by';
+            $modifiedColumns[':p' . $index++]  = '`posted_by`';
         }
         if ($this->isColumnModified(GalleryImagesTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
 
         $sql = sprintf(
-            'INSERT INTO gallery_images (%s) VALUES (%s)',
+            'INSERT INTO `gallery_images` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -723,16 +723,16 @@ abstract class GalleryImages implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'gallery':
+                    case '`gallery`':
                         $stmt->bindValue($identifier, $this->gallery, PDO::PARAM_INT);
                         break;
-                    case 'posted_by':
+                    case '`posted_by`':
                         $stmt->bindValue($identifier, $this->posted_by, PDO::PARAM_INT);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                 }

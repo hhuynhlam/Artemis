@@ -716,23 +716,23 @@ abstract class BrotherOfTheWeek2 implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(BrotherOfTheWeek2TableMap::COL_USER)) {
-            $modifiedColumns[':p' . $index++]  = 'user';
+            $modifiedColumns[':p' . $index++]  = '`user`';
         }
         if ($this->isColumnModified(BrotherOfTheWeek2TableMap::COL_REASON)) {
-            $modifiedColumns[':p' . $index++]  = 'reason';
+            $modifiedColumns[':p' . $index++]  = '`reason`';
         }
         if ($this->isColumnModified(BrotherOfTheWeek2TableMap::COL_WEEK)) {
-            $modifiedColumns[':p' . $index++]  = 'week';
+            $modifiedColumns[':p' . $index++]  = '`week`';
         }
         if ($this->isColumnModified(BrotherOfTheWeek2TableMap::COL_YEAR)) {
-            $modifiedColumns[':p' . $index++]  = 'year';
+            $modifiedColumns[':p' . $index++]  = '`year`';
         }
         if ($this->isColumnModified(BrotherOfTheWeek2TableMap::COL_TERM)) {
-            $modifiedColumns[':p' . $index++]  = 'term';
+            $modifiedColumns[':p' . $index++]  = '`term`';
         }
 
         $sql = sprintf(
-            'INSERT INTO brother_of_the_week_2 (%s) VALUES (%s)',
+            'INSERT INTO `brother_of_the_week_2` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -741,19 +741,19 @@ abstract class BrotherOfTheWeek2 implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'user':
+                    case '`user`':
                         $stmt->bindValue($identifier, $this->user, PDO::PARAM_INT);
                         break;
-                    case 'reason':
+                    case '`reason`':
                         $stmt->bindValue($identifier, $this->reason, PDO::PARAM_STR);
                         break;
-                    case 'week':
+                    case '`week`':
                         $stmt->bindValue($identifier, $this->week, PDO::PARAM_INT);
                         break;
-                    case 'year':
+                    case '`year`':
                         $stmt->bindValue($identifier, $this->year, PDO::PARAM_INT);
                         break;
-                    case 'term':
+                    case '`term`':
                         $stmt->bindValue($identifier, $this->term, PDO::PARAM_INT);
                         break;
                 }

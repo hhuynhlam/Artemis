@@ -1434,71 +1434,71 @@ abstract class Events implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(EventsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_EVENT_CODE)) {
-            $modifiedColumns[':p' . $index++]  = 'event_code';
+            $modifiedColumns[':p' . $index++]  = '`event_code`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'date';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_LOCATION)) {
-            $modifiedColumns[':p' . $index++]  = 'location';
+            $modifiedColumns[':p' . $index++]  = '`location`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_MEET_LOCATION)) {
-            $modifiedColumns[':p' . $index++]  = 'meet_location';
+            $modifiedColumns[':p' . $index++]  = '`meet_location`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_MEET_TIME)) {
-            $modifiedColumns[':p' . $index++]  = 'meet_time';
+            $modifiedColumns[':p' . $index++]  = '`meet_time`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_DRIVERS_NEEDED)) {
-            $modifiedColumns[':p' . $index++]  = 'drivers_needed';
+            $modifiedColumns[':p' . $index++]  = '`drivers_needed`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_CREATED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'created_by';
+            $modifiedColumns[':p' . $index++]  = '`created_by`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_LOG_POSTED)) {
-            $modifiedColumns[':p' . $index++]  = 'log_posted';
+            $modifiedColumns[':p' . $index++]  = '`log_posted`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_LOG_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'log_description';
+            $modifiedColumns[':p' . $index++]  = '`log_description`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_LOG_COMMENTS)) {
-            $modifiedColumns[':p' . $index++]  = 'log_comments';
+            $modifiedColumns[':p' . $index++]  = '`log_comments`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_LOG_IMPROVEMENTS)) {
-            $modifiedColumns[':p' . $index++]  = 'log_improvements';
+            $modifiedColumns[':p' . $index++]  = '`log_improvements`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_LOG_REATTEND)) {
-            $modifiedColumns[':p' . $index++]  = 'log_reattend';
+            $modifiedColumns[':p' . $index++]  = '`log_reattend`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_ORGANIZATION)) {
-            $modifiedColumns[':p' . $index++]  = 'organization';
+            $modifiedColumns[':p' . $index++]  = '`organization`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_CONTACT_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'contact_name';
+            $modifiedColumns[':p' . $index++]  = '`contact_name`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_CONTACT_PHONE)) {
-            $modifiedColumns[':p' . $index++]  = 'contact_phone';
+            $modifiedColumns[':p' . $index++]  = '`contact_phone`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_FRAT_EXPENSE)) {
-            $modifiedColumns[':p' . $index++]  = 'frat_expense';
+            $modifiedColumns[':p' . $index++]  = '`frat_expense`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_LOGED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'loged_by';
+            $modifiedColumns[':p' . $index++]  = '`loged_by`';
         }
         if ($this->isColumnModified(EventsTableMap::COL_VERIFIED)) {
-            $modifiedColumns[':p' . $index++]  = 'verified';
+            $modifiedColumns[':p' . $index++]  = '`verified`';
         }
 
         $sql = sprintf(
-            'INSERT INTO events (%s) VALUES (%s)',
+            'INSERT INTO `events` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1507,67 +1507,67 @@ abstract class Events implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'event_code':
+                    case '`event_code`':
                         $stmt->bindValue($identifier, $this->event_code, PDO::PARAM_INT);
                         break;
-                    case 'date':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_INT);
                         break;
-                    case 'location':
+                    case '`location`':
                         $stmt->bindValue($identifier, $this->location, PDO::PARAM_STR);
                         break;
-                    case 'meet_location':
+                    case '`meet_location`':
                         $stmt->bindValue($identifier, $this->meet_location, PDO::PARAM_STR);
                         break;
-                    case 'meet_time':
+                    case '`meet_time`':
                         $stmt->bindValue($identifier, $this->meet_time, PDO::PARAM_STR);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'drivers_needed':
+                    case '`drivers_needed`':
                         $stmt->bindValue($identifier, $this->drivers_needed, PDO::PARAM_INT);
                         break;
-                    case 'created_by':
+                    case '`created_by`':
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case 'log_posted':
+                    case '`log_posted`':
                         $stmt->bindValue($identifier, (int) $this->log_posted, PDO::PARAM_INT);
                         break;
-                    case 'log_description':
+                    case '`log_description`':
                         $stmt->bindValue($identifier, $this->log_description, PDO::PARAM_STR);
                         break;
-                    case 'log_comments':
+                    case '`log_comments`':
                         $stmt->bindValue($identifier, $this->log_comments, PDO::PARAM_STR);
                         break;
-                    case 'log_improvements':
+                    case '`log_improvements`':
                         $stmt->bindValue($identifier, $this->log_improvements, PDO::PARAM_STR);
                         break;
-                    case 'log_reattend':
+                    case '`log_reattend`':
                         $stmt->bindValue($identifier, $this->log_reattend, PDO::PARAM_STR);
                         break;
-                    case 'organization':
+                    case '`organization`':
                         $stmt->bindValue($identifier, $this->organization, PDO::PARAM_STR);
                         break;
-                    case 'contact_name':
+                    case '`contact_name`':
                         $stmt->bindValue($identifier, $this->contact_name, PDO::PARAM_STR);
                         break;
-                    case 'contact_phone':
+                    case '`contact_phone`':
                         $stmt->bindValue($identifier, $this->contact_phone, PDO::PARAM_INT);
                         break;
-                    case 'frat_expense':
+                    case '`frat_expense`':
                         $stmt->bindValue($identifier, $this->frat_expense, PDO::PARAM_STR);
                         break;
-                    case 'loged_by':
+                    case '`loged_by`':
                         $stmt->bindValue($identifier, $this->loged_by, PDO::PARAM_INT);
                         break;
-                    case 'verified':
+                    case '`verified`':
                         $stmt->bindValue($identifier, (int) $this->verified, PDO::PARAM_INT);
                         break;
                 }

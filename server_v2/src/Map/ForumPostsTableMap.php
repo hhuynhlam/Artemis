@@ -146,7 +146,7 @@ class ForumPostsTableMap extends TableMap
         // attributes
         $this->setName('forum_posts');
         $this->setPhpName('ForumPosts');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ForumPosts');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

@@ -151,7 +151,7 @@ class MiscContentTableMap extends TableMap
         // attributes
         $this->setName('misc_content');
         $this->setPhpName('MiscContent');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\MiscContent');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

@@ -813,26 +813,26 @@ abstract class Reminders implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(RemindersTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(RemindersTableMap::COL_TYPE)) {
-            $modifiedColumns[':p' . $index++]  = 'type';
+            $modifiedColumns[':p' . $index++]  = '`type`';
         }
         if ($this->isColumnModified(RemindersTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'date';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(RemindersTableMap::COL_MESSAGE)) {
-            $modifiedColumns[':p' . $index++]  = 'message';
+            $modifiedColumns[':p' . $index++]  = '`message`';
         }
         if ($this->isColumnModified(RemindersTableMap::COL_POSTED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'posted_by';
+            $modifiedColumns[':p' . $index++]  = '`posted_by`';
         }
         if ($this->isColumnModified(RemindersTableMap::COL_CURRENT)) {
-            $modifiedColumns[':p' . $index++]  = 'current';
+            $modifiedColumns[':p' . $index++]  = '`current`';
         }
 
         $sql = sprintf(
-            'INSERT INTO reminders (%s) VALUES (%s)',
+            'INSERT INTO `reminders` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -841,22 +841,22 @@ abstract class Reminders implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'type':
+                    case '`type`':
                         $stmt->bindValue($identifier, $this->type, PDO::PARAM_INT);
                         break;
-                    case 'date':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_INT);
                         break;
-                    case 'message':
+                    case '`message`':
                         $stmt->bindValue($identifier, $this->message, PDO::PARAM_STR);
                         break;
-                    case 'posted_by':
+                    case '`posted_by`':
                         $stmt->bindValue($identifier, $this->posted_by, PDO::PARAM_INT);
                         break;
-                    case 'current':
+                    case '`current`':
                         $stmt->bindValue($identifier, (int) $this->current, PDO::PARAM_INT);
                         break;
                 }

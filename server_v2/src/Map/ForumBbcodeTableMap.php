@@ -146,7 +146,7 @@ class ForumBbcodeTableMap extends TableMap
         // attributes
         $this->setName('forum_bbcode');
         $this->setPhpName('ForumBbcode');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ForumBbcode');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

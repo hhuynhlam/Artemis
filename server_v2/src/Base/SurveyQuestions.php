@@ -711,20 +711,20 @@ abstract class SurveyQuestions implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(SurveyQuestionsTableMap::COL_QUESTION_NUMBER)) {
-            $modifiedColumns[':p' . $index++]  = 'question_number';
+            $modifiedColumns[':p' . $index++]  = '`question_number`';
         }
         if ($this->isColumnModified(SurveyQuestionsTableMap::COL_QUESTION)) {
-            $modifiedColumns[':p' . $index++]  = 'question';
+            $modifiedColumns[':p' . $index++]  = '`question`';
         }
         if ($this->isColumnModified(SurveyQuestionsTableMap::COL_NUM_OF_RESPONSES)) {
-            $modifiedColumns[':p' . $index++]  = 'num_of_responses';
+            $modifiedColumns[':p' . $index++]  = '`num_of_responses`';
         }
         if ($this->isColumnModified(SurveyQuestionsTableMap::COL_FAMILY)) {
-            $modifiedColumns[':p' . $index++]  = 'family';
+            $modifiedColumns[':p' . $index++]  = '`family`';
         }
 
         $sql = sprintf(
-            'INSERT INTO survey_questions (%s) VALUES (%s)',
+            'INSERT INTO `survey_questions` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -733,16 +733,16 @@ abstract class SurveyQuestions implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'question_number':
+                    case '`question_number`':
                         $stmt->bindValue($identifier, $this->question_number, PDO::PARAM_INT);
                         break;
-                    case 'question':
+                    case '`question`':
                         $stmt->bindValue($identifier, $this->question, PDO::PARAM_STR);
                         break;
-                    case 'num_of_responses':
+                    case '`num_of_responses`':
                         $stmt->bindValue($identifier, $this->num_of_responses, PDO::PARAM_INT);
                         break;
-                    case 'family':
+                    case '`family`':
                         $stmt->bindValue($identifier, $this->family, PDO::PARAM_STR);
                         break;
                 }

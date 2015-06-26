@@ -151,7 +151,7 @@ class TermInfoTableMap extends TableMap
         // attributes
         $this->setName('term_info');
         $this->setPhpName('TermInfo');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\TermInfo');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

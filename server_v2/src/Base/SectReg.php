@@ -1047,38 +1047,38 @@ abstract class SectReg implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(SectRegTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_CHAPTER)) {
-            $modifiedColumns[':p' . $index++]  = 'chapter';
+            $modifiedColumns[':p' . $index++]  = '`chapter`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_EMAIL)) {
-            $modifiedColumns[':p' . $index++]  = 'email';
+            $modifiedColumns[':p' . $index++]  = '`email`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_PHONE)) {
-            $modifiedColumns[':p' . $index++]  = 'phone';
+            $modifiedColumns[':p' . $index++]  = '`phone`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_SHIRT)) {
-            $modifiedColumns[':p' . $index++]  = 'shirt';
+            $modifiedColumns[':p' . $index++]  = '`shirt`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_VEG)) {
-            $modifiedColumns[':p' . $index++]  = 'veg';
+            $modifiedColumns[':p' . $index++]  = '`veg`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_KOSHER)) {
-            $modifiedColumns[':p' . $index++]  = 'kosher';
+            $modifiedColumns[':p' . $index++]  = '`kosher`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_HOUSING)) {
-            $modifiedColumns[':p' . $index++]  = 'housing';
+            $modifiedColumns[':p' . $index++]  = '`housing`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_HPREF)) {
-            $modifiedColumns[':p' . $index++]  = 'hpref';
+            $modifiedColumns[':p' . $index++]  = '`hpref`';
         }
         if ($this->isColumnModified(SectRegTableMap::COL_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'date';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
 
         $sql = sprintf(
-            'INSERT INTO sect_reg (%s) VALUES (%s)',
+            'INSERT INTO `sect_reg` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1087,34 +1087,34 @@ abstract class SectReg implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'chapter':
+                    case '`chapter`':
                         $stmt->bindValue($identifier, $this->chapter, PDO::PARAM_STR);
                         break;
-                    case 'email':
+                    case '`email`':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case 'phone':
+                    case '`phone`':
                         $stmt->bindValue($identifier, $this->phone, PDO::PARAM_STR);
                         break;
-                    case 'shirt':
+                    case '`shirt`':
                         $stmt->bindValue($identifier, $this->shirt, PDO::PARAM_STR);
                         break;
-                    case 'veg':
+                    case '`veg`':
                         $stmt->bindValue($identifier, (int) $this->veg, PDO::PARAM_INT);
                         break;
-                    case 'kosher':
+                    case '`kosher`':
                         $stmt->bindValue($identifier, (int) $this->kosher, PDO::PARAM_INT);
                         break;
-                    case 'housing':
+                    case '`housing`':
                         $stmt->bindValue($identifier, (int) $this->housing, PDO::PARAM_INT);
                         break;
-                    case 'hpref':
+                    case '`hpref`':
                         $stmt->bindValue($identifier, $this->hpref, PDO::PARAM_STR);
                         break;
-                    case 'date':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date ? $this->date->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                 }

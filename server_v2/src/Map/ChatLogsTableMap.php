@@ -156,7 +156,7 @@ class ChatLogsTableMap extends TableMap
         // attributes
         $this->setName('chat_logs');
         $this->setPhpName('ChatLogs');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\ChatLogs');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

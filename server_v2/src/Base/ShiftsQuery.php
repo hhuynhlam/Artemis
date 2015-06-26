@@ -161,7 +161,7 @@ abstract class ShiftsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, event, start_time, end_time, open_to, cap, description FROM shifts WHERE id = :p0';
+        $sql = 'SELECT `id`, `event`, `start_time`, `end_time`, `open_to`, `cap`, `description` FROM `shifts` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);

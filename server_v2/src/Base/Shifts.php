@@ -846,29 +846,29 @@ abstract class Shifts implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ShiftsTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ShiftsTableMap::COL_EVENT)) {
-            $modifiedColumns[':p' . $index++]  = 'event';
+            $modifiedColumns[':p' . $index++]  = '`event`';
         }
         if ($this->isColumnModified(ShiftsTableMap::COL_START_TIME)) {
-            $modifiedColumns[':p' . $index++]  = 'start_time';
+            $modifiedColumns[':p' . $index++]  = '`start_time`';
         }
         if ($this->isColumnModified(ShiftsTableMap::COL_END_TIME)) {
-            $modifiedColumns[':p' . $index++]  = 'end_time';
+            $modifiedColumns[':p' . $index++]  = '`end_time`';
         }
         if ($this->isColumnModified(ShiftsTableMap::COL_OPEN_TO)) {
-            $modifiedColumns[':p' . $index++]  = 'open_to';
+            $modifiedColumns[':p' . $index++]  = '`open_to`';
         }
         if ($this->isColumnModified(ShiftsTableMap::COL_CAP)) {
-            $modifiedColumns[':p' . $index++]  = 'cap';
+            $modifiedColumns[':p' . $index++]  = '`cap`';
         }
         if ($this->isColumnModified(ShiftsTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
 
         $sql = sprintf(
-            'INSERT INTO shifts (%s) VALUES (%s)',
+            'INSERT INTO `shifts` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -877,25 +877,25 @@ abstract class Shifts implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'event':
+                    case '`event`':
                         $stmt->bindValue($identifier, $this->event, PDO::PARAM_INT);
                         break;
-                    case 'start_time':
+                    case '`start_time`':
                         $stmt->bindValue($identifier, $this->start_time, PDO::PARAM_INT);
                         break;
-                    case 'end_time':
+                    case '`end_time`':
                         $stmt->bindValue($identifier, $this->end_time, PDO::PARAM_INT);
                         break;
-                    case 'open_to':
+                    case '`open_to`':
                         $stmt->bindValue($identifier, $this->open_to, PDO::PARAM_INT);
                         break;
-                    case 'cap':
+                    case '`cap`':
                         $stmt->bindValue($identifier, $this->cap, PDO::PARAM_INT);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                 }

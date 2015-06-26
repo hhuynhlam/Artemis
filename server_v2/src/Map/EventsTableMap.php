@@ -221,7 +221,7 @@ class EventsTableMap extends TableMap
         // attributes
         $this->setName('events');
         $this->setPhpName('Events');
-        $this->setIdentifierQuoting(false);
+        $this->setIdentifierQuoting(true);
         $this->setClassName('\\Events');
         $this->setPackage('');
         $this->setUseIdGenerator(true);

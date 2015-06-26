@@ -759,26 +759,26 @@ abstract class PollCategories implements ActiveRecordInterface
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(PollCategoriesTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'id';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(PollCategoriesTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'name';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(PollCategoriesTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'description';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(PollCategoriesTableMap::COL_OPEN_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'open_date';
+            $modifiedColumns[':p' . $index++]  = '`open_date`';
         }
         if ($this->isColumnModified(PollCategoriesTableMap::COL_CLOSE_DATE)) {
-            $modifiedColumns[':p' . $index++]  = 'close_date';
+            $modifiedColumns[':p' . $index++]  = '`close_date`';
         }
         if ($this->isColumnModified(PollCategoriesTableMap::COL_TERM)) {
-            $modifiedColumns[':p' . $index++]  = 'term';
+            $modifiedColumns[':p' . $index++]  = '`term`';
         }
 
         $sql = sprintf(
-            'INSERT INTO poll_categories (%s) VALUES (%s)',
+            'INSERT INTO `poll_categories` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -787,22 +787,22 @@ abstract class PollCategories implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'id':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'name':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'description':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'open_date':
+                    case '`open_date`':
                         $stmt->bindValue($identifier, $this->open_date, PDO::PARAM_INT);
                         break;
-                    case 'close_date':
+                    case '`close_date`':
                         $stmt->bindValue($identifier, $this->close_date, PDO::PARAM_INT);
                         break;
-                    case 'term':
+                    case '`term`':
                         $stmt->bindValue($identifier, $this->term, PDO::PARAM_INT);
                         break;
                 }
