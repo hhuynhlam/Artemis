@@ -168,15 +168,15 @@ $app->post('/shift/user/signups/delete', function () use ($app) {
         // insert into signups
         $con = Propel::getConnection();
         $sql =  'INSERT INTO `signups` (`user`, `shift`, `event`, `driver`, `timestamp`)'
-                .' VALUES (' . $waitlisted[0]->user . ', ' . $waitlisted[0]->shift . ', ' . $waitlisted[0]->event . ', 0, ' . $waitlisted[0]->timestamp . ')';
+                .' VALUES (' . $waitlisted[0]->User . ', ' . $waitlisted[0]->Shift . ', ' . $waitlisted[0]->Event . ', 0, ' . $waitlisted[0]->Timestamp . ')';
         $stmt = $con->prepare($sql);
         $stmt->execute();
 
         // remove from waitlist
         $waitlisted = WaitlistQuery::create()
-            ->filterByUser($waitlisted[0]->user)
-            ->filterByShift($waitlisted[0]->shift)
-            ->filterByEvent($waitlisted[0]->event)
+            ->filterByUser($waitlisted[0]->User)
+            ->filterByShift($waitlisted[0]->Shift)
+            ->filterByEvent($waitlisted[0]->Event)
             ->delete();
     }
 
