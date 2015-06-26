@@ -1,10 +1,5 @@
 GULP=$(which gulp)
 
-# clean and build local_dist
-pushd ../client
-GULP clean
-GULP build
-
 # check for params
 if [ -z "$HOST" ];
 then
@@ -22,16 +17,19 @@ then
     exit 1
 fi
 
+# clean and build local_dist
+pushd ../client
+GULP clean
+GULP build
+
 # connect to host and copy files over
 lftp -u $USER,$PASS $HOST << EOF
 
 cd Sites/beta
 
 rm -r client
-rm -r server
 
 mirror -R ~/Git/Artemis/client/_dist client
-mirror -R ~/Git/Artemis/server server
 
 bye
 EOF
