@@ -13,7 +13,8 @@ $app->get('/member/list', function () use ($app) {
     $select = $app->request->get('select');
 
     // construct query
-    $members = MembersQuery::create();
+    $members = MembersQuery::create()
+        ->orderByFirstName('asc');
 
     if(!is_null($select)){ $members->select($select); }
 

@@ -3,6 +3,7 @@
 define(function (require) {
 	var $ = require('jquery');
 	var ko = require('knockout');
+    var role = require('role');
 	var sandbox = require('sandbox');
 	require('k/kendo.grid.min');
 
@@ -67,7 +68,7 @@ define(function (require) {
                 { field: "LastName", title: "Last Name"},
                 { field: "Class", title: "Class"},
                 { field: "Family", title: "Family"},
-                { field: "Position", title: "Position"},
+                { field: "Position", title: "Position", template: this.formatPosition },
                 { field: "Phone", title: "Phone"},
                 { field: "Email", title: "Email"}
             ],
@@ -105,6 +106,11 @@ define(function (require) {
 		this.view('Affiliate');
 		this.refreshGrid(this.affiliates());
 	};
+
+    MemberViewModel.prototype.formatPosition = function (dataItem) {
+        var roles = role.getPositionRoles(dataItem.Position);
+        return roles.join(", ");
+    };
 
 	return MemberViewModel;
 });

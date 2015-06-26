@@ -35,6 +35,7 @@ require.config({
 
         // Services
         'auth'                          : 'services/auth/auth',
+        'role'                          : 'services/role/role',
 
         // Vendor
         'bootstrap'                     : 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
