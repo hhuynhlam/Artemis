@@ -82,7 +82,11 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildMembersQuery rightJoinSignups($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Signups relation
  * @method     ChildMembersQuery innerJoinSignups($relationAlias = null) Adds a INNER JOIN clause to the query using the Signups relation
  *
- * @method     \SignupsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildMembersQuery leftJoinWaitlist($relationAlias = null) Adds a LEFT JOIN clause to the query using the Waitlist relation
+ * @method     ChildMembersQuery rightJoinWaitlist($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Waitlist relation
+ * @method     ChildMembersQuery innerJoinWaitlist($relationAlias = null) Adds a INNER JOIN clause to the query using the Waitlist relation
+ *
+ * @method     \SignupsQuery|\WaitlistQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildMembers findOne(ConnectionInterface $con = null) Return the first ChildMembers matching the query
  * @method     ChildMembers findOneOrCreate(ConnectionInterface $con = null) Return the first ChildMembers matching the query, or a new ChildMembers object populated from the query conditions when no match is found
@@ -1258,6 +1262,79 @@ abstract class MembersQuery extends ModelCriteria
         return $this
             ->joinSignups($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Signups', '\SignupsQuery');
+    }
+
+    /**
+     * Filter the query by a related \Waitlist object
+     *
+     * @param \Waitlist|ObjectCollection $waitlist the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildMembersQuery The current query, for fluid interface
+     */
+    public function filterByWaitlist($waitlist, $comparison = null)
+    {
+        if ($waitlist instanceof \Waitlist) {
+            return $this
+                ->addUsingAlias(MembersTableMap::COL_ID, $waitlist->getUser(), $comparison);
+        } elseif ($waitlist instanceof ObjectCollection) {
+            return $this
+                ->useWaitlistQuery()
+                ->filterByPrimaryKeys($waitlist->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByWaitlist() only accepts arguments of type \Waitlist or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Waitlist relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildMembersQuery The current query, for fluid interface
+     */
+    public function joinWaitlist($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Waitlist');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Waitlist');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Waitlist relation Waitlist object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \WaitlistQuery A secondary query class using the current class as primary query
+     */
+    public function useWaitlistQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinWaitlist($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Waitlist', '\WaitlistQuery');
     }
 
     /**

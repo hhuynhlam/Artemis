@@ -291,6 +291,13 @@ class MembersTableMap extends TableMap
     1 => ':id',
   ),
 ), null, null, 'Signupss', false);
+        $this->addRelation('Waitlist', '\\Waitlist', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':user',
+    1 => ':id',
+  ),
+), null, null, 'Waitlists', false);
     } // buildRelations()
 
     /**

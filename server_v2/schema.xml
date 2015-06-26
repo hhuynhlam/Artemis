@@ -518,10 +518,14 @@
     </vendor>
   </table>
   <table name="waitlist" idMethod="native" phpName="Waitlist">
+    <behavior name="auto_add_pk" />
     <column name="user" phpName="User" type="INTEGER" required="true" defaultValue="0"/>
     <column name="shift" phpName="Shift" type="INTEGER" required="true" defaultValue="0"/>
     <column name="event" phpName="Event" type="INTEGER" required="true" defaultValue="0"/>
     <column name="timestamp" phpName="Timestamp" type="BIGINT" required="true" defaultValue="0"/>
+    <foreign-key foreignTable="members" phpName="Members">
+      <reference local="user" foreign="id"/>
+    </foreign-key>
     <vendor type="mysql">
       <parameter name="Engine" value="MyISAM"/>
     </vendor>

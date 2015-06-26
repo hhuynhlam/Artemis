@@ -107,6 +107,18 @@ $app->post('/shift/user/signups/add', function () use ($app) {
         $stmt = $con->prepare($sql);
         $stmt->execute();
     }
+
+    // return updated signups
+    $signups = SignupsQuery::create()
+        ->useMembersQuery()
+        ->endUse()
+        ->filterByShift($shiftId)
+        ->addAsColumn('first_name', 'members.first_name')
+        ->addAsColumn('last_name', 'members.last_name')
+        ->select(array('driver', 'user'));
+
+    // execute and return
+    returnDataJSON($signups->find()->toJSON(), 'Signupss');
 });
 
 $app->post('/shift/user/signups/delete', function () use ($app) {
@@ -144,17 +156,14 @@ $app->post('/shift/user/signups/delete', function () use ($app) {
     $waitlisted = WaitlistQuery::create()
         ->select(array('user', 'shift', 'event', 'timestamp'))
         ->filterByShift($shiftId)
-        ->orderByTimestamp()
+        ->orderByTimestamp('asc')
         ->limit(1);
 
     $waitlisted = json_decode($waitlisted->find()->toJSON())->Waitlists;
 
     // check if any waitlist
     $hasWaitlist = count($waitlisted);
-    if($hasWaitlist != 1) { 
-        $app->status(200); 
-        return; 
-    } else {
+    if($hasWaitlist == 1) {
 
         // insert into signups
         $con = Propel::getConnection();
@@ -170,4 +179,16 @@ $app->post('/shift/user/signups/delete', function () use ($app) {
             ->filterByEvent($waitlisted[0]->event)
             ->delete();
     }
+
+    // return updated signups
+    $signups = SignupsQuery::create()
+        ->useMembersQuery()
+        ->endUse()
+        ->filterByShift($shiftId)
+        ->addAsColumn('first_name', 'members.first_name')
+        ->addAsColumn('last_name', 'members.last_name')
+        ->select(array('driver', 'user'));
+
+    // execute and return
+    returnDataJSON($signups->find()->toJSON(), 'Signupss');
 });

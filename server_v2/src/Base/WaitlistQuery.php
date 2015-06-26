@@ -5,13 +5,14 @@ namespace Base;
 use \Waitlist as ChildWaitlist;
 use \WaitlistQuery as ChildWaitlistQuery;
 use \Exception;
+use \PDO;
 use Map\WaitlistTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 
 /**
@@ -23,15 +24,23 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildWaitlistQuery orderByShift($order = Criteria::ASC) Order by the shift column
  * @method     ChildWaitlistQuery orderByEvent($order = Criteria::ASC) Order by the event column
  * @method     ChildWaitlistQuery orderByTimestamp($order = Criteria::ASC) Order by the timestamp column
+ * @method     ChildWaitlistQuery orderById($order = Criteria::ASC) Order by the id column
  *
  * @method     ChildWaitlistQuery groupByUser() Group by the user column
  * @method     ChildWaitlistQuery groupByShift() Group by the shift column
  * @method     ChildWaitlistQuery groupByEvent() Group by the event column
  * @method     ChildWaitlistQuery groupByTimestamp() Group by the timestamp column
+ * @method     ChildWaitlistQuery groupById() Group by the id column
  *
  * @method     ChildWaitlistQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildWaitlistQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildWaitlistQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     ChildWaitlistQuery leftJoinMembers($relationAlias = null) Adds a LEFT JOIN clause to the query using the Members relation
+ * @method     ChildWaitlistQuery rightJoinMembers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Members relation
+ * @method     ChildWaitlistQuery innerJoinMembers($relationAlias = null) Adds a INNER JOIN clause to the query using the Members relation
+ *
+ * @method     \MembersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildWaitlist findOne(ConnectionInterface $con = null) Return the first ChildWaitlist matching the query
  * @method     ChildWaitlist findOneOrCreate(ConnectionInterface $con = null) Return the first ChildWaitlist matching the query, or a new ChildWaitlist object populated from the query conditions when no match is found
@@ -39,7 +48,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildWaitlist findOneByUser(int $user) Return the first ChildWaitlist filtered by the user column
  * @method     ChildWaitlist findOneByShift(int $shift) Return the first ChildWaitlist filtered by the shift column
  * @method     ChildWaitlist findOneByEvent(int $event) Return the first ChildWaitlist filtered by the event column
- * @method     ChildWaitlist findOneByTimestamp(string $timestamp) Return the first ChildWaitlist filtered by the timestamp column *
+ * @method     ChildWaitlist findOneByTimestamp(string $timestamp) Return the first ChildWaitlist filtered by the timestamp column
+ * @method     ChildWaitlist findOneById(int $id) Return the first ChildWaitlist filtered by the id column *
 
  * @method     ChildWaitlist requirePk($key, ConnectionInterface $con = null) Return the ChildWaitlist by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildWaitlist requireOne(ConnectionInterface $con = null) Return the first ChildWaitlist matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -48,12 +58,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildWaitlist requireOneByShift(int $shift) Return the first ChildWaitlist filtered by the shift column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildWaitlist requireOneByEvent(int $event) Return the first ChildWaitlist filtered by the event column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildWaitlist requireOneByTimestamp(string $timestamp) Return the first ChildWaitlist filtered by the timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildWaitlist requireOneById(int $id) Return the first ChildWaitlist filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildWaitlist[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildWaitlist objects based on current ModelCriteria
  * @method     ChildWaitlist[]|ObjectCollection findByUser(int $user) Return ChildWaitlist objects filtered by the user column
  * @method     ChildWaitlist[]|ObjectCollection findByShift(int $shift) Return ChildWaitlist objects filtered by the shift column
  * @method     ChildWaitlist[]|ObjectCollection findByEvent(int $event) Return ChildWaitlist objects filtered by the event column
  * @method     ChildWaitlist[]|ObjectCollection findByTimestamp(string $timestamp) Return ChildWaitlist objects filtered by the timestamp column
+ * @method     ChildWaitlist[]|ObjectCollection findById(int $id) Return ChildWaitlist objects filtered by the id column
  * @method     ChildWaitlist[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -113,13 +125,83 @@ abstract class WaitlistQuery extends ModelCriteria
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
-        throw new LogicException('The Waitlist object has no primary key');
+        if ($key === null) {
+            return null;
+        }
+        if ((null !== ($obj = WaitlistTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
+            // the object is already in the instance pool
+            return $obj;
+        }
+        if ($con === null) {
+            $con = Propel::getServiceContainer()->getReadConnection(WaitlistTableMap::DATABASE_NAME);
+        }
+        $this->basePreSelect($con);
+        if ($this->formatter || $this->modelAlias || $this->with || $this->select
+         || $this->selectColumns || $this->asColumns || $this->selectModifiers
+         || $this->map || $this->having || $this->joins) {
+            return $this->findPkComplex($key, $con);
+        } else {
+            return $this->findPkSimple($key, $con);
+        }
+    }
+
+    /**
+     * Find object by primary key using raw SQL to go fast.
+     * Bypass doSelect() and the object formatter by using generated code.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildWaitlist A model object, or null if the key is not found
+     */
+    protected function findPkSimple($key, ConnectionInterface $con)
+    {
+        $sql = 'SELECT `user`, `shift`, `event`, `timestamp`, `id` FROM `waitlist` WHERE `id` = :p0';
+        try {
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sql), 0, $e);
+        }
+        $obj = null;
+        if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
+            /** @var ChildWaitlist $obj */
+            $obj = new ChildWaitlist();
+            $obj->hydrate($row);
+            WaitlistTableMap::addInstanceToPool($obj, (string) $key);
+        }
+        $stmt->closeCursor();
+
+        return $obj;
+    }
+
+    /**
+     * Find object by primary key.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @return ChildWaitlist|array|mixed the result, formatted by the current formatter
+     */
+    protected function findPkComplex($key, ConnectionInterface $con)
+    {
+        // As the query uses a PK condition, no limit(1) is necessary.
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKey($key)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->formatOne($dataFetcher);
     }
 
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
+     * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     ConnectionInterface $con an optional connection object
@@ -128,7 +210,16 @@ abstract class WaitlistQuery extends ModelCriteria
      */
     public function findPks($keys, ConnectionInterface $con = null)
     {
-        throw new LogicException('The Waitlist object has no primary key');
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
+        }
+        $this->basePreSelect($con);
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKeys($keys)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->format($dataFetcher);
     }
 
     /**
@@ -140,7 +231,8 @@ abstract class WaitlistQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        throw new LogicException('The Waitlist object has no primary key');
+
+        return $this->addUsingAlias(WaitlistTableMap::COL_ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -152,7 +244,8 @@ abstract class WaitlistQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        throw new LogicException('The Waitlist object has no primary key');
+
+        return $this->addUsingAlias(WaitlistTableMap::COL_ID, $keys, Criteria::IN);
     }
 
     /**
@@ -164,6 +257,8 @@ abstract class WaitlistQuery extends ModelCriteria
      * $query->filterByUser(array(12, 34)); // WHERE user IN (12, 34)
      * $query->filterByUser(array('min' => 12)); // WHERE user > 12
      * </code>
+     *
+     * @see       filterByMembers()
      *
      * @param     mixed $user The value to use as filter.
      *              Use scalar values for equality.
@@ -320,6 +415,124 @@ abstract class WaitlistQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterById(1234); // WHERE id = 1234
+     * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
+     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * </code>
+     *
+     * @param     mixed $id The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildWaitlistQuery The current query, for fluid interface
+     */
+    public function filterById($id = null, $comparison = null)
+    {
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(WaitlistTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(WaitlistTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(WaitlistTableMap::COL_ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Members object
+     *
+     * @param \Members|ObjectCollection $members The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildWaitlistQuery The current query, for fluid interface
+     */
+    public function filterByMembers($members, $comparison = null)
+    {
+        if ($members instanceof \Members) {
+            return $this
+                ->addUsingAlias(WaitlistTableMap::COL_USER, $members->getId(), $comparison);
+        } elseif ($members instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(WaitlistTableMap::COL_USER, $members->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByMembers() only accepts arguments of type \Members or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Members relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildWaitlistQuery The current query, for fluid interface
+     */
+    public function joinMembers($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Members');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Members');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Members relation Members object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \MembersQuery A secondary query class using the current class as primary query
+     */
+    public function useMembersQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinMembers($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Members', '\MembersQuery');
+    }
+
+    /**
      * Exclude object from result
      *
      * @param   ChildWaitlist $waitlist Object to remove from the list of results
@@ -329,8 +542,7 @@ abstract class WaitlistQuery extends ModelCriteria
     public function prune($waitlist = null)
     {
         if ($waitlist) {
-            throw new LogicException('Waitlist object has no primary key');
-
+            $this->addUsingAlias(WaitlistTableMap::COL_ID, $waitlist->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;

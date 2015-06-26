@@ -9,7 +9,6 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -60,7 +59,7 @@ class WaitlistTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -70,7 +69,7 @@ class WaitlistTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the user field
@@ -93,6 +92,11 @@ class WaitlistTableMap extends TableMap
     const COL_TIMESTAMP = 'waitlist.timestamp';
 
     /**
+     * the column name for the id field
+     */
+    const COL_ID = 'waitlist.id';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -104,11 +108,11 @@ class WaitlistTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('User', 'Shift', 'Event', 'Timestamp', ),
-        self::TYPE_CAMELNAME     => array('user', 'shift', 'event', 'timestamp', ),
-        self::TYPE_COLNAME       => array(WaitlistTableMap::COL_USER, WaitlistTableMap::COL_SHIFT, WaitlistTableMap::COL_EVENT, WaitlistTableMap::COL_TIMESTAMP, ),
-        self::TYPE_FIELDNAME     => array('user', 'shift', 'event', 'timestamp', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('User', 'Shift', 'Event', 'Timestamp', 'Id', ),
+        self::TYPE_CAMELNAME     => array('user', 'shift', 'event', 'timestamp', 'id', ),
+        self::TYPE_COLNAME       => array(WaitlistTableMap::COL_USER, WaitlistTableMap::COL_SHIFT, WaitlistTableMap::COL_EVENT, WaitlistTableMap::COL_TIMESTAMP, WaitlistTableMap::COL_ID, ),
+        self::TYPE_FIELDNAME     => array('user', 'shift', 'event', 'timestamp', 'id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -118,11 +122,11 @@ class WaitlistTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('User' => 0, 'Shift' => 1, 'Event' => 2, 'Timestamp' => 3, ),
-        self::TYPE_CAMELNAME     => array('user' => 0, 'shift' => 1, 'event' => 2, 'timestamp' => 3, ),
-        self::TYPE_COLNAME       => array(WaitlistTableMap::COL_USER => 0, WaitlistTableMap::COL_SHIFT => 1, WaitlistTableMap::COL_EVENT => 2, WaitlistTableMap::COL_TIMESTAMP => 3, ),
-        self::TYPE_FIELDNAME     => array('user' => 0, 'shift' => 1, 'event' => 2, 'timestamp' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('User' => 0, 'Shift' => 1, 'Event' => 2, 'Timestamp' => 3, 'Id' => 4, ),
+        self::TYPE_CAMELNAME     => array('user' => 0, 'shift' => 1, 'event' => 2, 'timestamp' => 3, 'id' => 4, ),
+        self::TYPE_COLNAME       => array(WaitlistTableMap::COL_USER => 0, WaitlistTableMap::COL_SHIFT => 1, WaitlistTableMap::COL_EVENT => 2, WaitlistTableMap::COL_TIMESTAMP => 3, WaitlistTableMap::COL_ID => 4, ),
+        self::TYPE_FIELDNAME     => array('user' => 0, 'shift' => 1, 'event' => 2, 'timestamp' => 3, 'id' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -140,12 +144,13 @@ class WaitlistTableMap extends TableMap
         $this->setIdentifierQuoting(true);
         $this->setClassName('\\Waitlist');
         $this->setPackage('');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('user', 'User', 'INTEGER', true, null, 0);
+        $this->addForeignKey('user', 'User', 'INTEGER', 'members', 'id', true, null, 0);
         $this->addColumn('shift', 'Shift', 'INTEGER', true, null, 0);
         $this->addColumn('event', 'Event', 'INTEGER', true, null, 0);
         $this->addColumn('timestamp', 'Timestamp', 'BIGINT', true, null, 0);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -153,7 +158,27 @@ class WaitlistTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Members', '\\Members', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':user',
+    1 => ':id',
+  ),
+), null, null, null, false);
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'auto_add_pk' => array('name' => 'id', 'autoIncrement' => 'true', 'type' => 'INTEGER', ),
+        );
+    } // getBehaviors()
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -170,7 +195,12 @@ class WaitlistTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 4 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 4 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -187,7 +217,11 @@ class WaitlistTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return '';
+        return (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 4 + $offset
+                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+        ];
     }
 
     /**
@@ -291,11 +325,13 @@ class WaitlistTableMap extends TableMap
             $criteria->addSelectColumn(WaitlistTableMap::COL_SHIFT);
             $criteria->addSelectColumn(WaitlistTableMap::COL_EVENT);
             $criteria->addSelectColumn(WaitlistTableMap::COL_TIMESTAMP);
+            $criteria->addSelectColumn(WaitlistTableMap::COL_ID);
         } else {
             $criteria->addSelectColumn($alias . '.user');
             $criteria->addSelectColumn($alias . '.shift');
             $criteria->addSelectColumn($alias . '.event');
             $criteria->addSelectColumn($alias . '.timestamp');
+            $criteria->addSelectColumn($alias . '.id');
         }
     }
 
@@ -343,10 +379,11 @@ class WaitlistTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \Waitlist) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            throw new LogicException('The Waitlist object has no primary key');
+            $criteria = new Criteria(WaitlistTableMap::DATABASE_NAME);
+            $criteria->add(WaitlistTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
         $query = WaitlistQuery::create()->mergeWith($criteria);
@@ -392,6 +429,10 @@ class WaitlistTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Waitlist object
+        }
+
+        if ($criteria->containsKey(WaitlistTableMap::COL_ID) && $criteria->keyContainsValue(WaitlistTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.WaitlistTableMap::COL_ID.')');
         }
 
 

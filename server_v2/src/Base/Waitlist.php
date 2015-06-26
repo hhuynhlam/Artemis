@@ -2,6 +2,8 @@
 
 namespace Base;
 
+use \Members as ChildMembers;
+use \MembersQuery as ChildMembersQuery;
 use \WaitlistQuery as ChildWaitlistQuery;
 use \Exception;
 use \PDO;
@@ -86,6 +88,17 @@ abstract class Waitlist implements ActiveRecordInterface
      * @var        string
      */
     protected $timestamp;
+
+    /**
+     * The value for the id field.
+     * @var        int
+     */
+    protected $id;
+
+    /**
+     * @var        ChildMembers
+     */
+    protected $aMembers;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -369,6 +382,16 @@ abstract class Waitlist implements ActiveRecordInterface
     }
 
     /**
+     * Get the [id] column value.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Set the value of [user] column.
      *
      * @param int $v new value
@@ -383,6 +406,10 @@ abstract class Waitlist implements ActiveRecordInterface
         if ($this->user !== $v) {
             $this->user = $v;
             $this->modifiedColumns[WaitlistTableMap::COL_USER] = true;
+        }
+
+        if ($this->aMembers !== null && $this->aMembers->getId() !== $v) {
+            $this->aMembers = null;
         }
 
         return $this;
@@ -449,6 +476,26 @@ abstract class Waitlist implements ActiveRecordInterface
     } // setTimestamp()
 
     /**
+     * Set the value of [id] column.
+     *
+     * @param int $v new value
+     * @return $this|\Waitlist The current object (for fluent API support)
+     */
+    public function setId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[WaitlistTableMap::COL_ID] = true;
+        }
+
+        return $this;
+    } // setId()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -511,6 +558,9 @@ abstract class Waitlist implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : WaitlistTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
             $this->timestamp = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : WaitlistTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -519,7 +569,7 @@ abstract class Waitlist implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = WaitlistTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = WaitlistTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Waitlist'), 0, $e);
@@ -541,6 +591,9 @@ abstract class Waitlist implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aMembers !== null && $this->user !== $this->aMembers->getId()) {
+            $this->aMembers = null;
+        }
     } // ensureConsistency
 
     /**
@@ -580,6 +633,7 @@ abstract class Waitlist implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aMembers = null;
         } // if (deep)
     }
 
@@ -679,6 +733,18 @@ abstract class Waitlist implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aMembers !== null) {
+                if ($this->aMembers->isModified() || $this->aMembers->isNew()) {
+                    $affectedRows += $this->aMembers->save($con);
+                }
+                $this->setMembers($this->aMembers);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -710,6 +776,10 @@ abstract class Waitlist implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[WaitlistTableMap::COL_ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . WaitlistTableMap::COL_ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(WaitlistTableMap::COL_USER)) {
@@ -723,6 +793,9 @@ abstract class Waitlist implements ActiveRecordInterface
         }
         if ($this->isColumnModified(WaitlistTableMap::COL_TIMESTAMP)) {
             $modifiedColumns[':p' . $index++]  = '`timestamp`';
+        }
+        if ($this->isColumnModified(WaitlistTableMap::COL_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
 
         $sql = sprintf(
@@ -747,6 +820,9 @@ abstract class Waitlist implements ActiveRecordInterface
                     case '`timestamp`':
                         $stmt->bindValue($identifier, $this->timestamp, PDO::PARAM_INT);
                         break;
+                    case '`id`':
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
                 }
             }
             $stmt->execute();
@@ -754,6 +830,13 @@ abstract class Waitlist implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', 0, $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -814,6 +897,9 @@ abstract class Waitlist implements ActiveRecordInterface
             case 3:
                 return $this->getTimestamp();
                 break;
+            case 4:
+                return $this->getId();
+                break;
             default:
                 return null;
                 break;
@@ -831,10 +917,11 @@ abstract class Waitlist implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Waitlist'][$this->hashCode()])) {
@@ -847,12 +934,30 @@ abstract class Waitlist implements ActiveRecordInterface
             $keys[1] => $this->getShift(),
             $keys[2] => $this->getEvent(),
             $keys[3] => $this->getTimestamp(),
+            $keys[4] => $this->getId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aMembers) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'members';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'members';
+                        break;
+                    default:
+                        $key = 'Members';
+                }
+
+                $result[$key] = $this->aMembers->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -898,6 +1003,9 @@ abstract class Waitlist implements ActiveRecordInterface
             case 3:
                 $this->setTimestamp($value);
                 break;
+            case 4:
+                $this->setId($value);
+                break;
         } // switch()
 
         return $this;
@@ -935,6 +1043,9 @@ abstract class Waitlist implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setTimestamp($arr[$keys[3]]);
+        }
+        if (array_key_exists($keys[4], $arr)) {
+            $this->setId($arr[$keys[4]]);
         }
     }
 
@@ -989,6 +1100,9 @@ abstract class Waitlist implements ActiveRecordInterface
         if ($this->isColumnModified(WaitlistTableMap::COL_TIMESTAMP)) {
             $criteria->add(WaitlistTableMap::COL_TIMESTAMP, $this->timestamp);
         }
+        if ($this->isColumnModified(WaitlistTableMap::COL_ID)) {
+            $criteria->add(WaitlistTableMap::COL_ID, $this->id);
+        }
 
         return $criteria;
     }
@@ -1005,7 +1119,8 @@ abstract class Waitlist implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        throw new LogicException('The Waitlist object has no primary key');
+        $criteria = ChildWaitlistQuery::create();
+        $criteria->add(WaitlistTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1018,7 +1133,7 @@ abstract class Waitlist implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = false;
+        $validPk = null !== $this->getId();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1033,27 +1148,23 @@ abstract class Waitlist implements ActiveRecordInterface
     }
 
     /**
-     * Returns NULL since this table doesn't have a primary key.
-     * This method exists only for BC and is deprecated!
-     * @return null
+     * Returns the primary key for this object (row).
+     * @return int
      */
     public function getPrimaryKey()
     {
-        return null;
+        return $this->getId();
     }
 
     /**
-     * Dummy primary key setter.
+     * Generic method to set the primary key (id column).
      *
-     * This function only exists to preserve backwards compatibility.  It is no longer
-     * needed or required by the Persistent interface.  It will be removed in next BC-breaking
-     * release of Propel.
-     *
-     * @deprecated
+     * @param       int $key Primary key.
+     * @return void
      */
-    public function setPrimaryKey($pk)
+    public function setPrimaryKey($key)
     {
-        // do nothing, because this object doesn't have any primary keys
+        $this->setId($key);
     }
 
     /**
@@ -1062,7 +1173,7 @@ abstract class Waitlist implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return ;
+        return null === $this->getId();
     }
 
     /**
@@ -1084,6 +1195,7 @@ abstract class Waitlist implements ActiveRecordInterface
         $copyObj->setTimestamp($this->getTimestamp());
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1110,16 +1222,71 @@ abstract class Waitlist implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildMembers object.
+     *
+     * @param  ChildMembers $v
+     * @return $this|\Waitlist The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setMembers(ChildMembers $v = null)
+    {
+        if ($v === null) {
+            $this->setUser(0);
+        } else {
+            $this->setUser($v->getId());
+        }
+
+        $this->aMembers = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildMembers object, it will not be re-added.
+        if ($v !== null) {
+            $v->addWaitlist($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildMembers object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildMembers The associated ChildMembers object.
+     * @throws PropelException
+     */
+    public function getMembers(ConnectionInterface $con = null)
+    {
+        if ($this->aMembers === null && ($this->user !== null)) {
+            $this->aMembers = ChildMembersQuery::create()->findPk($this->user, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aMembers->addWaitlists($this);
+             */
+        }
+
+        return $this->aMembers;
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aMembers) {
+            $this->aMembers->removeWaitlist($this);
+        }
         $this->user = null;
         $this->shift = null;
         $this->event = null;
         $this->timestamp = null;
+        $this->id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
@@ -1141,6 +1308,7 @@ abstract class Waitlist implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aMembers = null;
     }
 
     /**
