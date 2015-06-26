@@ -26,7 +26,7 @@ define(function (require) {
 			this.setupGrid();
 		}.bind(this))
 		.catch(function (err) {
-			console.error('Error: Cannot get events (', err, ')');
+			console.error('Error: Cannot get members (', err, ')');
 		})
 		.done();
 	};
@@ -35,7 +35,10 @@ define(function (require) {
 		var data, url;
 
         url = window.env.SERVER_HOST + '/member/list';
-        data = { apiKey: window.env.API_KEY };
+        data = { 
+            apiKey: window.env.API_KEY, 
+            select: ['FirstName', 'LastName', 'Position', 'Class', 'Family', 'Email', 'Phone']
+        };
 
         return sandbox.http.get(url, data);
 	};
@@ -49,7 +52,7 @@ define(function (require) {
                         fields: {
                             FirstName: { type: "string" },
                             LastName: { type: "string" },
-                            ClassName: { type: "string" },
+                            Class: { type: "string" },
                             Family: { type: "string" },
                             Position: { type: "number" },
                             Phone: { type: "string" },
@@ -62,7 +65,7 @@ define(function (require) {
             columns: [
                 { field: "FirstName", title: "First Name"},
                 { field: "LastName", title: "Last Name"},
-                { field: "ClassName", title: "Class"},
+                { field: "Class", title: "Class"},
                 { field: "Family", title: "Family"},
                 { field: "Position", title: "Position"},
                 { field: "Phone", title: "Phone"},

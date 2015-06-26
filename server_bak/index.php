@@ -1,18 +1,27 @@
 <?php
-require('vendor/autoload.php');
-require_once('app/config.php');
-require_once('helpers/helpers.php');
 
-// Setup app
+// Require
+require 'Slim/Slim.php';
+\Slim\Slim::registerAutoloader();
+
+// Instantiate
 $app = new \Slim\Slim();
 $app->response->headers->set('Content-Type', 'application/json');
 
-// // Define API routes
+// Helper Functions
+require_once('helpers/helpers.php');
+
+// Define API routes
+require_once('routes/root.php');
 require_once('routes/event.php');
 require_once('routes/login.php');
 require_once('routes/member.php');
 require_once('routes/shift.php');
 require_once('routes/signup.php');
+require_once('routes/term.php');
 require_once('routes/waitlist.php');
 
+// Run application
 $app->run();
+
+?>

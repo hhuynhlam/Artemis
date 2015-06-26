@@ -1,7 +1,8 @@
 <?php
+use Propel\Runtime\Propel;
 
 $app->get('/waitlist', function () use ($app) {
-    
+
     // authenticate before do anything
     if ( !authenticate($app->request->params('apiKey')) ) {
         $app->status(403);
@@ -9,30 +10,33 @@ $app->get('/waitlist', function () use ($app) {
         return;
     }
 
-    // connect to db
-    require_once('_db.php');
-
-    // get request parameters
-    $params = $app->request->get();
-    $between = '';
-    $where = array();
-
-    foreach($params as $key => $value) {
-        if ($key == 'apiKey') {
-            continue;
-        }
-
-        $where[$key] = $value;
+    // check required params
+    if(is_null($app->request->get('shift'))) {
+        $app->status(406); 
+        echo json_encode('You need to specify a shift.');
+        return; 
     }
     
-    $results = $db->query( db_select('waitlist as w JOIN members as m ON w.user = m.id', 
-        'm.id, m.first_name, m.last_name', 
-        $where, null, 'timestamp ASC', null, null ) );
-    echo parseJsonFromSQL($results);
+    // get request parameters
+    $shiftId = $app->request->get('shift');
+
+    // construct query
+    $signups = WaitlistQuery::create()
+        ->useMembersQuery()
+        ->endUse()
+        ->filterByShift($shiftId)
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->addAsColumn('Id', 'members.id')
+        ->select('Timestamp')
+        ->orderByTimestamp('asc');
+
+    // execute and return
+    returnDataJSON($signups->find()->toJSON(), 'Waitlists');
 });
 
 $app->post('/waitlist/add', function () use ($app) {
-    
+
     // authenticate before do anything
     if ( !authenticate($app->request->params('apiKey')) ) {
         $app->status(403);
@@ -40,36 +44,47 @@ $app->post('/waitlist/add', function () use ($app) {
         return;
     }
 
-    // connect to db
-    require_once('_db.php');
-
-    $user = $app->request->params('user');
-    $shift = $app->request->params('shift');
-    $event = $app->request->params('event');
-    $timestamp = $app->request->params('timestamp');
-
-    // get request parameters
-    $columns = ['user', 'shift', 'event', 'timestamp'];
-    $values= [$user, $shift, $event, $timestamp];
-
-    $results = $db->query( db_insert('waitlist', $columns, $values) );
-
-    if ($results == 1) {
-        $where = array(); $where['shift'] = $shift;
-        $results = $db->query( db_select('waitlist as w JOIN members as m ON w.user = m.id', 
-            'm.id, m.first_name, m.last_name', 
-            $where, null, 'timestamp ASC', null, null ) );
-        echo parseJsonFromSQL($results);
-    } else {
-        $app->status(500);
-        echo json_encode('1');
+    // check required params
+    if (is_null($app->request->post('user')) || 
+        is_null($app->request->post('shift')) || 
+        is_null($app->request->post('event')) || 
+        is_null($app->request->post('timestamp'))) 
+    {
+        $app->status(406); 
+        echo json_encode('You need to specify a user, shift, event and timestamp.');
+        return; 
     }
+    
+    // get request parameters
+    $userId = $app->request->post('user');
+    $shiftId = $app->request->post('shift');
+    $eventId = $app->request->post('event');
+    $timestamp = $app->request->post('timestamp');
 
-    //echo db_insert('signups', $columns, $values);
+    // begin insertion
+    $con = Propel::getConnection();
+    $sql =  'INSERT INTO `waitlist` (`user`, `shift`, `event`, `timestamp`)'
+            .' VALUES (' . $userId . ', ' . $shiftId . ', ' . $eventId . ', ' . $timestamp . ')';
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+
+    // return updated waitlist
+    $signups = WaitlistQuery::create()
+        ->useMembersQuery()
+        ->endUse()
+        ->filterByShift($shiftId)
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->addAsColumn('Id', 'members.id')
+        ->select('Timestamp')
+        ->orderByTimestamp('asc');
+
+    // execute and return
+    returnDataJSON($signups->find()->toJSON(), 'Waitlists');
 });
 
 $app->post('/waitlist/delete', function () use ($app) {
-    
+
     // authenticate before do anything
     if ( !authenticate($app->request->params('apiKey')) ) {
         $app->status(403);
@@ -77,32 +92,39 @@ $app->post('/waitlist/delete', function () use ($app) {
         return;
     }
 
-    // connect to db
-    require_once('_db.php');
+    // check required params
+    if (is_null($app->request->post('user')) || 
+        is_null($app->request->post('shift')) || 
+        is_null($app->request->post('event'))) 
+    {
+        $app->status(406); 
+        echo json_encode('You need to specify a user, shift and event.');
+        return; 
+    }
     
     // get request parameters
-    $user = $app->request->params('user');
-    $shift = $app->request->params('shift');
-    $event = $app->request->params('event');
+    $userId = $app->request->post('user');
+    $shiftId = $app->request->post('shift');
+    $eventId = $app->request->post('event');
 
-    $where = [
-        "user" => $user,
-        "shift" => $shift,
-        "event" => $event
-    ];
+    // remove
+    $signup = WaitlistQuery::create()
+        ->filterByUser($userId)
+        ->filterByShift($shiftId)
+        ->filterByEvent($eventId)
+        ->delete();
 
-    $results = $db->query( db_delete('waitlist', $where) );
-    
-    if ($results == 1) {
-        $where = array(); $where['shift'] = $shift;
-        $results = $db->query( db_select('waitlist as w JOIN members as m ON w.user = m.id', 
-            'm.id, m.first_name, m.last_name', 
-            $where, null, 'timestamp ASC', null, null ) );
-        echo parseJsonFromSQL($results);
-    } else {
-        $app->status(500);
-        echo json_encode('1');
-    }
+    // return updated waitlist
+    $signups = WaitlistQuery::create()
+        ->useMembersQuery()
+        ->endUse()
+        ->filterByShift($shiftId)
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->addAsColumn('Id', 'members.id')
+        ->select('Timestamp')
+        ->orderByTimestamp('asc');
+
+    // execute and return
+    returnDataJSON($signups->find()->toJSON(), 'Waitlists');
 });
-
-?>

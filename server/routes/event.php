@@ -1,7 +1,7 @@
 <?php
 
 $app->get('/event', function () use ($app) {
-    
+
     // authenticate before do anything
     if ( !authenticate($app->request->params('apiKey')) ) {
         $app->status(403);
@@ -9,61 +9,26 @@ $app->get('/event', function () use ($app) {
         return;
     }
 
-    // connect to db
-    require_once('_db.php');
-
     // get request parameters
-    // type, startDate, endDate, limit, offset
-    $id = $app->request->get('id');
-    $type = $app->request->get('event_code');
+    $eventId = $app->request->get('id');
+    $eventCode = $app->request->get('event_code');
     $startDate = $app->request->get('startDate');
     $endDate = $app->request->get('endDate');
     $limit = $app->request->get('limit');
     $offset = $app->request->get('offset');
 
-    $between = "";
-    $where = "";
-    $first = true;
+    // construct query
+    $events = EventsQuery::create()
+        ->orderByDate('asc');
 
-    if ( !is_null($id) ) {
-        $where .= " id = " . $id;
-        $first = false;
-    }
+    if(!is_null($eventId)){ $events->filterById($eventId); }
+    if(!is_null($eventCode)) { $events->where('events.event_code & ?', $eventCode ); }
+    if(!is_null($startDate) || !is_null($endDate)){ $events->filterByDate(array("min" => $startDate, "max" => $endDate));}
+    if(!is_null($limit)){ $events->limit($limit); }
+    if(!is_null($offset)){ $events->offset($offset); }
 
-    if ( !is_null($type) ) {
-        if ($first == true) {
-            $where .= " event_code & " . $type;
-            $first = false;
-        } else {
-            $where .= " AND event_code & " . $type;
-        }
-    }
-
-    if ( !is_null($startDate) && !is_null($endDate) ) {
-        if ($first == true) {
-            $where .= " date BETWEEN " . $startDate . " AND " . $endDate;
-            $first = false;
-        } else {
-            $where .= " AND date BETWEEN " . $startDate . " AND " . $endDate;
-        }
-        
-    }
-
-    if ( !is_null($startDate) && is_null($endDate) ) {
-        if ($first == true) {
-            $where .= " date >= " . $startDate;
-            $first = false;
-        } else {
-            $where .= " AND date >= " . $startDate;
-        }
-    }
+    // execute and return
+    returnDataJSON($events->find()->toJSON(), 'Eventss');
     
-    $results = $db->query( db_select_explicit('events', "*", $where, 'date ASC', $limit, $offset) );
-    echo parseJsonFromSQL($results);
-    
-    // $table, $columns, $where, $between, $order, $limit, $offset
-    // // echo db_select_explicit('events', "*", $where, 'date ASC', $limit, $offset);
-     
+    // echo $events->toString();
 });
-
-?>

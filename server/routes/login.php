@@ -1,32 +1,23 @@
 <?php
 
 $app->get('/login', function () use ($app) {
+
+    // check required params
+    if(is_null($app->request->get('username')) || is_null($app->request->get('password'))) {
+        $app->status(406); 
+        echo json_encode('You need to send a username and password.');
+        return; 
+    }
     
-    // connect to db
-    require_once('_db.php');
-
     // get request parameters
-    $params = $app->request->params();
+    $username = $app->request->get('username');
+    $password = $app->request->get('password');
 
-    // if there are no parameters, query all
-    if (count($params) == 0)
-    {
-        
-        $app->status(403);
-        echo json_encode('You are not allowed to see this page.');
+    // construct query
+    $member = MembersQuery::create()
+        ->filterByUsername($username)
+        ->filterByPassword($password);
 
-    } 
-
-    // if there are parameters
-    else 
-    {
-        $username = $app->request->params('username');
-        $password = $app->request->params('password');
-
-        $results = $db->query( 'SELECT * FROM members WHERE username=\'' . $username . '\' AND password=\'' . $password . '\'');
-
-        echo parseJsonFromSQL($results);
-    } 
+    // execute and return
+    returnDataJSON($member->find()->toJSON(), 'Memberss');
 });
-
-?>

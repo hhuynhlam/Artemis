@@ -1,7 +1,7 @@
 <?php
 
 $app->get('/member/list', function () use ($app) {
-    
+
     // authenticate before do anything
     if ( !authenticate($app->request->params('apiKey')) ) {
         $app->status(403);
@@ -9,34 +9,60 @@ $app->get('/member/list', function () use ($app) {
         return;
     }
 
-    // connect to db
-    require_once('_db.php');
+    // get request parameters
+    $select = $app->request->get('select');
 
-    $results = $db->query( 'SELECT first_name, last_name, position, class as class_name, family, email, phone FROM members ORDER BY first_name' );
-    echo parseJsonFromSQL($results);
+    // construct query
+    $members = MembersQuery::create();
+
+    if(!is_null($select)){ $members->select($select); }
+
+    // execute and return
+    returnDataJSON($members->find()->toJSON(), 'Memberss');
+    
+    // echo $members->toString();
 });
 
 $app->post('/member/update', function () use ($app) {
-    
+
     // authenticate before do anything
-    if ( !authenticate($app->request->post('apiKey')) ) {
+    if ( !authenticate($app->request->params('apiKey')) ) {
         $app->status(403);
         echo json_encode('You are not allowed to see this page.');
         return;
     }
 
-    // connect to db
-    require_once('_db.php');
-
-    // get request body
-    $params = $app->request->post();
-    $where = array("id" => $app->request->post('_id'));
-
-    $db->query( db_update("members", $params, $where) );
-    $result = $db->query( 'SELECT * FROM members WHERE id="' . $app->request->post('_id') . '"');
+    // check required params
+    if (is_null($app->request->post('_id'))) {
+        $app->status(406); 
+        echo json_encode('You need to specify a user id.');
+        return; 
+    }
     
-    echo parseJsonFromSQL($result); 
+    // get request parameters
+    $userId = $app->request->post('_id');
+    $phone = $app->request->post('phone');
+    $email = $app->request->post('email');
+    $shirtSize = $app->request->post('shirtSize');
+    $tempAddress = $app->request->post('tempAddress');
+    $permAddress = $app->request->post('permAddress');
+    $password = $app->request->post('password');
 
+    // construct query
+    $member = MembersQuery::create()->findPk($userId);
+    if(!is_null($phone)) { $member->setPhone($phone); }
+    if(!is_null($email)) { $member->setEmail($email); }
+    if(!is_null($shirtSize)) { $member->setShirtSize($shirtSize); }
+    if(!is_null($tempAddress)) { $member->setTempAddress($tempAddress); }
+    if(!is_null($permAddress)) { $member->setPermAddress($permAddress); }
+    if(!is_null($password)) { $member->setPassword($password); }
+
+    // execute
+    $member->save();
+
+    // return updated profile
+    $member = MembersQuery::create()
+        ->filterById($userId);
+
+    returnDataJSON($member->find()->toJSON(), 'Memberss');
 });
-
-?>

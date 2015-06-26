@@ -86,12 +86,12 @@ define(function (require) {
 	ProfileViewModel.prototype.serializeUserData = function () {
 		return {
 			apiKey: window.env.API_KEY,
-			_id: this.currentUser.id,
+			_id: this.currentUser.Id,
 			phone: this.formViewModel.phone(),
 			email: this.formViewModel.email(),
-			shirt_size: this.formViewModel.shirtSize(),
-			temp_address: this.formViewModel.schoolAddress(),
-			perm_address: this.formViewModel.permAddress(),
+			shirtSize: this.formViewModel.shirtSize(),
+			tempAddress: this.formViewModel.schoolAddress(),
+			permAddress: this.formViewModel.permAddress(),
 			password: (this.formViewModel.newPassword()) ? sandbox.crypto.encrypt(this.formViewModel.newPassword()) : undefined
 		};
 	};
