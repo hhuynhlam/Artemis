@@ -1,5 +1,10 @@
 {
     "require": {
-        "propel/propel": "~2.0@dev"
+        "propel/propel": "~2.0@dev",
+        "slim/slim": "2.6.2"
+    },
+    "autoload": {
+        "files": [ "app/config.php" ],
+        "classmap": [ "src" ]
     }
 }
