@@ -6,6 +6,8 @@ use \Events as ChildEvents;
 use \EventsQuery as ChildEventsQuery;
 use \Signups as ChildSignups;
 use \SignupsQuery as ChildSignupsQuery;
+use \Waitlist as ChildWaitlist;
+use \WaitlistQuery as ChildWaitlistQuery;
 use \Exception;
 use \PDO;
 use Map\EventsTableMap;
@@ -203,6 +205,12 @@ abstract class Events implements ActiveRecordInterface
     protected $collSignupssPartial;
 
     /**
+     * @var        ObjectCollection|ChildWaitlist[] Collection to store aggregation of ChildWaitlist objects.
+     */
+    protected $collWaitlists;
+    protected $collWaitlistsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -215,6 +223,12 @@ abstract class Events implements ActiveRecordInterface
      * @var ObjectCollection|ChildSignups[]
      */
     protected $signupssScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildWaitlist[]
+     */
+    protected $waitlistsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -1315,6 +1329,8 @@ abstract class Events implements ActiveRecordInterface
 
             $this->collSignupss = null;
 
+            $this->collWaitlists = null;
+
         } // if (deep)
     }
 
@@ -1436,6 +1452,23 @@ abstract class Events implements ActiveRecordInterface
 
             if ($this->collSignupss !== null) {
                 foreach ($this->collSignupss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->waitlistsScheduledForDeletion !== null) {
+                if (!$this->waitlistsScheduledForDeletion->isEmpty()) {
+                    \WaitlistQuery::create()
+                        ->filterByPrimaryKeys($this->waitlistsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->waitlistsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collWaitlists !== null) {
+                foreach ($this->collWaitlists as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1802,6 +1835,21 @@ abstract class Events implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->collSignupss->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collWaitlists) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'waitlists';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'waitlists';
+                        break;
+                    default:
+                        $key = 'Waitlists';
+                }
+
+                $result[$key] = $this->collWaitlists->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2211,6 +2259,12 @@ abstract class Events implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getWaitlists() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addWaitlist($relObj->copy($deepCopy));
+                }
+            }
+
         } // if ($deepCopy)
 
         if ($makeNew) {
@@ -2254,6 +2308,9 @@ abstract class Events implements ActiveRecordInterface
     {
         if ('Signups' == $relationName) {
             return $this->initSignupss();
+        }
+        if ('Waitlist' == $relationName) {
+            return $this->initWaitlists();
         }
     }
 
@@ -2526,6 +2583,274 @@ abstract class Events implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collWaitlists collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addWaitlists()
+     */
+    public function clearWaitlists()
+    {
+        $this->collWaitlists = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collWaitlists collection loaded partially.
+     */
+    public function resetPartialWaitlists($v = true)
+    {
+        $this->collWaitlistsPartial = $v;
+    }
+
+    /**
+     * Initializes the collWaitlists collection.
+     *
+     * By default this just sets the collWaitlists collection to an empty array (like clearcollWaitlists());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initWaitlists($overrideExisting = true)
+    {
+        if (null !== $this->collWaitlists && !$overrideExisting) {
+            return;
+        }
+        $this->collWaitlists = new ObjectCollection();
+        $this->collWaitlists->setModel('\Waitlist');
+    }
+
+    /**
+     * Gets an array of ChildWaitlist objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildEvents is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildWaitlist[] List of ChildWaitlist objects
+     * @throws PropelException
+     */
+    public function getWaitlists(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collWaitlistsPartial && !$this->isNew();
+        if (null === $this->collWaitlists || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collWaitlists) {
+                // return empty collection
+                $this->initWaitlists();
+            } else {
+                $collWaitlists = ChildWaitlistQuery::create(null, $criteria)
+                    ->filterByEvents($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collWaitlistsPartial && count($collWaitlists)) {
+                        $this->initWaitlists(false);
+
+                        foreach ($collWaitlists as $obj) {
+                            if (false == $this->collWaitlists->contains($obj)) {
+                                $this->collWaitlists->append($obj);
+                            }
+                        }
+
+                        $this->collWaitlistsPartial = true;
+                    }
+
+                    return $collWaitlists;
+                }
+
+                if ($partial && $this->collWaitlists) {
+                    foreach ($this->collWaitlists as $obj) {
+                        if ($obj->isNew()) {
+                            $collWaitlists[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collWaitlists = $collWaitlists;
+                $this->collWaitlistsPartial = false;
+            }
+        }
+
+        return $this->collWaitlists;
+    }
+
+    /**
+     * Sets a collection of ChildWaitlist objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $waitlists A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildEvents The current object (for fluent API support)
+     */
+    public function setWaitlists(Collection $waitlists, ConnectionInterface $con = null)
+    {
+        /** @var ChildWaitlist[] $waitlistsToDelete */
+        $waitlistsToDelete = $this->getWaitlists(new Criteria(), $con)->diff($waitlists);
+
+
+        $this->waitlistsScheduledForDeletion = $waitlistsToDelete;
+
+        foreach ($waitlistsToDelete as $waitlistRemoved) {
+            $waitlistRemoved->setEvents(null);
+        }
+
+        $this->collWaitlists = null;
+        foreach ($waitlists as $waitlist) {
+            $this->addWaitlist($waitlist);
+        }
+
+        $this->collWaitlists = $waitlists;
+        $this->collWaitlistsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Waitlist objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Waitlist objects.
+     * @throws PropelException
+     */
+    public function countWaitlists(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collWaitlistsPartial && !$this->isNew();
+        if (null === $this->collWaitlists || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collWaitlists) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getWaitlists());
+            }
+
+            $query = ChildWaitlistQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEvents($this)
+                ->count($con);
+        }
+
+        return count($this->collWaitlists);
+    }
+
+    /**
+     * Method called to associate a ChildWaitlist object to this object
+     * through the ChildWaitlist foreign key attribute.
+     *
+     * @param  ChildWaitlist $l ChildWaitlist
+     * @return $this|\Events The current object (for fluent API support)
+     */
+    public function addWaitlist(ChildWaitlist $l)
+    {
+        if ($this->collWaitlists === null) {
+            $this->initWaitlists();
+            $this->collWaitlistsPartial = true;
+        }
+
+        if (!$this->collWaitlists->contains($l)) {
+            $this->doAddWaitlist($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildWaitlist $waitlist The ChildWaitlist object to add.
+     */
+    protected function doAddWaitlist(ChildWaitlist $waitlist)
+    {
+        $this->collWaitlists[]= $waitlist;
+        $waitlist->setEvents($this);
+    }
+
+    /**
+     * @param  ChildWaitlist $waitlist The ChildWaitlist object to remove.
+     * @return $this|ChildEvents The current object (for fluent API support)
+     */
+    public function removeWaitlist(ChildWaitlist $waitlist)
+    {
+        if ($this->getWaitlists()->contains($waitlist)) {
+            $pos = $this->collWaitlists->search($waitlist);
+            $this->collWaitlists->remove($pos);
+            if (null === $this->waitlistsScheduledForDeletion) {
+                $this->waitlistsScheduledForDeletion = clone $this->collWaitlists;
+                $this->waitlistsScheduledForDeletion->clear();
+            }
+            $this->waitlistsScheduledForDeletion[]= clone $waitlist;
+            $waitlist->setEvents(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Events is new, it will return
+     * an empty collection; or if this Events has previously
+     * been saved, it will retrieve related Waitlists from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Events.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildWaitlist[] List of ChildWaitlist objects
+     */
+    public function getWaitlistsJoinMembers(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildWaitlistQuery::create(null, $criteria);
+        $query->joinWith('Members', $joinBehavior);
+
+        return $this->getWaitlists($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Events is new, it will return
+     * an empty collection; or if this Events has previously
+     * been saved, it will retrieve related Waitlists from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Events.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildWaitlist[] List of ChildWaitlist objects
+     */
+    public function getWaitlistsJoinShifts(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildWaitlistQuery::create(null, $criteria);
+        $query->joinWith('Shifts', $joinBehavior);
+
+        return $this->getWaitlists($query, $con);
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
@@ -2577,9 +2902,15 @@ abstract class Events implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collWaitlists) {
+                foreach ($this->collWaitlists as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
         $this->collSignupss = null;
+        $this->collWaitlists = null;
     }
 
     /**

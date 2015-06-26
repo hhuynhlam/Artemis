@@ -532,6 +532,12 @@
     <foreign-key foreignTable="members" phpName="Members">
       <reference local="user" foreign="id"/>
     </foreign-key>
+    <foreign-key foreignTable="events" phpName="Events">
+      <reference local="event" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="shifts" phpName="Shifts">
+      <reference local="shift" foreign="id"/>
+    </foreign-key>
     <vendor type="mysql">
       <parameter name="Engine" value="MyISAM"/>
     </vendor>

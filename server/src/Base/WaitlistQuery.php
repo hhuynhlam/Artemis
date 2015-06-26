@@ -40,7 +40,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildWaitlistQuery rightJoinMembers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Members relation
  * @method     ChildWaitlistQuery innerJoinMembers($relationAlias = null) Adds a INNER JOIN clause to the query using the Members relation
  *
- * @method     \MembersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildWaitlistQuery leftJoinEvents($relationAlias = null) Adds a LEFT JOIN clause to the query using the Events relation
+ * @method     ChildWaitlistQuery rightJoinEvents($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Events relation
+ * @method     ChildWaitlistQuery innerJoinEvents($relationAlias = null) Adds a INNER JOIN clause to the query using the Events relation
+ *
+ * @method     ChildWaitlistQuery leftJoinShifts($relationAlias = null) Adds a LEFT JOIN clause to the query using the Shifts relation
+ * @method     ChildWaitlistQuery rightJoinShifts($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Shifts relation
+ * @method     ChildWaitlistQuery innerJoinShifts($relationAlias = null) Adds a INNER JOIN clause to the query using the Shifts relation
+ *
+ * @method     \MembersQuery|\EventsQuery|\ShiftsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildWaitlist findOne(ConnectionInterface $con = null) Return the first ChildWaitlist matching the query
  * @method     ChildWaitlist findOneOrCreate(ConnectionInterface $con = null) Return the first ChildWaitlist matching the query, or a new ChildWaitlist object populated from the query conditions when no match is found
@@ -301,6 +309,8 @@ abstract class WaitlistQuery extends ModelCriteria
      * $query->filterByShift(array('min' => 12)); // WHERE shift > 12
      * </code>
      *
+     * @see       filterByShifts()
+     *
      * @param     mixed $shift The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -341,6 +351,8 @@ abstract class WaitlistQuery extends ModelCriteria
      * $query->filterByEvent(array(12, 34)); // WHERE event IN (12, 34)
      * $query->filterByEvent(array('min' => 12)); // WHERE event > 12
      * </code>
+     *
+     * @see       filterByEvents()
      *
      * @param     mixed $event The value to use as filter.
      *              Use scalar values for equality.
@@ -530,6 +542,160 @@ abstract class WaitlistQuery extends ModelCriteria
         return $this
             ->joinMembers($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Members', '\MembersQuery');
+    }
+
+    /**
+     * Filter the query by a related \Events object
+     *
+     * @param \Events|ObjectCollection $events The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildWaitlistQuery The current query, for fluid interface
+     */
+    public function filterByEvents($events, $comparison = null)
+    {
+        if ($events instanceof \Events) {
+            return $this
+                ->addUsingAlias(WaitlistTableMap::COL_EVENT, $events->getId(), $comparison);
+        } elseif ($events instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(WaitlistTableMap::COL_EVENT, $events->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByEvents() only accepts arguments of type \Events or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Events relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildWaitlistQuery The current query, for fluid interface
+     */
+    public function joinEvents($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Events');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Events');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Events relation Events object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \EventsQuery A secondary query class using the current class as primary query
+     */
+    public function useEventsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEvents($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Events', '\EventsQuery');
+    }
+
+    /**
+     * Filter the query by a related \Shifts object
+     *
+     * @param \Shifts|ObjectCollection $shifts The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildWaitlistQuery The current query, for fluid interface
+     */
+    public function filterByShifts($shifts, $comparison = null)
+    {
+        if ($shifts instanceof \Shifts) {
+            return $this
+                ->addUsingAlias(WaitlistTableMap::COL_SHIFT, $shifts->getId(), $comparison);
+        } elseif ($shifts instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(WaitlistTableMap::COL_SHIFT, $shifts->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByShifts() only accepts arguments of type \Shifts or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Shifts relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildWaitlistQuery The current query, for fluid interface
+     */
+    public function joinShifts($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Shifts');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Shifts');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Shifts relation Shifts object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \ShiftsQuery A secondary query class using the current class as primary query
+     */
+    public function useShiftsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinShifts($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Shifts', '\ShiftsQuery');
     }
 
     /**

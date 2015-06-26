@@ -147,8 +147,8 @@ class WaitlistTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addForeignKey('user', 'User', 'INTEGER', 'members', 'id', true, null, 0);
-        $this->addColumn('shift', 'Shift', 'INTEGER', true, null, 0);
-        $this->addColumn('event', 'Event', 'INTEGER', true, null, 0);
+        $this->addForeignKey('shift', 'Shift', 'INTEGER', 'shifts', 'id', true, null, 0);
+        $this->addForeignKey('event', 'Event', 'INTEGER', 'events', 'id', true, null, 0);
         $this->addColumn('timestamp', 'Timestamp', 'BIGINT', true, null, 0);
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
     } // initialize()
@@ -162,6 +162,20 @@ class WaitlistTableMap extends TableMap
   0 =>
   array (
     0 => ':user',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Events', '\\Events', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':event',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Shifts', '\\Shifts', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':shift',
     1 => ':id',
   ),
 ), null, null, null, false);

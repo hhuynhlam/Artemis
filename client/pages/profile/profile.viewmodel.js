@@ -10,6 +10,7 @@ define(function (require) {
 	var ProfileViewModel = function () {
 		this.currentUser = auth.currentUser();
 		this.upcomingEvents = ko.observableArray([]);
+		this.waitlistedEvents = ko.observableArray([]);
 
 		this.formViewModel = {
 			phone: ko.observable(this.currentUser.Phone),
@@ -41,6 +42,7 @@ define(function (require) {
 
 		// get upcoming events
 		this.getUpcomingEvents();
+		this.getWaitlistedEvents();
 	};
 
 	// Edit Profile
@@ -125,6 +127,24 @@ define(function (require) {
 		}.bind(this))
 		.catch(function (err) {
 			console.error('Error: Cannot get upcoming events (', err, ')');
+		})
+		.done();
+	};
+
+	// Waitlisted Events
+	ProfileViewModel.prototype.getWaitlistedEvents = function () {
+		var url = window.env.SERVER_HOST + '/waitlist/user',
+			data = {
+				apiKey: window.env.API_KEY,
+				id: this.currentUser.Id
+			};
+
+		sandbox.http.get(url, data)
+		.then(function (events) {
+			this.waitlistedEvents(this.formatEventData(events));
+		}.bind(this))
+		.catch(function (err) {
+			console.error('Error: Cannot get waitlisted events (', err, ')');
 		})
 		.done();
 	};
