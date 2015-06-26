@@ -2,8 +2,12 @@
 
 namespace Base;
 
+use \Events as ChildEvents;
+use \EventsQuery as ChildEventsQuery;
 use \Members as ChildMembers;
 use \MembersQuery as ChildMembersQuery;
+use \Shifts as ChildShifts;
+use \ShiftsQuery as ChildShiftsQuery;
 use \SignupsQuery as ChildSignupsQuery;
 use \Exception;
 use \PDO;
@@ -115,6 +119,16 @@ abstract class Signups implements ActiveRecordInterface
      * @var        int
      */
     protected $id;
+
+    /**
+     * @var        ChildEvents
+     */
+    protected $aEvents;
+
+    /**
+     * @var        ChildShifts
+     */
+    protected $aShifts;
 
     /**
      * @var        ChildMembers
@@ -486,6 +500,10 @@ abstract class Signups implements ActiveRecordInterface
             $this->modifiedColumns[SignupsTableMap::COL_SHIFT] = true;
         }
 
+        if ($this->aShifts !== null && $this->aShifts->getId() !== $v) {
+            $this->aShifts = null;
+        }
+
         return $this;
     } // setShift()
 
@@ -504,6 +522,10 @@ abstract class Signups implements ActiveRecordInterface
         if ($this->event !== $v) {
             $this->event = $v;
             $this->modifiedColumns[SignupsTableMap::COL_EVENT] = true;
+        }
+
+        if ($this->aEvents !== null && $this->aEvents->getId() !== $v) {
+            $this->aEvents = null;
         }
 
         return $this;
@@ -729,6 +751,12 @@ abstract class Signups implements ActiveRecordInterface
         if ($this->aMembers !== null && $this->user !== $this->aMembers->getId()) {
             $this->aMembers = null;
         }
+        if ($this->aShifts !== null && $this->shift !== $this->aShifts->getId()) {
+            $this->aShifts = null;
+        }
+        if ($this->aEvents !== null && $this->event !== $this->aEvents->getId()) {
+            $this->aEvents = null;
+        }
     } // ensureConsistency
 
     /**
@@ -768,6 +796,8 @@ abstract class Signups implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aEvents = null;
+            $this->aShifts = null;
             $this->aMembers = null;
         } // if (deep)
     }
@@ -872,6 +902,20 @@ abstract class Signups implements ActiveRecordInterface
             // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
+
+            if ($this->aEvents !== null) {
+                if ($this->aEvents->isModified() || $this->aEvents->isNew()) {
+                    $affectedRows += $this->aEvents->save($con);
+                }
+                $this->setEvents($this->aEvents);
+            }
+
+            if ($this->aShifts !== null) {
+                if ($this->aShifts->isModified() || $this->aShifts->isNew()) {
+                    $affectedRows += $this->aShifts->save($con);
+                }
+                $this->setShifts($this->aShifts);
+            }
 
             if ($this->aMembers !== null) {
                 if ($this->aMembers->isModified() || $this->aMembers->isNew()) {
@@ -1107,6 +1151,36 @@ abstract class Signups implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aEvents) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'events';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'events';
+                        break;
+                    default:
+                        $key = 'Events';
+                }
+
+                $result[$key] = $this->aEvents->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aShifts) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'shifts';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'shifts';
+                        break;
+                    default:
+                        $key = 'Shifts';
+                }
+
+                $result[$key] = $this->aShifts->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aMembers) {
 
                 switch ($keyType) {
@@ -1417,6 +1491,108 @@ abstract class Signups implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildEvents object.
+     *
+     * @param  ChildEvents $v
+     * @return $this|\Signups The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setEvents(ChildEvents $v = null)
+    {
+        if ($v === null) {
+            $this->setEvent(0);
+        } else {
+            $this->setEvent($v->getId());
+        }
+
+        $this->aEvents = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildEvents object, it will not be re-added.
+        if ($v !== null) {
+            $v->addSignups($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildEvents object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildEvents The associated ChildEvents object.
+     * @throws PropelException
+     */
+    public function getEvents(ConnectionInterface $con = null)
+    {
+        if ($this->aEvents === null && ($this->event !== null)) {
+            $this->aEvents = ChildEventsQuery::create()->findPk($this->event, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEvents->addSignupss($this);
+             */
+        }
+
+        return $this->aEvents;
+    }
+
+    /**
+     * Declares an association between this object and a ChildShifts object.
+     *
+     * @param  ChildShifts $v
+     * @return $this|\Signups The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setShifts(ChildShifts $v = null)
+    {
+        if ($v === null) {
+            $this->setShift(0);
+        } else {
+            $this->setShift($v->getId());
+        }
+
+        $this->aShifts = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildShifts object, it will not be re-added.
+        if ($v !== null) {
+            $v->addSignups($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildShifts object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildShifts The associated ChildShifts object.
+     * @throws PropelException
+     */
+    public function getShifts(ConnectionInterface $con = null)
+    {
+        if ($this->aShifts === null && ($this->shift !== null)) {
+            $this->aShifts = ChildShiftsQuery::create()->findPk($this->shift, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aShifts->addSignupss($this);
+             */
+        }
+
+        return $this->aShifts;
+    }
+
+    /**
      * Declares an association between this object and a ChildMembers object.
      *
      * @param  ChildMembers $v
@@ -1474,6 +1650,12 @@ abstract class Signups implements ActiveRecordInterface
      */
     public function clear()
     {
+        if (null !== $this->aEvents) {
+            $this->aEvents->removeSignups($this);
+        }
+        if (null !== $this->aShifts) {
+            $this->aShifts->removeSignups($this);
+        }
         if (null !== $this->aMembers) {
             $this->aMembers->removeSignups($this);
         }
@@ -1506,6 +1688,8 @@ abstract class Signups implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aEvents = null;
+        $this->aShifts = null;
         $this->aMembers = null;
     }
 

@@ -170,6 +170,13 @@ class ShiftsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Signups', '\\Signups', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':shift',
+    1 => ':id',
+  ),
+), null, null, 'Signupss', false);
     } // buildRelations()
 
     /**

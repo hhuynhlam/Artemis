@@ -162,8 +162,8 @@ class SignupsTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addForeignKey('user', 'User', 'INTEGER', 'members', 'id', true, 10, 0);
-        $this->addColumn('shift', 'Shift', 'INTEGER', true, 10, 0);
-        $this->addColumn('event', 'Event', 'INTEGER', true, null, 0);
+        $this->addForeignKey('shift', 'Shift', 'INTEGER', 'shifts', 'id', true, 10, 0);
+        $this->addForeignKey('event', 'Event', 'INTEGER', 'events', 'id', true, null, 0);
         $this->addColumn('driver', 'Driver', 'SMALLINT', true, 2, 0);
         $this->addColumn('chair', 'Chair', 'SMALLINT', true, 1, 0);
         $this->addColumn('credit', 'Credit', 'FLOAT', true, null, -1);
@@ -176,6 +176,20 @@ class SignupsTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Events', '\\Events', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':event',
+    1 => ':id',
+  ),
+), null, null, null, false);
+        $this->addRelation('Shifts', '\\Shifts', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':shift',
+    1 => ':id',
+  ),
+), null, null, null, false);
         $this->addRelation('Members', '\\Members', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (

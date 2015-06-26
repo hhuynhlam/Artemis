@@ -10,6 +10,7 @@ use Map\ShiftsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -38,6 +39,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildShiftsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildShiftsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildShiftsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     ChildShiftsQuery leftJoinSignups($relationAlias = null) Adds a LEFT JOIN clause to the query using the Signups relation
+ * @method     ChildShiftsQuery rightJoinSignups($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Signups relation
+ * @method     ChildShiftsQuery innerJoinSignups($relationAlias = null) Adds a INNER JOIN clause to the query using the Signups relation
+ *
+ * @method     \SignupsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildShifts findOne(ConnectionInterface $con = null) Return the first ChildShifts matching the query
  * @method     ChildShifts findOneOrCreate(ConnectionInterface $con = null) Return the first ChildShifts matching the query, or a new ChildShifts object populated from the query conditions when no match is found
@@ -524,6 +531,79 @@ abstract class ShiftsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ShiftsTableMap::COL_DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Signups object
+     *
+     * @param \Signups|ObjectCollection $signups the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildShiftsQuery The current query, for fluid interface
+     */
+    public function filterBySignups($signups, $comparison = null)
+    {
+        if ($signups instanceof \Signups) {
+            return $this
+                ->addUsingAlias(ShiftsTableMap::COL_ID, $signups->getShift(), $comparison);
+        } elseif ($signups instanceof ObjectCollection) {
+            return $this
+                ->useSignupsQuery()
+                ->filterByPrimaryKeys($signups->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterBySignups() only accepts arguments of type \Signups or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Signups relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildShiftsQuery The current query, for fluid interface
+     */
+    public function joinSignups($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Signups');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Signups');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Signups relation Signups object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \SignupsQuery A secondary query class using the current class as primary query
+     */
+    public function useSignupsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinSignups($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Signups', '\SignupsQuery');
     }
 
     /**
