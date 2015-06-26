@@ -49,9 +49,9 @@ $app->get('/shift/signups', function () use ($app) {
         ->useMembersQuery()
         ->endUse()
         ->filterByShift($shiftId)
-        ->addAsColumn('first_name', 'members.first_name')
-        ->addAsColumn('last_name', 'members.last_name')
-        ->select(array('driver', 'user'));
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->select(array('Driver', 'User'));
 
     // execute and return
     returnDataJSON($signups->find()->toJSON(), 'Signupss');
@@ -113,9 +113,9 @@ $app->post('/shift/user/signups/add', function () use ($app) {
         ->useMembersQuery()
         ->endUse()
         ->filterByShift($shiftId)
-        ->addAsColumn('first_name', 'members.first_name')
-        ->addAsColumn('last_name', 'members.last_name')
-        ->select(array('driver', 'user'));
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->select(array('Driver', 'User'));
 
     // execute and return
     returnDataJSON($signups->find()->toJSON(), 'Signupss');
@@ -154,7 +154,7 @@ $app->post('/shift/user/signups/delete', function () use ($app) {
 
     // get first on waitlist
     $waitlisted = WaitlistQuery::create()
-        ->select(array('user', 'shift', 'event', 'timestamp'))
+        ->select(array('User', 'Shift', 'Event', 'Timestamp'))
         ->filterByShift($shiftId)
         ->orderByTimestamp('asc')
         ->limit(1);
@@ -185,9 +185,9 @@ $app->post('/shift/user/signups/delete', function () use ($app) {
         ->useMembersQuery()
         ->endUse()
         ->filterByShift($shiftId)
-        ->addAsColumn('first_name', 'members.first_name')
-        ->addAsColumn('last_name', 'members.last_name')
-        ->select(array('driver', 'user'));
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->select(array('Driver', 'User'));
 
     // execute and return
     returnDataJSON($signups->find()->toJSON(), 'Signupss');

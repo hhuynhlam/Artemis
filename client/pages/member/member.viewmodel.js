@@ -18,9 +18,9 @@ define(function (require) {
 		this.getMembers()
 		.then(function (members) {
 			members.forEach(function (m) {
-				if(m.position & sandbox.constant.role.ACTIVE) { this.actives.push(m); }
-				else if(m.position & sandbox.constant.role.ALUMNUS) { this.alumni.push(m); }
-				else if(m.position & sandbox.constant.role.AFFILIATE) { this.affiliates.push(m); }
+				if(m.Position & sandbox.constant.role.ACTIVE) { this.actives.push(m); }
+				else if(m.Position & sandbox.constant.role.ALUMNUS) { this.alumni.push(m); }
+				else if(m.Position & sandbox.constant.role.AFFILIATE) { this.affiliates.push(m); }
 			}, this);
 
 			this.setupGrid();
@@ -47,26 +47,26 @@ define(function (require) {
                 schema: {
                     model: {
                         fields: {
-                            first_name: { type: "string" },
-                            last_name: { type: "string" },
-                            class_name: { type: "string" },
-                            family: { type: "string" },
-                            position: { type: "number" },
-                            phone: { type: "string" },
-                            email: { type: "string" },
+                            FirstName: { type: "string" },
+                            LastName: { type: "string" },
+                            ClassName: { type: "string" },
+                            Family: { type: "string" },
+                            Position: { type: "number" },
+                            Phone: { type: "string" },
+                            Email: { type: "string" },
                         }
                     }
                 },
                 pageSize: 20
             },
             columns: [
-                { field: "first_name", title: "First Name"},
-                { field: "last_name", title: "Last Name"},
-                { field: "class_name", title: "Class"},
-                { field: "family", title: "Family"},
-                { field: "position", title: "Position"},
-                { field: "phone", title: "Phone"},
-                { field: "email", title: "Email"}
+                { field: "FirstName", title: "First Name"},
+                { field: "LastName", title: "Last Name"},
+                { field: "ClassName", title: "Class"},
+                { field: "Family", title: "Family"},
+                { field: "Position", title: "Position"},
+                { field: "Phone", title: "Phone"},
+                { field: "Email", title: "Email"}
             ],
             filterable: {
             	extra: false

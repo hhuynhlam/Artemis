@@ -35,15 +35,15 @@ define(function (require) {
     EventCalendarViewModel.prototype.transformEvent = function (eventData) {
         var className;
 
-        if (eventData.event_code & sandbox.constant.eventType.SERVICE) { className = 'event-service'; }
-        else if (eventData.event_code & sandbox.constant.eventType.FELLOWSHIP) { className = 'event-fellowship'; }
-        else if (eventData.event_code & sandbox.constant.eventType.GENERAL_EVENT()) { className = 'event-general-event'; }
+        if (eventData.EventCode & sandbox.constant.eventType.SERVICE) { className = 'event-service'; }
+        else if (eventData.EventCode & sandbox.constant.eventType.FELLOWSHIP) { className = 'event-fellowship'; }
+        else if (eventData.EventCode & sandbox.constant.eventType.GENERAL_EVENT()) { className = 'event-general-event'; }
 
         return {
-            title: eventData.name,
-            start: sandbox.date.parseUnix(eventData.date).format('YYYY-MM-DD'),
+            title: eventData.Name,
+            start: sandbox.date.parseUnix(eventData.Date).format('YYYY-MM-DD'),
             className: className,
-            url: window.env.CLIENT_HOST + '/event/' + eventData.id
+            url: window.env.CLIENT_HOST + '/event/' + eventData.Id
         };
     };
 

@@ -24,10 +24,10 @@ block content
                             th Name
                     tbody(data-bind="foreach: formattedEvents")
                         tr
-                            td(data-bind="text: date")
+                            td(data-bind="text: Date")
                             td
-                                a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + id }")
-                                    span(data-bind="text: name")
+                                a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + Id }")
+                                    span(data-bind="text: Name")
 
                 div.text-center
                     button.btn.btn-primary(data-bind="visible: isMore, click: seeMore") See More

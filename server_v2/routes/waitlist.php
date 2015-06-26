@@ -25,10 +25,10 @@ $app->get('/waitlist', function () use ($app) {
         ->useMembersQuery()
         ->endUse()
         ->filterByShift($shiftId)
-        ->addAsColumn('first_name', 'members.first_name')
-        ->addAsColumn('last_name', 'members.last_name')
-        ->addAsColumn('id', 'members.id')
-        ->select('timestamp')
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->addAsColumn('Id', 'members.id')
+        ->select('Timestamp')
         ->orderByTimestamp('asc');
 
     // execute and return
@@ -73,10 +73,10 @@ $app->post('/waitlist/add', function () use ($app) {
         ->useMembersQuery()
         ->endUse()
         ->filterByShift($shiftId)
-        ->addAsColumn('first_name', 'members.first_name')
-        ->addAsColumn('last_name', 'members.last_name')
-        ->addAsColumn('id', 'members.id')
-        ->select('timestamp')
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->addAsColumn('Id', 'members.id')
+        ->select('Timestamp')
         ->orderByTimestamp('asc');
 
     // execute and return
@@ -119,10 +119,10 @@ $app->post('/waitlist/delete', function () use ($app) {
         ->useMembersQuery()
         ->endUse()
         ->filterByShift($shiftId)
-        ->addAsColumn('first_name', 'members.first_name')
-        ->addAsColumn('last_name', 'members.last_name')
-        ->addAsColumn('id', 'members.id')
-        ->select('timestamp')
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->addAsColumn('Id', 'members.id')
+        ->select('Timestamp')
         ->orderByTimestamp('asc');
 
     // execute and return

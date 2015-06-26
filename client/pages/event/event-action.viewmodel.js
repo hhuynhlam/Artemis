@@ -61,7 +61,7 @@ define(function (require) {
         var $target = $($(options.event)[0].target),
             data = {
                 apiKey: window.env.API_KEY,
-                user: this.currentUser.id,
+                user: this.currentUser.Id,
                 shift: $target.attr('data-shiftId'),
                 event: $target.attr('data-eventId')
             }, 

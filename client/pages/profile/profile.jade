@@ -4,7 +4,7 @@ block content
   section#Profile.container
     
     .col-md-12
-      h3(data-bind="text: currentUser.first_name + ' ' + currentUser.last_name")
+      h3(data-bind="text: currentUser.FirstName + ' ' + currentUser.LastName")
       hr 
 
     //- Upcoming Shifts
@@ -24,20 +24,20 @@ block content
             tbody(data-bind="foreach: upcomingEvents")
               tr(data-bind="css: { 'text-danger': conflict }")
                 td
-                  span(data-bind="text: date")
+                  span(data-bind="text: Date")
                   i.fa.fa-exclamation-triangle.left-space(data-bind="visible: conflict")
                 td
-                  a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + event }")
-                    span(data-bind="text: name")
-                td(data-bind="text: start_time")
-                td(data-bind="text: end_time")
+                  a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + Event }")
+                    span(data-bind="text: Name")
+                td(data-bind="text: StartTime")
+                td(data-bind="text: EndTime")
 
     //- Notes
     .col-md-3
       .alert.alert-warning 
         strong Notes
         hr
-        div(data-bind="html: currentUser.notes")
+        div(data-bind="html: currentUser.Notes")
 
     //- Edit Profile
     .col-md-9

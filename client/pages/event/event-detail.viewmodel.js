@@ -13,7 +13,7 @@ define(function (require) {
         this.getEvent(eventId)
         .then(function (_event) {
             _event = _event[0];
-            _event.date = (_event.date) ? sandbox.date.parseUnix(_event.date).format('MM/DD/YYYY') : '';
+            _event.date = (_event.Date) ? sandbox.date.parseUnix(_event.Date).format('MM/DD/YYYY') : '';
             this.event(_event);
         }.bind(this))
         .catch(function (err) {

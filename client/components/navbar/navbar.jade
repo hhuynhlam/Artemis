@@ -70,18 +70,18 @@ nav#Navbar
       ul.nav.navbar-nav.navbar-right
         li.dropdown(data-bind='visible: loggedIn')
           a.dropdown-toggle(href='#', data-toggle='dropdown')
-            span(data-bind='text: currentUser.first_name')
+            span(data-bind='text: currentUser.FirstName')
             b.caret
           
           ul.dropdown-menu
             li
               a
                 span Service Hours: &nbsp;
-                span(data-bind='text: currentUser.total_service')
+                span(data-bind='text: currentUser.TotalService')
             li
               a
                 span Fellowship Hours: &nbsp;
-                span(data-bind='text: currentUser.total_fellowship')
+                span(data-bind='text: currentUser.TotalFellowship')
             li.divider
             li
               a(href='#/profile') Profile

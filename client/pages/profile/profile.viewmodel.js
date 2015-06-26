@@ -12,17 +12,17 @@ define(function (require) {
 		this.upcomingEvents = ko.observableArray([]);
 
 		this.formViewModel = {
-			phone: ko.observable(this.currentUser.phone),
-			email: ko.observable(this.currentUser.email),
-			shirtSize: ko.observable(this.currentUser.shirt_size),
-			schoolAddress: ko.observable(this.currentUser.temp_address),
-			permAddress: ko.observable(this.currentUser.perm_address),
+			phone: ko.observable(this.currentUser.Phone),
+			email: ko.observable(this.currentUser.Email),
+			shirtSize: ko.observable(this.currentUser.ShirtSize),
+			schoolAddress: ko.observable(this.currentUser.TempAddress),
+			permAddress: ko.observable(this.currentUser.PermAddress),
 			newPassword: ko.observable(''),
 			isDirty: ko.observable(false)
 		};
 
 		// format currentUser data
-		this.currentUser.notes = sandbox.util.nlToBr(this.currentUser.notes);
+		this.currentUser.Notes = sandbox.util.nlToBr(this.currentUser.Notes);
 
 		// setup submit actions for each form inputs
 		sandbox.util.forIn(this.formViewModel, function (val, key) {
@@ -45,11 +45,11 @@ define(function (require) {
 
 	// Edit Profile
 	ProfileViewModel.prototype.reset = function () {
-		this.formViewModel.phone(this.currentUser.phone);
-		this.formViewModel.email(this.currentUser.email);
-		this.formViewModel.shirtSize(this.currentUser.shirt_size);
-		this.formViewModel.schoolAddress(this.currentUser.temp_address);
-		this.formViewModel.permAddress(this.currentUser.perm_address);
+		this.formViewModel.phone(this.currentUser.Phone);
+		this.formViewModel.email(this.currentUser.Email);
+		this.formViewModel.shirtSize(this.currentUser.ShirtSize);
+		this.formViewModel.schoolAddress(this.currentUser.TempAddress);
+		this.formViewModel.permAddress(this.currentUser.PermAddress);
 		this.formViewModel.newPassword('');
 		this.formViewModel.isDirty(false);
 	};
@@ -116,7 +116,7 @@ define(function (require) {
 		var url = window.env.SERVER_HOST + '/signup/user',
 			data = {
 				apiKey: window.env.API_KEY,
-				id: this.currentUser.id
+				id: this.currentUser.Id
 			};
 
 		sandbox.http.get(url, data)
@@ -132,12 +132,12 @@ define(function (require) {
 	ProfileViewModel.prototype.formatEventData = function (events) {
 		var _events = [];
 		events.forEach(function (e) {
-			var conflict = sandbox.util.find(_events, function (_e) { return e.start_time >= _e.start_time && e.start_time <= _e.end_time; });
+			var conflict = sandbox.util.find(_events, function (_e) { return e.StartTime >= _e.StartTime && e.StartTime <= _e.EndTime; });
 			_events.push(sandbox.util.clone(e));
 
-			if (e.start_time) { e.start_time = sandbox.date.parseUnix(e.start_time).format('h:mm A'); }
-			if (e.end_time) { e.end_time = sandbox.date.parseUnix(e.end_time).format('h:mm A'); }
-			if (e.date) { e.date = sandbox.date.parseUnix(e.date).format('MM/DD/YYYY'); }
+			if (e.StartTime) { e.StartTime = sandbox.date.parseUnix(e.StartTime).format('h:mm A'); }
+			if (e.EndTime) { e.EndTime = sandbox.date.parseUnix(e.EndTime).format('h:mm A'); }
+			if (e.Date) { e.Date = sandbox.date.parseUnix(e.Date).format('MM/DD/YYYY'); }
 			if (conflict) { e.conflict = true; } else { e.conflict = false; }
 		});
 

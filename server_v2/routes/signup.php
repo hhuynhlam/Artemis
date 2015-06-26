@@ -28,11 +28,11 @@ $app->get('/signup/user', function () use ($app) {
         ->useShiftsQuery()
         ->endUse()
         ->filterByUser($userId)
-        ->addAsColumn('start_time', 'shifts.start_time')
-        ->addAsColumn('end_time', 'shifts.end_time')
-        ->addAsColumn('name', 'events.name')
-        ->addAsColumn('date', 'events.date')
-        ->select(array('event', 'user', 'shift', 'timestamp'))
+        ->addAsColumn('StartTime', 'shifts.start_time')
+        ->addAsColumn('EndTime', 'shifts.end_time')
+        ->addAsColumn('Name', 'events.name')
+        ->addAsColumn('Date', 'events.date')
+        ->select(array('Event', 'User', 'Shift', 'Timestamp'))
         ->orderByTimestamp('asc');
 
     // execute and return

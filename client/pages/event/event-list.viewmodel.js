@@ -21,7 +21,7 @@ define(function (require) {
 		this.formattedEvents = ko.computed(function () {
 			var result = [];
 			this.events().forEach(function (e) {
-				e.date = (e.date) ? sandbox.date.parseUnix(e.date).format('MM/DD/YYYY') : '';
+				e.Date = (e.Date) ? sandbox.date.parseUnix(e.Date).format('MM/DD/YYYY') : '';
 				result.push(e);
 			});
 			return result;
@@ -157,6 +157,7 @@ define(function (require) {
                 })
                 .then(function(events){
                     this.events(events);
+                    this.isMore(true); 
                 }.bind(this))
                 .catch(function (err) {
                     console.error('Error: Cannot filter events (', err, ')');
