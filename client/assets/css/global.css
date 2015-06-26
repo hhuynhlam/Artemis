@@ -2987,6 +2987,21 @@ td.k-state-focused.k-state-selected,
   border-bottom-right-radius: 0;
   -webkit-appearance: none;
 }
+@media screen and (max-width: 992px) {
+  .k-grid-header {
+    display: none;
+  }
+  table[role='grid'] tr.k-alt {
+    background-color: #eeeeee;
+  }
+  table[role='grid'] tr.k-alt.k-state-selected {
+    background-color: #337ab7;
+  }
+  table[role='grid'] td {
+    display: block;
+    min-height: 25px;
+  }
+}
 div.k-window-content {
   padding: 15px;
 }

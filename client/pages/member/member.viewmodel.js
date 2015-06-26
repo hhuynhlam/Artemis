@@ -78,12 +78,14 @@ define(function (require) {
             mobile: true,
             pageable: true,
             selectable: 'row',
-            scrollable: true,
+            scrollable: false,
             sortable: true,
             change: function () {
             	// do something when selected
             }
 		});
+        
+        this.makeGridResponsive();
 	};
 
 	MemberViewModel.prototype.refreshGrid = function (newData) {
@@ -110,6 +112,14 @@ define(function (require) {
     MemberViewModel.prototype.formatPosition = function (dataItem) {
         var roles = role.getPositionRoles(dataItem.Position);
         return roles.join(", ");
+    };
+
+    MemberViewModel.prototype.makeGridResponsive = function () {
+        $(window).on("resize", function() {
+            if ($(window).width() < 992) {
+                this.$selector.data('kendoGrid').resize();
+            }
+        }.bind(this));
     };
 
 	return MemberViewModel;
