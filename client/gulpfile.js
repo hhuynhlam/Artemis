@@ -138,10 +138,11 @@ gulp.task('copy', function() {
 //
 gulp.task('rjs', function() {
     rjs({
-        baseUrl: "./",
-        mainConfigFile: "./core/require-config.js",
-        name: "./app.js",
-        out: "main.js"
+        baseUrl: './',
+        insertRequire: ['app.js'],
+        mainConfigFile: './core/require-config.js',
+        name: './app.js',
+        out: 'main.js'
     })
     .pipe(uglify())
     .pipe(gulp.dest('_dist'));

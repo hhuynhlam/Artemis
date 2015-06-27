@@ -1,13 +1,13 @@
 'use strict';
 
 define(function (require) {
-    var store = require('storage');
+    var store = require('store');
 
-    var localStorage = {
+    var storage = {
         read: function (name) { return store.get(name); },
         remove: function (name) { store.remove(name); },
         set: function (name, val) { store.set(name, val); }
     };
 
-    return localStorage;
+    return storage;
 });

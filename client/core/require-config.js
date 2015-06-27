@@ -39,7 +39,6 @@ require.config({
 
         // Vendor
         'bootstrap'                     : 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
-        'storage'                       : 'vendor/bower_components/store/dist/store2.min',
         'fullcalendar'                  : 'vendor/bower_components/fullcalendar/dist/fullcalendar.min',
         'jquery'                        : 'vendor/bower_components/jquery/dist/jquery.min',
         'k'                             : 'vendor/bower_components/kendo/js',
@@ -48,8 +47,9 @@ require.config({
         'lodash'                        : 'vendor/bower_components/lodash/dist/lodash.min',
         'md5'                           : 'vendor/bower_components/blueimp-md5/js/md5.min',
         'moment'                        : 'vendor/bower_components/moment/min/moment.min',
-        'sammy'                         : 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
         'Q'                             : 'vendor/bower_components/q/q',
+        'sammy'                         : 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
+        'store'                         : 'vendor/bower_components/store/store.min',
 
         // RequireJS Plugins
         'async'                         : 'vendor/bower_components/requirejs-plugins/src/async',

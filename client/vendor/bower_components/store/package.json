@@ -1,59 +1,49 @@
 {
-  "name": "store2",
-  "version": "2.3.0",
-  "description": "Better localStorage",
-  "keywords": [
-    "localStorage",
-    "sessionStorage",
-    "json",
-    "namespace",
-    "store"
+  "name": "store",
+  "description": "A localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood",
+  "version": "1.3.17",
+  "homepage": "https://github.com/marcuswestin/store.js",
+  "author": "Marcus Westin <narcvs@gmail.com> (http://marcuswest.in)",
+  "contributors": [
+    "Matt Pizzimenti <mjpizz+github@gmail.com> (http://mjpizz.com)",
+    "Long Ouyang (https://github.com/longouyang)",
+    "Paul Irish (http://paulirish.com)",
+    "Guillermo Rauch <rauchg@gmail.com> (https://github.com/guille)",
+    "whitmer (https://github.com/whitmer)",
+    "Steven Black <steveb@stevenblack.com> (https://github.com/StevenBlack)",
+    "Marcus Tucker <info@marcustucker.com> (https://github.com/MarcusJT)",
+    "Leonid Bugaev <leonsbox@gmail.com> (https://github.com/buger)",
+    "Per Eckerdal <per.eckerdal@gmail.com> (https://github.com/pereckerdal)",
+    "Fredrik Blomqvist (https://github.com/blq)",
+    "Ryan Graham (https://github.com/rmg)",
+    "Ben Rudolph (https://github.com/benrudolph)",
+    "Haoliang Gao (https://github.com/popomore)"
   ],
-  "author": {
-    "name": "Nathan Bubna",
-    "email": "nathan@esha.com",
-    "url": "http://www.esha.com/"
-  },
-  "engines": {
-    "node": ">= 0.8.0"
-  },
-  "files": [
-    "src",
-    "dist"
-  ],
-  "main": "dist/store2.js",
-  "bugs": {
-    "url": "http://github.com/nbubna/store/issues",
-    "email": "nathan@esharesearch.com"
-  },
   "repository": {
     "type": "git",
-    "url": "http://github.com/nbubna/store.git"
+    "url": "git://github.com/marcuswestin/store.js.git"
+  },
+  "bugs": {
+    "url": "http://github.com/marcuswestin/store.js/issues"
+  },
+  "engines": {
+    "browser": "*",
+    "node": "*"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    },
-    {
-      "type": "GPL",
-      "url": "http://www.gnu.org/licenses/gpl.html"
+      "url": "https://raw.github.com/marcuswestin/store.js/master/store.js"
     }
   ],
-  "scripts": {
-    "test": "grunt qunit"
+  "main": "store",
+  "directories": {
+    "lib": "."
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-cli": "^0.1",
-    "grunt-component-build": "~0.2.7",
-    "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-concat": "~0.1.3",
-    "grunt-contrib-jshint": "~0.1.1",
-    "grunt-contrib-qunit": "~0.2.0",
-    "grunt-contrib-uglify": "~0.1.1",
-    "grunt-contrib-watch": "~0.3.1",
-    "grunt-lib-phantomjs": "^0.7.0",
-    "phantomjs": "~1.9.0"
+    "uglify-js": "v1.3.4"
+  },
+  "spm": {
+    "main": "store.js"
   }
 }

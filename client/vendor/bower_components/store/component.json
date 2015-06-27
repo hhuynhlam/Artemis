@@ -1,27 +1,7 @@
 {
-  "name": "store",
-  "version": "2.3.0",
-  "description": "A better way to use localStorage and sessionStorage",
-  "repo": "nbubna/store",
-  "keywords": [
-    "localStorage",
-    "sessionStorage",
-    "json",
-    "namespace",
-    "store"
-  ],
-  "dependencies": {},
-  "development": {},
-  "license": "MIT",
-  "main": "dist/store2.js",
-  "scripts": [
-    "dist/store2.js",
-    "src/store.on.js",
-    "src/store.cache.js",
-    "src/store.measure.js",
-    "src/store.old.js",
-    "src/store.overflow.js",
-    "src/store.quota.js",
-    "src/store.onlyreal.js"
-  ]
+  "name" : "store",
+  "version" : "1.3.17",
+  "description" : "a simple API for cross browser local storage",
+  "main" : "store.js",
+  "scripts" : [ "store.js" ]
 }
