@@ -75,7 +75,6 @@ define(function (require) {
             filterable: {
             	extra: false
             },
-            mobile: true,
             pageable: true,
             selectable: 'row',
             scrollable: false,
