@@ -41,13 +41,25 @@
 <!-- // container -->
 <div class="container">
 
-<!-- Grid-->
+  <!-- Grid-->
   <div class="panel panel-default">
       <div class="panel-heading">Grid</div>
       <div class="panel-body">
         <div id="grid"></div>
       </div>
   </div>
+
+  
+  <!-- Modal-->
+  <div class="panel panel-default">
+      <div class="panel-heading">Modal</div>
+      <div class="panel-body">
+        <a id="openModal" class="btn btn-primary">Open Modal</a>
+        <div id="Modal">
+        </div>
+      </div>
+  </div>
+
 
   <!-- Multiselect-->
   <div class="panel panel-default">
@@ -70,7 +82,7 @@
 <script>
   $(document).ready(function() {
       // grid
-      $("#grid").kendoGrid({
+      $('#grid').kendoGrid({
           dataSource: {
               type: "odata",
               transport: {
@@ -101,9 +113,28 @@
           selectable: 'row',
           sortable: true
       });
+      
+
+      // modal
+      $('#openModal').on('click', function () {
+        var $modal =$('#Modal');
+        if($modal.data('kendoWindow')) {
+          $modal.data('kendoWindow').open();
+        } else {
+          $modal.html('<section class="text-center"><div>Are you sure you want to make these changes?</div><div class="top-space"><button class="btn btn-default closeModal">No</button><button class="btn btn-success closeModal">Yes </button></div>');
+          
+          $('.closeModal').on('click', function () {
+            $('#Modal').data('kendoWindow').close();
+          });
+          
+          $modal.kendoWindow({ title: 'Modal Title', modal: true });
+          $modal.data('kendoWindow').center();
+        }
+      });
+
 
       // multiselect
-      $("#required").kendoMultiSelect().data("kendoMultiSelect");
+      $('#required').kendoMultiSelect().data("kendoMultiSelect");
   
   });
     </script>
