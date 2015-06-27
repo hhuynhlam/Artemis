@@ -15,7 +15,7 @@ define(function (require) {
             return sandbox.http.get(url, data)
             .then(function (user) {
                 if (user.length !== 0) {
-                    sandbox.cookie.set('apo_user', JSON.stringify(user[0]), { expires: 1, path: window.env.CLIENT_HOST });
+                    sandbox.storage.set('apo_user', JSON.stringify(user[0]));
                     return user;
                 } else {
                     console.error('Error: Could not login (Incorrect username and/or password)');
@@ -27,20 +27,20 @@ define(function (require) {
         },
 
         logout: function () {
-            sandbox.cookie.remove('apo_user', { path: window.env.CLIENT_HOST });
+            sandbox.storage.remove('apo_user');
         },
 
         isLoggedIn: function () {
-            return (sandbox.cookie.read('apo_user')) ? true : false;
+            return (sandbox.storage.read('apo_user')) ? true : false;
         },
 
         currentUser: function () {
-            var user = sandbox.cookie.read('apo_user');
+            var user = sandbox.storage.read('apo_user');
             return (user) ? JSON.parse(user) : null;
         },
 
         setCurrentUser: function (user) {
-            sandbox.cookie.set('apo_user', JSON.stringify(user[0]), { expires: 1, path: window.env.CLIENT_HOST });
+            sandbox.storage.set('apo_user', JSON.stringify(user[0]));
         }
     };
 

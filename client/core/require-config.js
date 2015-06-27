@@ -39,7 +39,7 @@ require.config({
 
         // Vendor
         'bootstrap'                     : 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
-        'cookie'                        : 'vendor/bower_components/jquery.cookie/jquery.cookie',
+        'storage'                       : 'vendor/bower_components/store/dist/store2.min',
         'fullcalendar'                  : 'vendor/bower_components/fullcalendar/dist/fullcalendar.min',
         'jquery'                        : 'vendor/bower_components/jquery/dist/jquery.min',
         'k'                             : 'vendor/bower_components/kendo/js',
@@ -68,7 +68,6 @@ require.config({
         'jquery'                        : { exports: 'jQuery' },
         'bootstrap'                     : { deps: ['jquery'] },
         'fullcalendar'                  : { deps: ['jquery'] },
-        'cookie'                        : { deps: ['jquery'] },
         'k/kendo.core.min'              : { deps: ['jquery'] },
         'sammy'                         : { deps: ['jquery'] }
     },

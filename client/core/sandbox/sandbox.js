@@ -2,7 +2,7 @@
 
 define(function (require) {
     var constant = require('core/sandbox/constant/constant');
-    var cookie = require('core/sandbox/cookie/cookie');
+    var storage = require('core/sandbox/storage/storage');
     var crypto = require('core/sandbox/crypto/crypto');
     var date = require('core/sandbox/date/date');
     var http = require('core/sandbox/http/http');
@@ -12,7 +12,7 @@ define(function (require) {
 
     return {
         constant: constant,
-        cookie: cookie,
+        storage: storage,
         crypto: crypto,
         date: date,
         http: http,
