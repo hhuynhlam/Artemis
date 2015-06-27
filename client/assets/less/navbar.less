@@ -1,5 +1,29 @@
 .navbar { .border-radius(0); }
 
+.navbar-inverse {
+    background-image: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+
+    .navbar-brand,
+    .navbar-nav>li>a { 
+        color: lighten(@gray, 50%); 
+    }
+
+    .open>a, 
+    .open>a:hover, 
+    .open>a:focus {
+        border-color: inherit;
+    }
+}
+
+.navbar-nav a.border {
+    border: 2px solid;
+    padding: 10px;
+    margin: 5px;
+}
+
+
 #Navbar {
     position: fixed;
     top: 0;

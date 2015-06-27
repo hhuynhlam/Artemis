@@ -1,6 +1,6 @@
 nav#Navbar
   // Navigation
-  .navbar.navbar-default
+  .navbar.navbar-inverse
     .navbar-header
       // Toggle Button
       button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-responsive-collapse')
@@ -69,7 +69,7 @@ nav#Navbar
       // Right Links
       ul.nav.navbar-nav.navbar-right
         li.dropdown(data-bind='visible: loggedIn')
-          a.dropdown-toggle(href='#', data-toggle='dropdown')
+          a.border.dropdown-toggle(href='#', data-toggle='dropdown')
             span(data-bind='text: currentUser.FirstName')
             b.caret
           

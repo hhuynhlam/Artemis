@@ -34,6 +34,20 @@ define(function (require) {
 	// Override this function so that Sammy doesn't mess with forms
     app._checkFormSubmission = function() { return false; };
 
+    // Override swap function for post-actions and transitions
+	app.swap = function(content, callback) {
+		
+		// replace html
+		app.$element().html(content);
+
+		// check for content
+		if($('.content').html().trim()) {
+			$('.content').css('display', 'block');
+		}
+
+		// apply callback
+		if (callback) { callback.apply(); }
+	};
 
 	// run app
 	$(function() { 

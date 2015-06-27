@@ -2895,9 +2895,51 @@ td.k-state-focused.k-state-selected,
   border-bottom-right-radius: 0;
   -webkit-appearance: none;
 }
+/**
+ * Body
+ */
+body {
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  height: 100vh;
+}
+@media all and (max-width: 767px) {
+  body {
+    background-image: url('../../assets/img/oak-tree-bg-xs.jpg');
+  }
+}
+@media all and (min-width: 768px) {
+  body {
+    background-image: url('../../assets/img/oak-tree-bg-sm.jpg');
+  }
+}
+@media all and (min-width: 992px) {
+  body {
+    background-image: url('../../assets/img/oak-tree-bg-md.jpg');
+  }
+}
+@media all and (min-width: 1200px) {
+  body {
+    background-image: url('../../assets/img/oak-tree-bg-lg.jpg');
+  }
+}
+.content {
+  background-color: #ffffff;
+  display: none;
+  height: auto;
+  min-height: calc(100vh - 54px);
+}
+/**
+ * MainView
+ */
 #MainView {
   padding-top: 72px;
 }
+/**
+ * Utilities
+ */
 .top-space {
   margin-top: 15px;
 }
@@ -3035,6 +3077,25 @@ div.k-window-content {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   -webkit-appearance: none;
+}
+.navbar-inverse {
+  background-image: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+}
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-nav > li > a {
+  color: #d5d5d5;
+}
+.navbar-inverse .open > a,
+.navbar-inverse .open > a:hover,
+.navbar-inverse .open > a:focus {
+  border-color: inherit;
+}
+.navbar-nav a.border {
+  border: 2px solid;
+  padding: 10px;
+  margin: 5px;
 }
 #Navbar {
   position: fixed;

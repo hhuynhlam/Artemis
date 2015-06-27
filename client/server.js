@@ -13,7 +13,7 @@ app.route('/').get(function(req, res) {
 	res.sendFile(path.resolve(__dirname + '/index.html'));
 });
 
-// Dev route
+// Dev routes
 app.route('/dev').get(function(req, res) {
     res.sendFile(path.resolve(__dirname + '/_dev/bootstrap-style-guide.html'));
 });
