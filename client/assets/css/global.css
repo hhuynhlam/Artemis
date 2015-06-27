@@ -2910,6 +2910,15 @@ td.k-state-focused.k-state-selected,
 .right-space {
   margin-right: 15px;
 }
+.v-top {
+  vertical-align: top;
+}
+.v-middle {
+  vertical-align: middle;
+}
+.v-bottom {
+  vertical-align: bottom;
+}
 .breadcrumb {
   margin-top: -20px;
 }

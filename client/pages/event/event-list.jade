@@ -10,8 +10,13 @@ block content
         .container
             h2 
                 | Upcoming Events
-                .btn.btn-primary.pull-right(data-bind="visible: eventView() === 'upcoming', click: seePastEvents") View Past Events
-                .btn.btn-primary.pull-right(data-bind="visible: eventView() === 'past', click: seeUpcomingEvents") View Upcoming Events
+                .visible-xs-block.top-space
+                    .col-xs-12.btn.btn-primary(data-bind="visible: eventView() === 'upcoming', click: seePastEvents") View Past Events
+                    .col-xs-12.btn.btn-primary(data-bind="visible: eventView() === 'past', click: seeUpcomingEvents") View Upcoming Events
+                
+                .hidden-xs.pull-right
+                    .btn.btn-primary(data-bind="visible: eventView() === 'upcoming', click: seePastEvents") View Past Events
+                    .btn.btn-primary(data-bind="visible: eventView() === 'past', click: seeUpcomingEvents") View Upcoming Events
             
             .well.col-xs-12
 
