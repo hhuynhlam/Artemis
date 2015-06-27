@@ -13,6 +13,14 @@ app.route('/').get(function(req, res) {
 	res.sendFile(path.resolve(__dirname + '/index.html'));
 });
 
+// Dev route
+app.route('/dev').get(function(req, res) {
+    res.sendFile(path.resolve(__dirname + '/_dev/bootstrap-style-guide.html'));
+});
+app.route('/dev-kendo').get(function(req, res) {
+    res.sendFile(path.resolve(__dirname + '/_dev/kendo-style-guide.html'));
+});
+
 // Error routes
 app.get('*', function(req, res) {
  	res.redirect('/');
