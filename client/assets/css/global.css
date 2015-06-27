@@ -2987,7 +2987,7 @@ td.k-state-focused.k-state-selected,
   border-bottom-right-radius: 0;
   -webkit-appearance: none;
 }
-@media screen and (max-width: 992px) {
+@media all and (max-width: 992px) {
   .k-grid-header {
     display: none;
   }
