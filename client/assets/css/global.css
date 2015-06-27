@@ -3001,6 +3001,9 @@ td.k-state-focused.k-state-selected,
     display: block;
     min-height: 25px;
   }
+  table[role='grid'] td:empty {
+    display: none;
+  }
 }
 div.k-window-content {
   padding: 15px;
