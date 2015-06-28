@@ -2907,22 +2907,22 @@ body {
 }
 @media all and (max-width: 767px) {
   body {
-    background-image: url('../../assets/img/oak-tree-bg-xs.jpg');
+    background-image: url('assets/img/oak-tree-bg-xs.jpg');
   }
 }
 @media all and (min-width: 768px) {
   body {
-    background-image: url('../../assets/img/oak-tree-bg-sm.jpg');
+    background-image: url('assets/img/oak-tree-bg-sm.jpg');
   }
 }
 @media all and (min-width: 992px) {
   body {
-    background-image: url('../../assets/img/oak-tree-bg-md.jpg');
+    background-image: url('assets/img/oak-tree-bg-md.jpg');
   }
 }
 @media all and (min-width: 1200px) {
   body {
-    background-image: url('../../assets/img/oak-tree-bg-lg.jpg');
+    background-image: url('assets/img/oak-tree-bg-lg.jpg');
   }
 }
 .content {
@@ -3080,8 +3080,13 @@ div.k-window-content {
 }
 .navbar-inverse {
   background-image: none;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: none;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.navbar-inverse .navbar-brand {
+  border-right: 1px solid;
+  height: 20px;
+  margin: 15px 0;
+  padding: 0 15px;
 }
 .navbar-inverse .navbar-brand,
 .navbar-inverse .navbar-nav > li > a {
@@ -3096,6 +3101,7 @@ div.k-window-content {
   border: 2px solid;
   padding: 10px;
   margin: 3px;
+  margin-right: 15px;
 }
 #Navbar {
   position: fixed;
