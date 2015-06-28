@@ -16,7 +16,7 @@
 @input-text-color: @widget-text-color;
 
 /* Links */
-@link-text-color: #428bca;
+@link-text-color: @brand-primary;
 
 /* Headers */
 @header-text-color: @widget-text-color;
@@ -37,28 +37,28 @@
 /* Widget States */
 
 /* Hover State */
-@hover-text-color: #333333;
+@hover-text-color: #fff;
 @hover-gradient: none;
-@hover-background-color: #ebebeb;
-@hover-border-color: #adadad;
+@hover-background-color: @brand-primary;
+@hover-border-color: @brand-primary;
 @hover-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
 
 /* Selects, Dropdowns */
-@select-background-color: #ebebeb;
+@select-background-color: @brand-primary;
 @select-border-color: @hover-border-color;
-@select-hover-background-color: #ebebeb;
-@select-group-background-color: #ffffff;
+@select-hover-background-color: @brand-primary;
+@select-group-background-color: #fff;
 
 /* Selected State */
 @selected-text-color: #ffffff;
 @selected-gradient: none;
-@selected-background-color: #428bca;
-@selected-border-color: #428bca;
+@selected-background-color: @brand-primary;
+@selected-border-color: @brand-primary;
 @selected-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 
 /*Focused State*/
-@focused-border-color: #67afe9;
-@focused-shadow: 0 0 7px 0 #67afe9;
+@focused-border-color: @brand-primary;
+@focused-shadow: 0 0 7px 0 @brand-primary;
 @focused-item-shadow: inset 0 0 7px 0 #67afe9;
 @focused-active-item-shadow: inset 0 0 10px 3px darken(#428bca, 8%);
 
@@ -175,8 +175,8 @@
 @tabstrip-tabs-color: #428bca;
 @form-widget-color: @widget-text-color;
 @drop-down-border-color: @widget-border-color;
-@drop-down-hover-border-color: #adadad;
-@drop-down-focused-border-color: #67afe9;
+@drop-down-hover-border-color: @brand-primary;
+@drop-down-focused-border-color: @brand-primary;
 @drop-down-background: #ffffff;
 @drop-down-text-color: @widget-text-color;
 @secondary-border-color: #cccccc;
@@ -196,11 +196,11 @@
 @treeview-text-color: #428bca;
 @treeview-hover-text-color: #428bca;
 @tabstrip-tabs-hover-color: #428bca;
-@pager-hover-color: #428bca;
+@pager-hover-color: #fff;
 @multiselect-buttons-border-color: #357ebd;
 @multiselect-buttons-color: #ffffff;
-@multiselect-buttons-background: #428bca;
-@multiselect-buttons-hover-background: #3276b1;
+@multiselect-buttons-background: @brand-primary;
+@multiselect-buttons-hover-background: darken(@brand-primary, 10%);
 @multiselect-buttons-hover-border-color: #295f8e;
 @slider-selection-background-color: #ebebeb;
 @form-widgets-border-color: #cccccc;
