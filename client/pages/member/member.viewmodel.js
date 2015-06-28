@@ -114,8 +114,9 @@ define(function (require) {
     };
 
     MemberViewModel.prototype.makeGridResponsive = function () {
-        $(window).on("resize", function() {
-            if ($(window).width() < 992) {
+        $(window).unbind('resize');
+        $(window).on('resize', function() {
+            if ($(window).width() < 992 && this.$selector.data('kendoGrid')) {
                 this.$selector.data('kendoGrid').resize();
             }
         }.bind(this));

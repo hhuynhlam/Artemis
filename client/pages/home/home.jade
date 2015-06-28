@@ -2,76 +2,28 @@ extends ../_layout.jade
 
 block no-content
     section#Home
-        .container
-        //- .jumbotron.text-center
-        //-     h1(style="color: red;") Warning!
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
-        //-     p This area is currently under development. Tread carefully.
+        .container-fluid
+            .jumbotron
+                .visible-xs-block
+                    div(data-bind='visible: !loggedIn')
+                        h3 You must be the change you wish to see in the world. 
+                        p - Mahatma Ghandi
+                        a.btn.btn-block.btn-primary.btn-lg.double-top-space(href='#/login') Login
+
+                    div(data-bind='visible: loggedIn')
+                        h3 You must be the change you wish to see in the world. 
+                        p - Mahatma Ghandi
+                        a.btn.btn-block.btn-info.btn-lg.double-top-space(href='#/member/roster') View Roster
+                        a.btn.btn-block.btn-success.btn-lg.top-space(href='#/event') Upcoming Events
+
+                .hidden-xs
+                    h1 
+                        span.small Be a 
+                        | Leader 
+                    h1 
+                        span.small Be a 
+                        | Friend 
+                    h1 
+                        span.small Be of 
+                        | Service 
+                
