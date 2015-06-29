@@ -2995,16 +2995,16 @@ td.k-state-focused.k-state-selected,
   color: #cccccc;
 }
 .alert-info {
-  color: #5c6153;
+  color: #42463b;
 }
 .alert-info .alert-link {
-  color: #353830;
+  color: #1b1c18;
 }
 .alert-warning {
-  color: #c77c11;
+  color: #985f0d;
 }
 .alert-warning .alert-link {
-  color: #81500b;
+  color: #523307;
 }
 .alert-danger {
   color: #f2f2f2;
@@ -3024,22 +3024,22 @@ body {
 }
 @media all and (max-width: 767px) {
   body {
-    background-image: url('../../assets/img/oak-tree-bg-xs.jpg');
+    background-image: url('assets/img/oak-tree-bg-xs.jpg');
   }
 }
 @media all and (min-width: 768px) {
   body {
-    background-image: url('../../assets/img/oak-tree-bg-sm.jpg');
+    background-image: url('assets/img/oak-tree-bg-sm.jpg');
   }
 }
 @media all and (min-width: 992px) {
   body {
-    background-image: url('../../assets/img/oak-tree-bg-md.jpg');
+    background-image: url('assets/img/oak-tree-bg-md.jpg');
   }
 }
 @media all and (min-width: 1200px) {
   body {
-    background-image: url('../../assets/img/oak-tree-bg-lg.jpg');
+    background-image: url('assets/img/oak-tree-bg-lg.jpg');
   }
 }
 .content {
