@@ -165,7 +165,7 @@
 
 // Mixin for generating new styles
 .alert-styles(@color) {
-  #gradient > .vertical(@start-color: @color; @end-color: darken(@color, 7.5%));
+  background-color: lighten(@color, 25%);
   border-color: darken(@color, 15%);
 }
 
@@ -246,6 +246,17 @@
 .panel-info > .panel-heading      { .panel-heading-styles(@panel-info-heading-bg); }
 .panel-warning > .panel-heading   { .panel-heading-styles(@panel-warning-heading-bg); }
 .panel-danger > .panel-heading    { .panel-heading-styles(@panel-danger-heading-bg); }
+
+
+//
+// Tables
+// --------------------------------------------------
+// 
+.table-row-variant(active; lighten(@brand-primary, 30%));
+.table-row-variant(success; lighten(@state-success-bg, 30%));
+.table-row-variant(info; lighten(@state-info-bg, 30%));
+.table-row-variant(warning; lighten(@state-warning-bg, 30%));
+.table-row-variant(danger; lighten(@state-danger-bg, 30%));
 
 
 //

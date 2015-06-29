@@ -1,3 +1,8 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900);
+body {
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
 .btn-default,
 .btn-primary,
 .btn-success,
@@ -239,35 +244,19 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 .alert-success {
-  background-image: -webkit-linear-gradient(top, #114466 0%, #0c2e45 100%);
-  background-image: -o-linear-gradient(top, #114466 0%, #0c2e45 100%);
-  background-image: linear-gradient(to bottom, #114466 0%, #0c2e45 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff114466', endColorstr='#ff0c2e45', GradientType=0);
-  border-color: #061824;
+  background-color: #b7cba2;
+  border-color: #51683a;
 }
 .alert-info {
-  background-image: -webkit-linear-gradient(top, #909684 0%, #7d8370 100%);
-  background-image: -o-linear-gradient(top, #909684 0%, #7d8370 100%);
-  background-image: linear-gradient(to bottom, #909684 0%, #7d8370 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff909684', endColorstr='#ff7d8370', GradientType=0);
+  background-color: #ced1c9;
   border-color: #696f5f;
 }
 .alert-warning {
-  background-image: -webkit-linear-gradient(top, #f0ad4e 0%, #ed9d2b 100%);
-  background-image: -o-linear-gradient(top, #f0ad4e 0%, #ed9d2b 100%);
-  background-image: linear-gradient(to bottom, #f0ad4e 0%, #ed9d2b 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0ad4e', endColorstr='#ffed9d2b', GradientType=0);
-  border-color: #df8a13;
+  background-color: #fffbe5;
+  border-color: #ffda19;
 }
 .alert-danger {
-  background-image: -webkit-linear-gradient(top, #ab4433 0%, #8e382a 100%);
-  background-image: -o-linear-gradient(top, #ab4433 0%, #8e382a 100%);
-  background-image: linear-gradient(to bottom, #ab4433 0%, #8e382a 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffab4433', endColorstr='#ff8e382a', GradientType=0);
+  background-color: #da9083;
   border-color: #702d21;
 }
 .progress {
@@ -357,11 +346,11 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff779955', endColorstr='#ff6a894c', GradientType=0);
 }
 .panel-success > .panel-heading {
-  background-image: -webkit-linear-gradient(top, #114466 0%, #0d3550 100%);
-  background-image: -o-linear-gradient(top, #114466 0%, #0d3550 100%);
-  background-image: linear-gradient(to bottom, #114466 0%, #0d3550 100%);
+  background-image: -webkit-linear-gradient(top, #779955 0%, #6a894c 100%);
+  background-image: -o-linear-gradient(top, #779955 0%, #6a894c 100%);
+  background-image: linear-gradient(to bottom, #779955 0%, #6a894c 100%);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff114466', endColorstr='#ff0d3550', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff779955', endColorstr='#ff6a894c', GradientType=0);
 }
 .panel-info > .panel-heading {
   background-image: -webkit-linear-gradient(top, #909684 0%, #848a76 100%);
@@ -383,6 +372,111 @@
   background-image: linear-gradient(to bottom, #ab4433 0%, #973c2d 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffab4433', endColorstr='#ff973c2d', GradientType=0);
+}
+.table > thead > tr > td.active,
+.table > tbody > tr > td.active,
+.table > tfoot > tr > td.active,
+.table > thead > tr > th.active,
+.table > tbody > tr > th.active,
+.table > tfoot > tr > th.active,
+.table > thead > tr.active > td,
+.table > tbody > tr.active > td,
+.table > tfoot > tr.active > td,
+.table > thead > tr.active > th,
+.table > tbody > tr.active > th,
+.table > tfoot > tr.active > th {
+  background-color: #c3d4b3;
+}
+.table-hover > tbody > tr > td.active:hover,
+.table-hover > tbody > tr > th.active:hover,
+.table-hover > tbody > tr.active:hover > td,
+.table-hover > tbody > tr:hover > .active,
+.table-hover > tbody > tr.active:hover > th {
+  background-color: #b7cba2;
+}
+.table > thead > tr > td.success,
+.table > tbody > tr > td.success,
+.table > tfoot > tr > td.success,
+.table > thead > tr > th.success,
+.table > tbody > tr > th.success,
+.table > tfoot > tr > th.success,
+.table > thead > tr.success > td,
+.table > tbody > tr.success > td,
+.table > tfoot > tr.success > td,
+.table > thead > tr.success > th,
+.table > tbody > tr.success > th,
+.table > tfoot > tr.success > th {
+  background-color: #c3d4b3;
+}
+.table-hover > tbody > tr > td.success:hover,
+.table-hover > tbody > tr > th.success:hover,
+.table-hover > tbody > tr.success:hover > td,
+.table-hover > tbody > tr:hover > .success,
+.table-hover > tbody > tr.success:hover > th {
+  background-color: #b7cba2;
+}
+.table > thead > tr > td.info,
+.table > tbody > tr > td.info,
+.table > tfoot > tr > td.info,
+.table > thead > tr > th.info,
+.table > tbody > tr > th.info,
+.table > tfoot > tr > th.info,
+.table > thead > tr.info > td,
+.table > tbody > tr.info > td,
+.table > tfoot > tr.info > td,
+.table > thead > tr.info > th,
+.table > tbody > tr.info > th,
+.table > tfoot > tr.info > th {
+  background-color: #dadcd7;
+}
+.table-hover > tbody > tr > td.info:hover,
+.table-hover > tbody > tr > th.info:hover,
+.table-hover > tbody > tr.info:hover > td,
+.table-hover > tbody > tr:hover > .info,
+.table-hover > tbody > tr.info:hover > th {
+  background-color: #ced1c9;
+}
+.table > thead > tr > td.warning,
+.table > tbody > tr > td.warning,
+.table > tfoot > tr > td.warning,
+.table > thead > tr > th.warning,
+.table > tbody > tr > th.warning,
+.table > tfoot > tr > th.warning,
+.table > thead > tr.warning > td,
+.table > tbody > tr.warning > td,
+.table > tfoot > tr.warning > td,
+.table > thead > tr.warning > th,
+.table > tbody > tr.warning > th,
+.table > tfoot > tr.warning > th {
+  background-color: #fceedb;
+}
+.table-hover > tbody > tr > td.warning:hover,
+.table-hover > tbody > tr > th.warning:hover,
+.table-hover > tbody > tr.warning:hover > td,
+.table-hover > tbody > tr:hover > .warning,
+.table-hover > tbody > tr.warning:hover > th {
+  background-color: #fae3c4;
+}
+.table > thead > tr > td.danger,
+.table > tbody > tr > td.danger,
+.table > tfoot > tr > td.danger,
+.table > thead > tr > th.danger,
+.table > tbody > tr > th.danger,
+.table > tfoot > tr > th.danger,
+.table > thead > tr.danger > td,
+.table > tbody > tr.danger > td,
+.table > tfoot > tr.danger > td,
+.table > thead > tr.danger > th,
+.table > tbody > tr.danger > th,
+.table > tfoot > tr.danger > th {
+  background-color: #e0a197;
+}
+.table-hover > tbody > tr > td.danger:hover,
+.table-hover > tbody > tr > th.danger:hover,
+.table-hover > tbody > tr.danger:hover > td,
+.table-hover > tbody > tr:hover > .danger,
+.table-hover > tbody > tr.danger:hover > th {
+  background-color: #da9083;
 }
 .well {
   background-image: -webkit-linear-gradient(top, #e8e8e8 0%, #f5f5f5 100%);
@@ -2886,7 +2980,6 @@ td.k-state-focused.k-state-selected,
   border: none;
 }
 .alert {
-  background-image: none !important;
   border: none;
   border-radius: 0;
   border-top-left-radius: 0;
@@ -2894,6 +2987,30 @@ td.k-state-focused.k-state-selected,
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   -webkit-appearance: none;
+}
+.alert-success {
+  color: #f2f2f2;
+}
+.alert-success .alert-link {
+  color: #cccccc;
+}
+.alert-info {
+  color: #5c6153;
+}
+.alert-info .alert-link {
+  color: #353830;
+}
+.alert-warning {
+  color: #c77c11;
+}
+.alert-warning .alert-link {
+  color: #81500b;
+}
+.alert-danger {
+  color: #f2f2f2;
+}
+.alert-danger .alert-link {
+  color: #cccccc;
 }
 /**
  * Body
@@ -2907,22 +3024,22 @@ body {
 }
 @media all and (max-width: 767px) {
   body {
-    background-image: url('assets/img/oak-tree-bg-xs.jpg');
+    background-image: url('../../assets/img/oak-tree-bg-xs.jpg');
   }
 }
 @media all and (min-width: 768px) {
   body {
-    background-image: url('assets/img/oak-tree-bg-sm.jpg');
+    background-image: url('../../assets/img/oak-tree-bg-sm.jpg');
   }
 }
 @media all and (min-width: 992px) {
   body {
-    background-image: url('assets/img/oak-tree-bg-md.jpg');
+    background-image: url('../../assets/img/oak-tree-bg-md.jpg');
   }
 }
 @media all and (min-width: 1200px) {
   body {
-    background-image: url('assets/img/oak-tree-bg-lg.jpg');
+    background-image: url('../../assets/img/oak-tree-bg-lg.jpg');
   }
 }
 .content {
