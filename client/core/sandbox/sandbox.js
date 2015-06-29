@@ -7,6 +7,7 @@ define(function (require) {
     var date = require('core/sandbox/date/date');
     var http = require('core/sandbox/http/http');
     var msg = require('core/sandbox/msg/msg');
+    var notification = require('core/sandbox/notification/notification');
     var promise = require('core/sandbox/promise/promise');
     var util = require('core/sandbox/util/util');
 
@@ -17,6 +18,7 @@ define(function (require) {
         date: date,
         http: http,
         msg: msg,
+        notification: notification,
         promise: promise,
         util: util
     };
