@@ -19,15 +19,21 @@ $app->get('/signup/user', function () use ($app) {
     
     // get request parameters
     $userId = $app->request->get('id');
+    $startTime = $app->request->get('startTime');
 
-    // construct query
+    // join with events
     $signups = SignupsQuery::create()
         ->useEventsQuery()
             ->orderByDate('asc')
-        ->endUse()
-        ->useShiftsQuery()
-        ->endUse()
-        ->filterByUser($userId)
+        ->endUse();
+
+    // join with shifts and filter start_time if specified
+    $signups = $signups->useShiftsQuery();
+    if(!is_null($startTime)) { $signups->where('shifts.start_time >= ?', $startTime); }
+    $signups = $signups->endUse();
+
+    // filter by userid and select columns
+    $signups = $signups->filterByUser($userId)
         ->addAsColumn('StartTime', 'shifts.start_time')
         ->addAsColumn('EndTime', 'shifts.end_time')
         ->addAsColumn('Name', 'events.name')

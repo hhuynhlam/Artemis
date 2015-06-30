@@ -118,7 +118,8 @@ define(function (require) {
 		var url = window.env.SERVER_HOST + '/signup/user',
 			data = {
 				apiKey: window.env.API_KEY,
-				id: this.currentUser.Id
+				id: this.currentUser.Id,
+				startTime: sandbox.date.toUnix()
 			};
 
 		sandbox.http.get(url, data)
