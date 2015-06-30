@@ -53,15 +53,19 @@ $app->get('/waitlist/user', function () use ($app) {
     
     // get request parameters
     $userId = $app->request->get('id');
+    $startTime = $app->request->get('startTime');
 
     // construct query
     $waitlists = WaitlistQuery::create()
         ->useEventsQuery()
             ->orderByDate('asc')
-        ->endUse()
-        ->useShiftsQuery()
-        ->endUse()
-        ->filterByUser($userId)
+        ->endUse();
+
+    $waitlists = $waitlists->useShiftsQuery();
+    if(!is_null($startTime)) { $waitlists->where('shifts.start_time >= ?', $startTime); }
+    $waitlists = $waitlists->endUse();
+        
+    $waitlists = $waitlists->filterByUser($userId)
         ->addAsColumn('StartTime', 'shifts.start_time')
         ->addAsColumn('EndTime', 'shifts.end_time')
         ->addAsColumn('Name', 'events.name')
