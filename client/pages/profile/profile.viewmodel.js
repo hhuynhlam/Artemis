@@ -152,8 +152,12 @@ define(function (require) {
 	ProfileViewModel.prototype.formatEventData = function (events) {
 		var _events = [];
 		events.forEach(function (e) {
-			var conflict = sandbox.util.find(_events, function (_e) { return e.StartTime >= _e.StartTime && e.StartTime <= _e.EndTime; });
-			_events.push(sandbox.util.clone(e));
+			var conflict;
+			if (e.StartTime) {
+				conflict = sandbox.util.find(_events, function (_e) { 
+					return e.StartTime >= _e.StartTime && e.StartTime <= _e.EndTime && e.Name !== _e.Name; });
+				_events.push(sandbox.util.clone(e));
+			}
 
 			if (e.StartTime) { e.StartTime = sandbox.date.parseUnix(e.StartTime).format('h:mm A'); }
 			if (e.EndTime) { e.EndTime = sandbox.date.parseUnix(e.EndTime).format('h:mm A'); }

@@ -35,7 +35,7 @@ block content
                         i.fa.fa-exclamation-triangle.left-space(data-bind="visible: conflict")
                       td
                         a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + Event }")
-                          span(data-bind="text: Name")
+                          span(data-bind="text: Name, css: { 'text-danger': conflict }")
                       td(data-bind="text: StartTime")
                       td.hidden-xs(data-bind="text: EndTime")
 
@@ -60,7 +60,7 @@ block content
                         i.fa.fa-exclamation-triangle.left-space(data-bind="visible: conflict")
                       td
                         a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + Event }")
-                          span(data-bind="text: Name")
+                          span(data-bind="text: Name, css: { 'text-danger': conflict }")
                       td(data-bind="text: StartTime")
                       td.hidden-xs(data-bind="text: EndTime")
 
