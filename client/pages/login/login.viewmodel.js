@@ -18,7 +18,7 @@ define(function (require) {
 		auth.login(this.username(), this.password())
 		.then(function (user) {
 			if (user) { window.location.replace(window.env.CLIENT_HOST + '/#/profile'); }
-			else { sandbox.notification.error('LoginError', 'Error: Could not login (Incorrect username and/or password)'); }
+			else { sandbox.notification.error('LoginError', 'Error: Incorrect username and/or password'); }
 		})
 		.done();
 	};

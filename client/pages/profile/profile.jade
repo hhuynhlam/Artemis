@@ -26,8 +26,8 @@ block content
                     tr
                       th Date
                       th Name
-                      th Start Time
-                      th End Time
+                      th Start 
+                      th.hidden-xs End 
                   tbody(data-bind="foreach: upcomingEvents")
                     tr(data-bind="css: { 'text-danger': conflict }")
                       td
@@ -37,7 +37,7 @@ block content
                         a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + Event }")
                           span(data-bind="text: Name")
                       td(data-bind="text: StartTime")
-                      td(data-bind="text: EndTime")
+                      td.hidden-xs(data-bind="text: EndTime")
 
           //- Waitlisted
           .col-md-6
@@ -45,14 +45,14 @@ block content
               .panel-heading 
                 h1.panel-title Waitlisted
               .panel-body 
-                span(data-bind="visible: !waitlistedEvents().length") You have no upcoming shifts.
+                span(data-bind="visible: !waitlistedEvents().length") You have no waitlisted shifts.
                 table.table(data-bind="visible: waitlistedEvents().length")
                   thead
                     tr
                       th Date
                       th Name
-                      th Start Time
-                      th End Time
+                      th Start 
+                      th.hidden-xs End 
                   tbody(data-bind="foreach: waitlistedEvents")
                     tr(data-bind="css: { 'text-danger': conflict }")
                       td
@@ -62,7 +62,7 @@ block content
                         a(data-bind="attr: { href: window.env.CLIENT_HOST + '/event/' + Event }")
                           span(data-bind="text: Name")
                       td(data-bind="text: StartTime")
-                      td(data-bind="text: EndTime")
+                      td.hidden-xs(data-bind="text: EndTime")
 
         .row
           //- Notes

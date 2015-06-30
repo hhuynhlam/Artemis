@@ -157,7 +157,7 @@ define(function (require) {
 
 			if (e.StartTime) { e.StartTime = sandbox.date.parseUnix(e.StartTime).format('h:mm A'); }
 			if (e.EndTime) { e.EndTime = sandbox.date.parseUnix(e.EndTime).format('h:mm A'); }
-			if (e.Date) { e.Date = sandbox.date.parseUnix(e.Date).format('MM/DD/YYYY'); }
+			if (e.Date) { e.Date = sandbox.date.parseUnix(e.Date).format('M/D'); }
 			if (conflict) { e.conflict = true; } else { e.conflict = false; }
 		});
 
