@@ -78,18 +78,21 @@
 @disabled-text-color: #999999;
 
 /* Notification */
-@notification-info-background-color: #e5f5fa;
-@notification-info-text-color: #0487c4;
-@notification-info-border-color: #b7e1f0;
-@notification-success-background-color: #eaf7ec;
-@notification-success-text-color: #349946;
-@notification-success-border-color: #c3e8ca;
-@notification-warning-background-color: #fff4d9;
-@notification-warning-text-color: #0487c4;
-@notification-warning-border-color: #fff0c8;
-@notification-error-background-color: #ffe0d9;
-@notification-error-text-color: #ef470a;
-@notification-error-border-color: #ffb7a8;
+@notification-info-background-color: lighten(@brand-info, 20%);
+@notification-info-text-color: darken(@brand-info, 10%);
+@notification-info-border-color: transparent;
+
+@notification-warning-background-color: lighten(@brand-warning, 20%);
+@notification-warning-text-color: darken(@brand-warning, 10%);
+@notification-warning-border-color: transparent;
+
+@notification-success-background-color: lighten(@brand-success, 40%);
+@notification-success-text-color: @brand-success;
+@notification-success-border-color: transparent;
+
+@notification-error-background-color: lighten(@brand-danger, 30%);
+@notification-error-text-color: @brand-danger;
+@notification-error-border-color: transparent;
 
 /* ToolTip */
 @tooltip-text-color: #fff;

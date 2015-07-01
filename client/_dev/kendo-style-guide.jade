@@ -61,6 +61,16 @@ html.no-js(lang='')
               option Steven White
               option Nancy King
               option Nancy Davolio
+
+        // Notification
+        .panel.panel-default
+          .panel-heading Notification
+          .panel-body#Notifications
+            span#Notification
+            //- span#SuccessNotification
+            //- span#WarningNotification
+            //- span#ErrorNotification
+
     // end container
 
 
@@ -121,4 +131,16 @@ html.no-js(lang='')
 
         // multiselect
         $('#required').kendoMultiSelect().data("kendoMultiSelect");
+
+        // notification
+        var $notification = $("#Notification").kendoNotification({ 
+          appendTo: '#Notifications',
+          autoHideAfter: 0 
+        }).data("kendoNotification");
+
+        $notification.info('Info Notification');
+        $notification.success('Success Notification');
+        $notification.warning('Warning Notification');
+        $notification.error('Error Notification');
+
       });

@@ -1434,24 +1434,24 @@ div.k-filebrowser-dropzone em {
 }
 /* Notification */
 .k-widget.k-notification.k-notification-info {
-  background-color: #e5f5fa;
-  color: #0487c4;
-  border-color: #b7e1f0;
+  background-color: #c2c5bb;
+  color: #777d6a;
+  border-color: transparent;
 }
 .k-widget.k-notification.k-notification-success {
-  background-color: #eaf7ec;
-  color: #349946;
-  border-color: #c3e8ca;
+  background-color: #5fafe4;
+  color: #114466;
+  border-color: transparent;
 }
 .k-widget.k-notification.k-notification-warning {
-  background-color: #fff4d9;
-  color: #0487c4;
-  border-color: #fff0c8;
+  background-color: #f8d9ac;
+  color: #ec971f;
+  border-color: transparent;
 }
 .k-widget.k-notification.k-notification-error {
-  background-color: #ffe0d9;
-  color: #ef470a;
-  border-color: #ffb7a8;
+  background-color: #e0a197;
+  color: #ab4433;
+  border-color: transparent;
 }
 /* Gantt */
 .k-gantt .k-treelist {
