@@ -17,8 +17,8 @@ define(function (require) {
 	LoginViewModel.prototype.submit = function () {
 		auth.login(this.username(), this.password())
 		.then(function (user) {
-			if (user) { window.location.replace(window.env.CLIENT_HOST + '/#/profile'); }
-			else { sandbox.notification.error('LoginError', 'Error: Incorrect username and/or password'); }
+			if (user) { window.location.replace(window.env.CLIENT_HOST + '/profile'); }
+			else { sandbox.notification.error('LoginError', 'Incorrect username and/or password'); }
 		})
 		.done();
 	};

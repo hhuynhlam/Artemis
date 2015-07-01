@@ -68,10 +68,10 @@ define(function (require) {
 			this.formViewModel.confirmError(true);
 			this.formViewModel.newPassword('');
 			this.formViewModel.confirmPassword('');
-			sandbox.notification.error('ConfirmPasswordError', 'Error: Passwords do no match.');
+			sandbox.notification.error('ConfirmPasswordError', 'Passwords do no match.');
 			return; 
 		} else if (this.formViewModel.confirmError() && !this.formViewModel.newPassword()) {
-			sandbox.notification.error('ConfirmPasswordError', 'Error: Passwords cannot be blank.');
+			sandbox.notification.error('ConfirmPasswordError', 'Passwords cannot be blank.');
 			return;
 		}
 		
@@ -86,8 +86,10 @@ define(function (require) {
 				auth.setCurrentUser(user);
 				this.currentUser = auth.currentUser();
 				this.formViewModel.isDirty(false);
+				sandbox.notification.success('SaveProfileSuccess', 'Profile Saved.');
 			}.bind(this))
 			.catch(function (err) {
+				sandbox.notification.success('SaveProfileError', 'Could not save profile, please try again later.');
 				console.error('Error: There was a problem saving profile (', err, ')');
 			})
 			.done();
