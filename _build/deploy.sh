@@ -1,3 +1,4 @@
+npm install -g gulp
 GULP=$(which gulp)
 
 # check for params
