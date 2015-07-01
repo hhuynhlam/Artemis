@@ -10,7 +10,7 @@ var jasmineOptions = {
     templateOptions: {
         requireConfigFile: './core/require-config.js',
         requireConfig: {
-            baseUrl: './',
+            baseUrl: '',
         }
     }
 };
@@ -23,6 +23,7 @@ grunt.initConfig({
             options: _.assign({
                 specs: grunt.file.expand([
                     './**/*.spec.js',
+                    '!./node_modules/**/*.spec.js',
                     '!./vendor/**/*.spec.js'
                 ])
             }, jasmineOptions)
@@ -31,10 +32,19 @@ grunt.initConfig({
         single: {
             options: _.assign({
                 specs: grunt.file.expand([
-                    './**/*.spec.js',
-                    '!./vendor/**/*.spec.js'
+                    './**/*' + grunt.option('file') + '.spec.js'
                 ])
             }, jasmineOptions)
+        }
+    },
+
+    watch: {
+        tdd: {
+            files: [
+                './**/*' + grunt.option('file') + '.js',
+                './**/*' + grunt.option('file') + '.spec.js'
+            ],
+            tasks: ['jasmine:single']
         }
     }
 
@@ -42,10 +52,11 @@ grunt.initConfig({
 
 // Load Grunt plugins
 grunt.loadNpmTasks('grunt-contrib-jasmine');
+grunt.loadNpmTasks('grunt-contrib-watch');
 
 // Register Grunt tasks
 grunt.registerTask('default', []);
 grunt.registerTask('test', ['jasmine:ui']);
-grunt.registerTask('tdd', ['jasmine:single']);
+grunt.registerTask('tdd', ['watch:tdd']);
 
 };
