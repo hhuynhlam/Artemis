@@ -40,6 +40,11 @@ block content
                             div
                                 span(data-bind="text: StartTime")
                                 span(data-bind="visible: EndTime, text: ' - ' + EndTime")
+                            div(data-bind="visible: Cap && Cap != 0 && Cap != -1")
+                                span(data-bind="text: numberOfSignups") 
+                                span &nbsp; space(s) of 
+                                span(data-bind="text: Cap") 
+                                span &nbsp; filled
                         
                         .panel-body
                             //- signups

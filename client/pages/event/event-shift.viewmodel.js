@@ -42,7 +42,7 @@ define(function (require) {
             .then(function (signups) {
                 var result = {};
                 result[shift.Id] = signups;
-                this.signups(sandbox.util.assign(this.signups, result));
+                this.signups(sandbox.util.assign(this.signups(), result));
                 this.setSignUpAvailabilityForShift(this.currentUser, shift, signups);
             }.bind(this))
             .catch(function (err) {
@@ -61,7 +61,7 @@ define(function (require) {
             userSignedUp = sandbox.util.find(signups, function (su) { return su.User === user.Id; }, this);
 
         // find out if shift is full
-        if(signups.length >= shift.Cap && shift.Cap != 0 && shift.Cap != -1) { currentShift.isFull(true); }
+        if(signups.length >= shift.Cap && parseInt(shift.Cap) !== 0 && parseInt(shift.Cap) !== -1) { currentShift.isFull(true); }
 
         // find out if current user already signup to shift
         if(userSignedUp) { currentShift.isSignedUp(true); }
@@ -73,7 +73,7 @@ define(function (require) {
             .then(function (waitlist) {
                 var result = {};
                 result[shift.Id] = waitlist;
-                this.waitlist(sandbox.util.assign(this.waitlist, result));
+                this.waitlist(sandbox.util.assign(this.waitlist(), result));
                 this.setWaitlistAvailabilityForShift(shift, waitlist);
 
                 this.setShiftsToReady(shifts);            
@@ -154,28 +154,28 @@ define(function (require) {
         sandbox.msg.subscribe(shift.Id + '.shift.add', function (updatedSignups) {
             var updated = {};
             updated[shift.Id] = updatedSignups;
-            this.signups(sandbox.util.assign(this.signups, updated));
+            this.signups(sandbox.util.assign(this.signups(), updated));
             currentShift.isSignedUp(true);
         }, this);
 
         sandbox.msg.subscribe(shift.Id + '.shift.waitlist.add', function (updatedWaitlist) {
             var updated = {};
             updated[shift.Id] = updatedWaitlist;
-            this.waitlist(sandbox.util.assign(this.waitlist, updated));
+            this.waitlist(sandbox.util.assign(this.waitlist(), updated));
             currentShift.isWaitlisted(true);
         }, this);
 
         sandbox.msg.subscribe(shift.Id + '.shift.waitlist.remove', function (updatedWaitlist) {
             var updated = {};
             updated[shift.Id] = updatedWaitlist;
-            this.waitlist(sandbox.util.assign(this.waitlist, updated));
+            this.waitlist(sandbox.util.assign(this.waitlist(), updated));
             currentShift.isWaitlisted(false);
         }, this);
 
         sandbox.msg.subscribe(shift.Id + '.shift.remove', function (updatedSignups) {
             var updated = {};
             updated[shift.Id] = updatedSignups;
-            this.signups(sandbox.util.assign(this.signups, updated));
+            this.signups(sandbox.util.assign(this.signups(), updated));
             currentShift.isSignedUp(false);
             
             if(!this.waitlist()[shift.Id].length) { currentShift.isFull(false); }
@@ -185,6 +185,11 @@ define(function (require) {
     };
 
     EventShiftViewModel.prototype.setShiftObservables = function (shift) {
+        shift.numberOfSignups = ko.computed(function () {
+            var signups = this.signups()[shift.Id];
+            return (signups) ? signups.length : 0;
+        }, this);
+
         shift.isFull = ko.observable(false);
         shift.isSignedUp = ko.observable(false);
         shift.isWaitlisted = ko.observable(false);
