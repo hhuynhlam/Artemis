@@ -70,6 +70,9 @@ define(function (require) {
 			this.formViewModel.confirmPassword('');
 			sandbox.notification.error('ConfirmPasswordError', 'Error: Passwords do no match.');
 			return; 
+		} else if (this.formViewModel.confirmError() && !this.formViewModel.newPassword()) {
+			sandbox.notification.error('ConfirmPasswordError', 'Error: Passwords cannot be blank.');
+			return;
 		}
 		
 		// subscribe to save/cancel topics
