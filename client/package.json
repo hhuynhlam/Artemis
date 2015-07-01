@@ -32,8 +32,7 @@
     "node": "^0.10.0"
   },
   "scripts": {
-    "postinstall": "node ./node_modules/bower/bin/bower install",
-    "start": "node server.js"
+    "test": "gulp test",
   },
   "private": true
 }

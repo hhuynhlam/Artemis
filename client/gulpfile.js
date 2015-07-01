@@ -179,5 +179,6 @@ gulp.task('serve', ['less', 'jade'], shell.task([ 'node ./server.js' ]));
 //======================================
 gulp.task('default', ['jshint', 'less', 'jade']);
 gulp.task('build', ['copy', 'rjs']);
+gulp.task('test', ['jshint']);
 
 
