@@ -19,7 +19,11 @@ define(function (require) {
 		this.getMembers()
 		.then(function (members) {
 			members.forEach(function (m) {
-				if(m.Position & sandbox.constant.role.ACTIVE) { this.actives.push(m); }
+				if( (m.Position & sandbox.constant.role.ACTIVE) ||              // if is an active,
+                    ((m.Position & sandbox.constant.role.PROBATIONARY) &&       // of if on probation
+                        !(m.Position & sandbox.constant.role.ALUMNUS) &&        // and not an alumnus
+                        !(m.Position & sandbox.constant.role.AFFILIATE))        // nor an affiliate
+                ) { this.actives.push(m); }
 				else if(m.Position & sandbox.constant.role.ALUMNUS) { this.alumni.push(m); }
 				else if(m.Position & sandbox.constant.role.AFFILIATE) { this.affiliates.push(m); }
 			}, this);

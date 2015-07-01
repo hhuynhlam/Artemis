@@ -24,7 +24,7 @@ require.config({
         'login.viewmodel'               : 'pages/login/login.viewmodel',
         'login.router'                  : 'pages/login/login.router',
 
-        'member.viewmodel'              : 'pages/member/member.viewmodel',
+        'member-list.viewmodel'         : 'pages/member/member-list.viewmodel',
         'member.router'                 : 'pages/member/member.router',
 
         'profile.viewmodel'             : 'pages/profile/profile.viewmodel',
