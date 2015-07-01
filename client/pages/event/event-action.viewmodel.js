@@ -3,6 +3,7 @@
 define(function (require) {
     var $= require('jquery');
     var auth = require('auth');
+    var modal = require('modal');
     var sandbox = require('sandbox');
 
     var EventActionViewModel = function () {
@@ -10,15 +11,30 @@ define(function (require) {
     };
 
     EventActionViewModel.prototype.add = function (viewmodel, event) {
-        this.postAction({
-            type: 'add',
-            event: event,
-            topic: 'shift.add'
-        })
-        .catch(function (err) {
-            console.error('Error: Could not add user to shift (', err, ')');
-        })
-        .done();
+        var cancel, signup;
+
+        // subscribe to signup/cancel topics
+        signup = sandbox.msg.subscribe('signup.add', function (driver) {
+            this.postAction({
+                type: 'add',
+                event: event,
+                driver: driver,
+                topic: 'shift.add'
+            })
+            .catch(function (err) {
+                console.error('Error: Could not add user to shift (', err, ')');
+            })
+            .done();
+
+            sandbox.msg.dispose(signup, cancel);
+        }, this);
+
+        cancel = sandbox.msg.subscribe('signup.cancel', function () {
+            sandbox.msg.dispose(signup, cancel);
+        });
+
+        // setup modal
+        this.setupDriverModal();
     };
 
     EventActionViewModel.prototype.addWaitlist = function (viewmodel, event) {
@@ -63,7 +79,8 @@ define(function (require) {
                 apiKey: window.env.API_KEY,
                 user: this.currentUser.Id,
                 shift: $target.attr('data-shiftId'),
-                event: $target.attr('data-eventId')
+                event: $target.attr('data-eventId'),
+                driver: options.driver || 0
             }, 
             url;
 
@@ -71,7 +88,6 @@ define(function (require) {
         switch(options.type) {
             case 'add':
                 url = window.env.SERVER_HOST + '/shift/user/signups/add';
-                data.driver = 0;
                 data.timestamp = sandbox.date.toUnix();
                 break;
             case 'remove':
@@ -92,6 +108,21 @@ define(function (require) {
             .then(function (data) {
                 sandbox.msg.publish($target.attr('data-shiftId') + '.' + options.topic, data);
             });
+    };
+
+    EventActionViewModel.prototype.setupDriverModal = function () {
+        var selector = '#DriverModal',
+            $kendoWindow = $(selector).data('kendoWindow');
+            
+        if ($kendoWindow) { 
+            $kendoWindow.open();
+        } else {
+            modal('signupDriver', {
+                selector: selector,
+                cancel: function () { sandbox.msg.publish('signup.cancel'); },
+                confirm: function (driver) { sandbox.msg.publish('signup.add', driver); }
+            });
+        }
     };
 
     return EventActionViewModel;

@@ -5,6 +5,7 @@ define(function (require) {
     require('k/kendo.window.min');
 
     var templates = {
+        signupDriver: require('text!components/modal/templates/signup-driver.html'),
         logoutConfirm: require('text!components/modal/templates/logout-confirm.html'),
         saveConfirm: require('text!components/modal/templates/save-confirm.html')
     };
@@ -31,8 +32,10 @@ define(function (require) {
         }
 
         if($confirm) {
-            $confirm.on('click', function() { 
-                if (typeof options.confirm === 'function') { options.confirm(); }
+            $confirm.on('click', function() {
+                var val;
+                if(templateName === 'signupDriver') { val = $('#Driver').val(); }
+                if (typeof options.confirm === 'function') { options.confirm((val) ? parseInt(val) : null); }
                 $kendoWindow.close();
             }); 
         }
