@@ -2,7 +2,6 @@
 .grunt
 node_modules
 _dist
-env.json
 config.php
 client/assets/img/faces/
 
