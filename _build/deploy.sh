@@ -30,7 +30,7 @@ cd Sites/beta
 
 rm -r client
 
-mirror -R ~/Git/Artemis/client/_dist client
+mirror -R ./_dist client
 
 bye
 EOF
