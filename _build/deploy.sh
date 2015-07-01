@@ -1,6 +1,3 @@
-npm install -g gulp
-GULP=$(which gulp)
-
 # check for params
 if [ -z "$HOST" ];
 then
@@ -20,9 +17,9 @@ fi
 
 # clean and build local_dist
 pushd ../client
-GULP jade && GULP less-production
-GULP clean
-GULP build
+gulp jade && gulp less-production
+gulp clean
+gulp build
 
 # connect to host and copy files over
 lftp -u $USER,$PASS $HOST << EOF
