@@ -3244,6 +3244,9 @@ body {
 div.k-window-content {
   padding: 15px;
 }
+div.k-window-content.km-widget.km-scroll-wrapper {
+  padding-bottom: 15px;
+}
 .k-multiselect,
 .k-multiselect.k-state-border-down,
 .k-multiselect-wrap,
