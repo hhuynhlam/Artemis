@@ -19,6 +19,7 @@ fi
 
 # clean and build local_dist
 pushd ../client
+GULP jade && GULP less-production
 GULP clean
 GULP build
 

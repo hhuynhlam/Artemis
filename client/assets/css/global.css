@@ -3196,7 +3196,7 @@ body {
 .jumbotron h1 span.small,
 .jumbotron h3 span.small,
 .jumbotron p span.small {
-  color: #999999;
+  color: rgba(153, 153, 153, 0.5);
 }
 .jumbotron h1:nth-child(2),
 .jumbotron h3:nth-child(2),
@@ -3236,9 +3236,14 @@ div.k-window-content {
 }
 .navbar-inverse .navbar-brand {
   border-right: 1px solid;
+  font-weight: lighter;
   height: 20px;
   margin: 15px 0;
   padding: 0 15px;
+}
+.navbar-inverse .navbar-brand span {
+  color: #779955;
+  font-weight: normal;
 }
 .navbar-inverse .navbar-brand,
 .navbar-inverse .navbar-nav > li > a {

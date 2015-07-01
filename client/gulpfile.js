@@ -10,6 +10,7 @@ var minifyCss = require('gulp-minify-css');
 var minifyHtml = require('gulp-minify-html');
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
+var replace = require('gulp-replace');
 var rjs = require('gulp-requirejs');
 var shell = require('gulp-shell');
 var uglify = require('gulp-uglify');
@@ -40,6 +41,14 @@ gulp.task('jshint', function() {
 gulp.task('less', function () {
     return gulp.src('./assets/less/global.less')
     .pipe(plumber())
+    .pipe(less())
+    .pipe(gulp.dest('./assets/css'));
+});
+
+gulp.task('less-production', function () {
+    return gulp.src('./assets/less/global.less')
+    .pipe(plumber())
+    .pipe(replace('../../assets/img', 'assets/img'))
     .pipe(less())
     .pipe(gulp.dest('./assets/css'));
 });
