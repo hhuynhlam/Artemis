@@ -19,6 +19,8 @@ define(function (require) {
 			schoolAddress: ko.observable(this.currentUser.TempAddress),
 			permAddress: ko.observable(this.currentUser.PermAddress),
 			newPassword: ko.observable(''),
+			confirmPassword: ko.observable(''),
+			confirmError: ko.observable(false),
 			isDirty: ko.observable(false)
 		};
 
@@ -53,12 +55,24 @@ define(function (require) {
 		this.formViewModel.schoolAddress(this.currentUser.TempAddress);
 		this.formViewModel.permAddress(this.currentUser.PermAddress);
 		this.formViewModel.newPassword('');
+		this.formViewModel.confirmPassword('');
+		this.formViewModel.confirmError(false);
 		this.formViewModel.isDirty(false);
 	};
 	
 	ProfileViewModel.prototype.save = function () {
 		var cancel, submit;
 
+		// check password
+		if (!this.doesPasswordsMatch()) { 
+			this.formViewModel.confirmError(true);
+			this.formViewModel.newPassword('');
+			this.formViewModel.confirmPassword('');
+			sandbox.notification.error('ConfirmPasswordError', 'Error: Passwords do no match.');
+			return; 
+		}
+		
+		// subscribe to save/cancel topics
 		submit = sandbox.msg.subscribe('profile.save', function () {
 			var url = window.env.SERVER_HOST + '/member/update',
 				userData = this.serializeUserData();
@@ -82,6 +96,7 @@ define(function (require) {
 			sandbox.msg.dispose(submit, cancel);
 		});
 
+		// open up modal
 		this.setupConfirmModal();
 	};
 
@@ -111,6 +126,10 @@ define(function (require) {
 				confirm: function () { sandbox.msg.publish('profile.save'); }
 			});
 		}
+	};
+
+	ProfileViewModel.prototype.doesPasswordsMatch = function () {
+		return this.formViewModel.newPassword() === this.formViewModel.confirmPassword();
 	};
 
 	// Upcoming Events

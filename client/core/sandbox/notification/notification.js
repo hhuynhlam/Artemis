@@ -5,6 +5,12 @@ define(function (require) {
     require('k/kendo.notification.min');
 
     var notification = {
+        
+        /**
+         * @param  {[string]} id  [unique notification identifier, ex. LoginError]
+         * @param  {[string]} msg [message to display]
+         * @return {[void]}
+         */
         error: function (id, msg) {
             var $selector, $notification;
 

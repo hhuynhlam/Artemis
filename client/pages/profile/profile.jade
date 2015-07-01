@@ -107,10 +107,14 @@ block content
                     label.col-lg-3.control-label Permanent Address
                     .col-lg-9
                       input.form-control(type='text', name='perm_address', data-bind="value: formViewModel.permAddress")
-                  .form-group
+                  .form-group(data-bind="css: { 'has-error' : formViewModel.confirmError }")
                     label.col-lg-3.control-label New Password
                     .col-lg-9
                       input.form-control(type='password', name='password', data-bind="value: formViewModel.newPassword")
+                  .form-group(data-bind="visible: formViewModel.newPassword() || formViewModel.confirmError(), css: { 'has-error' : formViewModel.confirmError }")
+                    label.col-lg-3.control-label.text-primary Confirm Password
+                    .col-lg-9
+                      input.form-control(type='password', name='confirm_password', data-bind="value: formViewModel.confirmPassword")
                   .form-group
                     .col-lg-12.text-center
                       button.btn.btn-default(type='reset', data-bind="click: reset") Cancel
