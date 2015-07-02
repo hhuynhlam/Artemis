@@ -32,8 +32,6 @@ define(function (require) {
 
             it('can getDate', function () {
                 var _newDate = new Date('02/11/1991'); 
-                expect(sandbox.date.getDate()).toEqual(moment());
-                expect(sandbox.date.getDate(_newDate)).toEqual(moment(_newDate));
                 expect(sandbox.date.getDate(_newDate).format('M-D-YYYY')).toBe('2-11-1991');
             });
 
@@ -99,11 +97,29 @@ define(function (require) {
         });
         
         // storage
-        it('can store', function () {
-            expect(sandbox.storage).toBeDefined();
-            expect(sandbox.storage.read).toBeDefined();
-            expect(sandbox.storage.remove).toBeDefined();
-            expect(sandbox.storage.set).toBeDefined();
+        describe('storage', function () {
+            it('can store', function () {
+                expect(sandbox.storage).toBeDefined();
+                expect(sandbox.storage.read).toBeDefined();
+                expect(sandbox.storage.remove).toBeDefined();
+                expect(sandbox.storage.set).toBeDefined();
+            });
+
+            it('can set a new session value', function () {
+                sandbox.storage.set('newCookie', 'newValue');
+                expect(window.sessionStorage.newCookie).toBe('newValue');
+            });
+
+            it('can read a new session value', function () {
+                sandbox.storage.set('newCookie', 'newValue');
+                expect(sandbox.storage.read('newCookie')).toBe('newValue');
+            });
+
+            it('can remove a session value', function () {
+                sandbox.storage.set('newCookie', 'newValue');
+                sandbox.storage.remove('newCookie')
+                expect(sandbox.storage.read('newCookie')).toBeNull();
+            });
         });
         
         // util
