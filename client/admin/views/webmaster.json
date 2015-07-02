@@ -1,0 +1,11 @@
+{
+    "tools": [{
+        "id": "AddEvent",
+        "template": "text!admin/tools/AddEvent/AddEvent.html",
+        "viewmodel": "AddEventViewModel"
+    }, {
+        "id": "AddPledges",
+        "template": "text!admin/tools/AddPledges/AddPledges.html",
+        "viewmodel": "AddPledgesViewModel"
+    }]
+}

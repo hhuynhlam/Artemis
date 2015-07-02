@@ -9,6 +9,7 @@ define(function (require) {
         clone: _.clone,
         find: _.find,
         findIndex: _.findIndex,
+        forEach: _.forEach,
         forIn: _.forIn,
         template: _.template,
 
