@@ -30,7 +30,8 @@ gulp.task('jshint', function() {
         '!**/*.spec.js'
     ])
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'));
 });
 
 
