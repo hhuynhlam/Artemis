@@ -8,6 +8,7 @@ var jshint = require('gulp-jshint');
 var less = require('gulp-less');
 var minifyCss = require('gulp-minify-css');
 var minifyHtml = require('gulp-minify-html');
+var minifyJson = require('gulp-jsonminify');
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
@@ -132,6 +133,15 @@ gulp.task('copy', function() {
         '!index.release.html',
         '!_dist/**'])
     .pipe(minifyHtml())
+    .pipe(gulp.dest('_dist'));
+
+    // copy json
+    gulp.src([
+        '**/*.json', 
+        '!node_modules/**', 
+        '!vendor/**', 
+        '!_dist/**'])
+    .pipe(minifyJson())
     .pipe(gulp.dest('_dist'));
 
     // copy .htaccess
