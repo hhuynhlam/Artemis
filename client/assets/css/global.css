@@ -160,28 +160,28 @@ a.text-primary:hover {
   color: #5e7843;
 }
 .text-success {
-  color: #f2f2f2;
+  color: #114466;
 }
 a.text-success:hover {
-  color: #d9d9d9;
+  color: #0a273a;
 }
 .text-info {
-  color: #42463b;
+  color: #909684;
 }
 a.text-info:hover {
-  color: #282a24;
+  color: #777d6a;
 }
 .text-warning {
-  color: #985f0d;
+  color: #f0ad4e;
 }
 a.text-warning:hover {
-  color: #694109;
+  color: #ec971f;
 }
 .text-danger {
-  color: #f2f2f2;
+  color: #ab4433;
 }
 a.text-danger:hover {
-  color: #d9d9d9;
+  color: #843427;
 }
 .thumbnail,
 .img-thumbnail {
@@ -3057,22 +3057,22 @@ body {
 }
 @media all and (max-width: 767px) {
   body {
-    background-image: url('assets/img/oak-tree-bg-xs.jpg');
+    background-image: url('../../assets/img/oak-tree-bg-xs.jpg');
   }
 }
 @media all and (min-width: 768px) {
   body {
-    background-image: url('assets/img/oak-tree-bg-sm.jpg');
+    background-image: url('../../assets/img/oak-tree-bg-sm.jpg');
   }
 }
 @media all and (min-width: 992px) {
   body {
-    background-image: url('assets/img/oak-tree-bg-md.jpg');
+    background-image: url('../../assets/img/oak-tree-bg-md.jpg');
   }
 }
 @media all and (min-width: 1200px) {
   body {
-    background-image: url('assets/img/oak-tree-bg-lg.jpg');
+    background-image: url('../../assets/img/oak-tree-bg-lg.jpg');
   }
 }
 .content {
@@ -3229,7 +3229,7 @@ body {
 .jumbotron h1 span.small,
 .jumbotron h3 span.small,
 .jumbotron p span.small {
-  color: rgba(153, 153, 153, 0.5);
+  color: rgba(153, 153, 153, 0.8);
 }
 .jumbotron h1:nth-child(2),
 .jumbotron h3:nth-child(2),

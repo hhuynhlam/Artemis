@@ -10,7 +10,18 @@ block content
         .container
             h2 
                 | Calendar
-                .calendar-legend.pull-right.text-right
+                .calendar-legend.hidden-xs.pull-right.text-right
+                    span.right-space
+                        .legend-block.legend-block-primary.right-space
+                        small.text-primary General Event
+                    span.right-space
+                        .legend-block.legend-block-success.right-space
+                        small.text-success Fellowship
+                    span.right-space
+                        .legend-block.legend-block-danger.right-space
+                        small.text-danger Service
+
+                .calendar-legend.visible-xs-block.text-center
                     span.right-space
                         .legend-block.legend-block-primary.right-space
                         small.text-primary General Event
