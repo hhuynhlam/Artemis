@@ -3,7 +3,6 @@
 define(function (require) {
     var $ = require('jquery');
     var ko = require('knockout');
-    var sandbox = require('sandbox');
     var AddEventViewModel = require('admin/tools/AddEvent/AddEvent.viewmodel');
     var AddPledgesViewModel = require('admin/tools/AddPledges/AddPledges.viewmodel');
 
