@@ -86,6 +86,7 @@ define(function (require) {
 				auth.setCurrentUser(user);
 				this.currentUser = auth.currentUser();
 				this.formViewModel.isDirty(false);
+				this.reset();
 				sandbox.notification.success('SaveProfileSuccess', 'Profile Saved.');
 			}.bind(this))
 			.catch(function (err) {
