@@ -1,6 +1,9 @@
 require.config({
     baseUrl: '',
     paths: {
+        // Admin
+        'admin.router'                  : 'admin/admin.router',
+        'admin.dashboard.viewmodel'     : 'admin/dashboard/dashboard.viewmodel',
 
         // Components
         'modal'                         : 'components/modal/modal',

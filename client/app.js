@@ -19,6 +19,7 @@ define(function (require) {
 	var app = sammy('#MainView');
 
 	// -- Routes -- //
+	require('admin.router')(app);
 	require('about.router')(app);
 	require('event.router')(app);
 	require('home.router')(app);
