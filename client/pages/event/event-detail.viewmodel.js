@@ -14,6 +14,7 @@ define(function (require) {
         .then(function (_event) {
             _event = _event[0];
             _event.date = (_event.Date) ? sandbox.date.parseUnix(_event.Date).format('MM/DD/YYYY') : '';
+            _event.EventType = (_event.EventCode) ? this.formatEventType(_event.EventCode) : '';
             this.event(_event);
         }.bind(this))
         .catch(function (err) {
@@ -30,6 +31,10 @@ define(function (require) {
             id: eventId
         };
         return sandbox.http.get(url, data);
+    };
+
+    EventDetailViewModel.prototype.formatEventType = function (code) {
+        return sandbox.constant.eventType.toString(code);
     };
 
     return EventDetailViewModel;
