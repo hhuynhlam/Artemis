@@ -14,7 +14,7 @@ define(function (require) {
         var cancel, signup;
 
         // subscribe to signup/cancel topics
-        signup = sandbox.msg.subscribe('signup.add', function (driver) {
+        signup = sandbox.msg.subscribe('signup.update', function (driver) {
             this.postAction({
                 type: 'add',
                 event: event,
@@ -47,6 +47,33 @@ define(function (require) {
             console.error('Error: Could not waitlist to shift (', err, ')');
         })
         .done();
+    };
+
+    EventActionViewModel.prototype.changeDriving = function (viewmodel, event) {
+        var cancel, signup;
+
+        // subscribe to signup/cancel topics
+        signup = sandbox.msg.subscribe('signup.update', function (driver) {
+            this.postAction({
+                type: 'changeDriving',
+                event: event,
+                driver: driver,
+                topic: 'shift.driver.change'
+            })
+            .catch(function (err) {
+                console.error('Error: Could not change driving (', err, ')');
+            })
+            .done();
+
+            sandbox.msg.dispose(signup, cancel);
+        }, this);
+
+        cancel = sandbox.msg.subscribe('signup.cancel', function () {
+            sandbox.msg.dispose(signup, cancel);
+        });
+
+        // setup modal
+        this.setupDriverModal();
     };
 
     EventActionViewModel.prototype.removeWaitlist = function (viewmodel, event) {
@@ -90,6 +117,9 @@ define(function (require) {
                 url = window.env.SERVER_HOST + '/shift/user/signups/add';
                 data.timestamp = sandbox.date.toUnix();
                 break;
+            case 'changeDriving':
+                url = window.env.SERVER_HOST + '/shift/user/signups/change';
+                break;
             case 'remove':
                 url = window.env.SERVER_HOST + '/shift/user/signups/delete';
                 break;
@@ -120,7 +150,7 @@ define(function (require) {
             modal('signupDriver', {
                 selector: selector,
                 cancel: function () { sandbox.msg.publish('signup.cancel'); },
-                confirm: function (driver) { sandbox.msg.publish('signup.add', driver); }
+                confirm: function (driver) { sandbox.msg.publish('signup.update', driver); }
             });
         }
     };

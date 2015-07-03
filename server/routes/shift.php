@@ -128,6 +128,52 @@ $app->post('/shift/user/signups/add', function () use ($app) {
     returnDataJSON($signups->find()->toJSON(), 'Signupss');
 });
 
+$app->post('/shift/user/signups/change', function () use ($app) {
+
+    // authenticate before do anything
+    if ( !authenticate($app->request->params('apiKey')) ) {
+        $app->status(403);
+        echo json_encode('You are not allowed to see this page.');
+        return;
+    }
+
+    // check required params
+    if (is_null($app->request->post('user')) || 
+        is_null($app->request->post('shift')) ||
+        is_null($app->request->post('event')) ||  
+        is_null($app->request->post('driver'))) 
+    {
+        $app->status(406); 
+        echo json_encode('You need to specify a user, shift, event and driver.');
+        return; 
+    }
+    
+    // get request parameters
+    $userId = $app->request->post('user');
+    $shiftId = $app->request->post('shift');
+    $eventId = $app->request->post('event');
+    $driver = $app->request->post('driver');
+
+    // construct query
+    $signup = SignupsQuery::create()
+        ->filterByUser($userId)
+        ->filterByShift($shiftId)
+        ->filterByEvent($eventId)
+        ->update(array('Driver' => $driver));
+
+    // return updated signups
+    $signups = SignupsQuery::create()
+        ->useMembersQuery()
+        ->endUse()
+        ->filterByShift($shiftId)
+        ->addAsColumn('FirstName', 'members.first_name')
+        ->addAsColumn('LastName', 'members.last_name')
+        ->select(array('Driver', 'User'));
+
+    // execute and return
+    returnDataJSON($signups->find()->toJSON(), 'Signupss');
+});
+
 $app->post('/shift/user/signups/delete', function () use ($app) {
 
     // authenticate before do anything

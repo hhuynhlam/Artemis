@@ -158,6 +158,12 @@ define(function (require) {
             currentShift.isSignedUp(true);
         }, this);
 
+         sandbox.msg.subscribe(shift.Id + '.shift.driver.change', function (updatedSignups) {
+            var updated = {};
+            updated[shift.Id] = updatedSignups;
+            this.signups(sandbox.util.assign(this.signups(), updated));
+        }, this);
+
         sandbox.msg.subscribe(shift.Id + '.shift.waitlist.add', function (updatedWaitlist) {
             var updated = {};
             updated[shift.Id] = updatedWaitlist;

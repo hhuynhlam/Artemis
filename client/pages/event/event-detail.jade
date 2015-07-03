@@ -76,6 +76,9 @@ block content
                                 button.btn.btn-danger(data-bind="visible: $parent.isWaitlisted() && $parent.isReady(), \
                                     attr: { 'data-shiftId': $parent.Id, 'data-eventId': $parent.Event }, \
                                     click: removeWaitlist, disable: $parent.disabled") Remove from Waitlist
+                                button.btn.btn-info(data-bind="visible: $parent.isSignedUp() && $parent.isReady(),  \
+                                    attr: { 'data-shiftId': $parent.Id, 'data-eventId': $parent.Event }, \
+                                    click: changeDriving, disable: $parent.disabled") Change Driving
                                 button.btn.btn-danger(data-bind="visible: $parent.isSignedUp() && $parent.isReady(),  \
                                     attr: { 'data-shiftId': $parent.Id, 'data-eventId': $parent.Event }, \
                                     click: remove, disable: $parent.disabled") Remove
