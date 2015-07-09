@@ -59,7 +59,7 @@ class MembersTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 26;
+    const NUM_COLUMNS = 27;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class MembersTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 26;
+    const NUM_HYDRATE_COLUMNS = 27;
 
     /**
      * the column name for the id field
@@ -202,6 +202,11 @@ class MembersTableMap extends TableMap
     const COL_REMINDER = 'members.reminder';
 
     /**
+     * the column name for the first_time field
+     */
+    const COL_FIRST_TIME = 'members.first_time';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -213,11 +218,11 @@ class MembersTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'FirstName', 'MiddleName', 'LastName', 'Position', 'MailList', 'Email', 'Aim', 'Website', 'Phone', 'PermAddress', 'TempAddress', 'Avatar', 'Signature', 'Class', 'Username', 'Password', 'Family', 'Birthday', 'ShirtSize', 'TotalService', 'TotalFellowship', 'Notes', 'FeesOwed', 'EmailList', 'Reminder', ),
-        self::TYPE_CAMELNAME     => array('id', 'firstName', 'middleName', 'lastName', 'position', 'mailList', 'email', 'aim', 'website', 'phone', 'permAddress', 'tempAddress', 'avatar', 'signature', 'class', 'username', 'password', 'family', 'birthday', 'shirtSize', 'totalService', 'totalFellowship', 'notes', 'feesOwed', 'emailList', 'reminder', ),
-        self::TYPE_COLNAME       => array(MembersTableMap::COL_ID, MembersTableMap::COL_FIRST_NAME, MembersTableMap::COL_MIDDLE_NAME, MembersTableMap::COL_LAST_NAME, MembersTableMap::COL_POSITION, MembersTableMap::COL_MAIL_LIST, MembersTableMap::COL_EMAIL, MembersTableMap::COL_AIM, MembersTableMap::COL_WEBSITE, MembersTableMap::COL_PHONE, MembersTableMap::COL_PERM_ADDRESS, MembersTableMap::COL_TEMP_ADDRESS, MembersTableMap::COL_AVATAR, MembersTableMap::COL_SIGNATURE, MembersTableMap::COL_CLASS, MembersTableMap::COL_USERNAME, MembersTableMap::COL_PASSWORD, MembersTableMap::COL_FAMILY, MembersTableMap::COL_BIRTHDAY, MembersTableMap::COL_SHIRT_SIZE, MembersTableMap::COL_TOTAL_SERVICE, MembersTableMap::COL_TOTAL_FELLOWSHIP, MembersTableMap::COL_NOTES, MembersTableMap::COL_FEES_OWED, MembersTableMap::COL_EMAIL_LIST, MembersTableMap::COL_REMINDER, ),
-        self::TYPE_FIELDNAME     => array('id', 'first_name', 'middle_name', 'last_name', 'position', 'mail_list', 'email', 'aim', 'website', 'phone', 'perm_address', 'temp_address', 'avatar', 'signature', 'class', 'username', 'password', 'family', 'birthday', 'shirt_size', 'total_service', 'total_fellowship', 'notes', 'fees_owed', 'email_list', 'reminder', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
+        self::TYPE_PHPNAME       => array('Id', 'FirstName', 'MiddleName', 'LastName', 'Position', 'MailList', 'Email', 'Aim', 'Website', 'Phone', 'PermAddress', 'TempAddress', 'Avatar', 'Signature', 'Class', 'Username', 'Password', 'Family', 'Birthday', 'ShirtSize', 'TotalService', 'TotalFellowship', 'Notes', 'FeesOwed', 'EmailList', 'Reminder', 'FirstTime', ),
+        self::TYPE_CAMELNAME     => array('id', 'firstName', 'middleName', 'lastName', 'position', 'mailList', 'email', 'aim', 'website', 'phone', 'permAddress', 'tempAddress', 'avatar', 'signature', 'class', 'username', 'password', 'family', 'birthday', 'shirtSize', 'totalService', 'totalFellowship', 'notes', 'feesOwed', 'emailList', 'reminder', 'firstTime', ),
+        self::TYPE_COLNAME       => array(MembersTableMap::COL_ID, MembersTableMap::COL_FIRST_NAME, MembersTableMap::COL_MIDDLE_NAME, MembersTableMap::COL_LAST_NAME, MembersTableMap::COL_POSITION, MembersTableMap::COL_MAIL_LIST, MembersTableMap::COL_EMAIL, MembersTableMap::COL_AIM, MembersTableMap::COL_WEBSITE, MembersTableMap::COL_PHONE, MembersTableMap::COL_PERM_ADDRESS, MembersTableMap::COL_TEMP_ADDRESS, MembersTableMap::COL_AVATAR, MembersTableMap::COL_SIGNATURE, MembersTableMap::COL_CLASS, MembersTableMap::COL_USERNAME, MembersTableMap::COL_PASSWORD, MembersTableMap::COL_FAMILY, MembersTableMap::COL_BIRTHDAY, MembersTableMap::COL_SHIRT_SIZE, MembersTableMap::COL_TOTAL_SERVICE, MembersTableMap::COL_TOTAL_FELLOWSHIP, MembersTableMap::COL_NOTES, MembersTableMap::COL_FEES_OWED, MembersTableMap::COL_EMAIL_LIST, MembersTableMap::COL_REMINDER, MembersTableMap::COL_FIRST_TIME, ),
+        self::TYPE_FIELDNAME     => array('id', 'first_name', 'middle_name', 'last_name', 'position', 'mail_list', 'email', 'aim', 'website', 'phone', 'perm_address', 'temp_address', 'avatar', 'signature', 'class', 'username', 'password', 'family', 'birthday', 'shirt_size', 'total_service', 'total_fellowship', 'notes', 'fees_owed', 'email_list', 'reminder', 'first_time', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, )
     );
 
     /**
@@ -227,11 +232,11 @@ class MembersTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'FirstName' => 1, 'MiddleName' => 2, 'LastName' => 3, 'Position' => 4, 'MailList' => 5, 'Email' => 6, 'Aim' => 7, 'Website' => 8, 'Phone' => 9, 'PermAddress' => 10, 'TempAddress' => 11, 'Avatar' => 12, 'Signature' => 13, 'Class' => 14, 'Username' => 15, 'Password' => 16, 'Family' => 17, 'Birthday' => 18, 'ShirtSize' => 19, 'TotalService' => 20, 'TotalFellowship' => 21, 'Notes' => 22, 'FeesOwed' => 23, 'EmailList' => 24, 'Reminder' => 25, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'firstName' => 1, 'middleName' => 2, 'lastName' => 3, 'position' => 4, 'mailList' => 5, 'email' => 6, 'aim' => 7, 'website' => 8, 'phone' => 9, 'permAddress' => 10, 'tempAddress' => 11, 'avatar' => 12, 'signature' => 13, 'class' => 14, 'username' => 15, 'password' => 16, 'family' => 17, 'birthday' => 18, 'shirtSize' => 19, 'totalService' => 20, 'totalFellowship' => 21, 'notes' => 22, 'feesOwed' => 23, 'emailList' => 24, 'reminder' => 25, ),
-        self::TYPE_COLNAME       => array(MembersTableMap::COL_ID => 0, MembersTableMap::COL_FIRST_NAME => 1, MembersTableMap::COL_MIDDLE_NAME => 2, MembersTableMap::COL_LAST_NAME => 3, MembersTableMap::COL_POSITION => 4, MembersTableMap::COL_MAIL_LIST => 5, MembersTableMap::COL_EMAIL => 6, MembersTableMap::COL_AIM => 7, MembersTableMap::COL_WEBSITE => 8, MembersTableMap::COL_PHONE => 9, MembersTableMap::COL_PERM_ADDRESS => 10, MembersTableMap::COL_TEMP_ADDRESS => 11, MembersTableMap::COL_AVATAR => 12, MembersTableMap::COL_SIGNATURE => 13, MembersTableMap::COL_CLASS => 14, MembersTableMap::COL_USERNAME => 15, MembersTableMap::COL_PASSWORD => 16, MembersTableMap::COL_FAMILY => 17, MembersTableMap::COL_BIRTHDAY => 18, MembersTableMap::COL_SHIRT_SIZE => 19, MembersTableMap::COL_TOTAL_SERVICE => 20, MembersTableMap::COL_TOTAL_FELLOWSHIP => 21, MembersTableMap::COL_NOTES => 22, MembersTableMap::COL_FEES_OWED => 23, MembersTableMap::COL_EMAIL_LIST => 24, MembersTableMap::COL_REMINDER => 25, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'first_name' => 1, 'middle_name' => 2, 'last_name' => 3, 'position' => 4, 'mail_list' => 5, 'email' => 6, 'aim' => 7, 'website' => 8, 'phone' => 9, 'perm_address' => 10, 'temp_address' => 11, 'avatar' => 12, 'signature' => 13, 'class' => 14, 'username' => 15, 'password' => 16, 'family' => 17, 'birthday' => 18, 'shirt_size' => 19, 'total_service' => 20, 'total_fellowship' => 21, 'notes' => 22, 'fees_owed' => 23, 'email_list' => 24, 'reminder' => 25, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'FirstName' => 1, 'MiddleName' => 2, 'LastName' => 3, 'Position' => 4, 'MailList' => 5, 'Email' => 6, 'Aim' => 7, 'Website' => 8, 'Phone' => 9, 'PermAddress' => 10, 'TempAddress' => 11, 'Avatar' => 12, 'Signature' => 13, 'Class' => 14, 'Username' => 15, 'Password' => 16, 'Family' => 17, 'Birthday' => 18, 'ShirtSize' => 19, 'TotalService' => 20, 'TotalFellowship' => 21, 'Notes' => 22, 'FeesOwed' => 23, 'EmailList' => 24, 'Reminder' => 25, 'FirstTime' => 26, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'firstName' => 1, 'middleName' => 2, 'lastName' => 3, 'position' => 4, 'mailList' => 5, 'email' => 6, 'aim' => 7, 'website' => 8, 'phone' => 9, 'permAddress' => 10, 'tempAddress' => 11, 'avatar' => 12, 'signature' => 13, 'class' => 14, 'username' => 15, 'password' => 16, 'family' => 17, 'birthday' => 18, 'shirtSize' => 19, 'totalService' => 20, 'totalFellowship' => 21, 'notes' => 22, 'feesOwed' => 23, 'emailList' => 24, 'reminder' => 25, 'firstTime' => 26, ),
+        self::TYPE_COLNAME       => array(MembersTableMap::COL_ID => 0, MembersTableMap::COL_FIRST_NAME => 1, MembersTableMap::COL_MIDDLE_NAME => 2, MembersTableMap::COL_LAST_NAME => 3, MembersTableMap::COL_POSITION => 4, MembersTableMap::COL_MAIL_LIST => 5, MembersTableMap::COL_EMAIL => 6, MembersTableMap::COL_AIM => 7, MembersTableMap::COL_WEBSITE => 8, MembersTableMap::COL_PHONE => 9, MembersTableMap::COL_PERM_ADDRESS => 10, MembersTableMap::COL_TEMP_ADDRESS => 11, MembersTableMap::COL_AVATAR => 12, MembersTableMap::COL_SIGNATURE => 13, MembersTableMap::COL_CLASS => 14, MembersTableMap::COL_USERNAME => 15, MembersTableMap::COL_PASSWORD => 16, MembersTableMap::COL_FAMILY => 17, MembersTableMap::COL_BIRTHDAY => 18, MembersTableMap::COL_SHIRT_SIZE => 19, MembersTableMap::COL_TOTAL_SERVICE => 20, MembersTableMap::COL_TOTAL_FELLOWSHIP => 21, MembersTableMap::COL_NOTES => 22, MembersTableMap::COL_FEES_OWED => 23, MembersTableMap::COL_EMAIL_LIST => 24, MembersTableMap::COL_REMINDER => 25, MembersTableMap::COL_FIRST_TIME => 26, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'first_name' => 1, 'middle_name' => 2, 'last_name' => 3, 'position' => 4, 'mail_list' => 5, 'email' => 6, 'aim' => 7, 'website' => 8, 'phone' => 9, 'perm_address' => 10, 'temp_address' => 11, 'avatar' => 12, 'signature' => 13, 'class' => 14, 'username' => 15, 'password' => 16, 'family' => 17, 'birthday' => 18, 'shirt_size' => 19, 'total_service' => 20, 'total_fellowship' => 21, 'notes' => 22, 'fees_owed' => 23, 'email_list' => 24, 'reminder' => 25, 'first_time' => 26, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, )
     );
 
     /**
@@ -277,6 +282,7 @@ class MembersTableMap extends TableMap
         $this->addColumn('fees_owed', 'FeesOwed', 'FLOAT', true, null, 0);
         $this->addColumn('email_list', 'EmailList', 'BOOLEAN', true, 1, true);
         $this->addColumn('reminder', 'Reminder', 'TINYINT', true, null, 1);
+        $this->addColumn('first_time', 'FirstTime', 'TINYINT', true, null, 0);
     } // initialize()
 
     /**
@@ -467,6 +473,7 @@ class MembersTableMap extends TableMap
             $criteria->addSelectColumn(MembersTableMap::COL_FEES_OWED);
             $criteria->addSelectColumn(MembersTableMap::COL_EMAIL_LIST);
             $criteria->addSelectColumn(MembersTableMap::COL_REMINDER);
+            $criteria->addSelectColumn(MembersTableMap::COL_FIRST_TIME);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.first_name');
@@ -494,6 +501,7 @@ class MembersTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.fees_owed');
             $criteria->addSelectColumn($alias . '.email_list');
             $criteria->addSelectColumn($alias . '.reminder');
+            $criteria->addSelectColumn($alias . '.first_time');
         }
     }
 

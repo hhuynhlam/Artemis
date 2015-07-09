@@ -285,6 +285,7 @@
     <column name="fees_owed" phpName="FeesOwed" type="FLOAT" required="true" defaultValue="0"/>
     <column name="email_list" phpName="EmailList" type="BOOLEAN" size="1" required="true" defaultValue="true"/>
     <column name="reminder" phpName="Reminder" type="TINYINT" required="true" defaultValue="1"/>
+    <column name="first_time" phpName="FirstTime" type="TINYINT" required="true" defaultValue="0"/>
     <unique name="id">
       <unique-column name="id"/>
     </unique>

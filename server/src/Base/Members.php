@@ -231,6 +231,13 @@ abstract class Members implements ActiveRecordInterface
     protected $reminder;
 
     /**
+     * The value for the first_time field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $first_time;
+
+    /**
      * @var        ObjectCollection|ChildSignups[] Collection to store aggregation of ChildSignups objects.
      */
     protected $collSignupss;
@@ -279,6 +286,7 @@ abstract class Members implements ActiveRecordInterface
         $this->fees_owed = 0;
         $this->email_list = true;
         $this->reminder = 1;
+        $this->first_time = 0;
     }
 
     /**
@@ -778,6 +786,16 @@ abstract class Members implements ActiveRecordInterface
     public function getReminder()
     {
         return $this->reminder;
+    }
+
+    /**
+     * Get the [first_time] column value.
+     *
+     * @return int
+     */
+    public function getFirstTime()
+    {
+        return $this->first_time;
     }
 
     /**
@@ -1317,6 +1335,26 @@ abstract class Members implements ActiveRecordInterface
     } // setReminder()
 
     /**
+     * Set the value of [first_time] column.
+     *
+     * @param int $v new value
+     * @return $this|\Members The current object (for fluent API support)
+     */
+    public function setFirstTime($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->first_time !== $v) {
+            $this->first_time = $v;
+            $this->modifiedColumns[MembersTableMap::COL_FIRST_TIME] = true;
+        }
+
+        return $this;
+    } // setFirstTime()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1359,6 +1397,10 @@ abstract class Members implements ActiveRecordInterface
             }
 
             if ($this->reminder !== 1) {
+                return false;
+            }
+
+            if ($this->first_time !== 0) {
                 return false;
             }
 
@@ -1465,6 +1507,9 @@ abstract class Members implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 25 + $startcol : MembersTableMap::translateFieldName('Reminder', TableMap::TYPE_PHPNAME, $indexType)];
             $this->reminder = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 26 + $startcol : MembersTableMap::translateFieldName('FirstTime', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->first_time = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1473,7 +1518,7 @@ abstract class Members implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 26; // 26 = MembersTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 27; // 27 = MembersTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Members'), 0, $e);
@@ -1786,6 +1831,9 @@ abstract class Members implements ActiveRecordInterface
         if ($this->isColumnModified(MembersTableMap::COL_REMINDER)) {
             $modifiedColumns[':p' . $index++]  = '`reminder`';
         }
+        if ($this->isColumnModified(MembersTableMap::COL_FIRST_TIME)) {
+            $modifiedColumns[':p' . $index++]  = '`first_time`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `members` (%s) VALUES (%s)',
@@ -1874,6 +1922,9 @@ abstract class Members implements ActiveRecordInterface
                         break;
                     case '`reminder`':
                         $stmt->bindValue($identifier, $this->reminder, PDO::PARAM_INT);
+                        break;
+                    case '`first_time`':
+                        $stmt->bindValue($identifier, $this->first_time, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -2015,6 +2066,9 @@ abstract class Members implements ActiveRecordInterface
             case 25:
                 return $this->getReminder();
                 break;
+            case 26:
+                return $this->getFirstTime();
+                break;
             default:
                 return null;
                 break;
@@ -2071,6 +2125,7 @@ abstract class Members implements ActiveRecordInterface
             $keys[23] => $this->getFeesOwed(),
             $keys[24] => $this->getEmailList(),
             $keys[25] => $this->getReminder(),
+            $keys[26] => $this->getFirstTime(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -2220,6 +2275,9 @@ abstract class Members implements ActiveRecordInterface
             case 25:
                 $this->setReminder($value);
                 break;
+            case 26:
+                $this->setFirstTime($value);
+                break;
         } // switch()
 
         return $this;
@@ -2323,6 +2381,9 @@ abstract class Members implements ActiveRecordInterface
         }
         if (array_key_exists($keys[25], $arr)) {
             $this->setReminder($arr[$keys[25]]);
+        }
+        if (array_key_exists($keys[26], $arr)) {
+            $this->setFirstTime($arr[$keys[26]]);
         }
     }
 
@@ -2443,6 +2504,9 @@ abstract class Members implements ActiveRecordInterface
         if ($this->isColumnModified(MembersTableMap::COL_REMINDER)) {
             $criteria->add(MembersTableMap::COL_REMINDER, $this->reminder);
         }
+        if ($this->isColumnModified(MembersTableMap::COL_FIRST_TIME)) {
+            $criteria->add(MembersTableMap::COL_FIRST_TIME, $this->first_time);
+        }
 
         return $criteria;
     }
@@ -2554,6 +2618,7 @@ abstract class Members implements ActiveRecordInterface
         $copyObj->setFeesOwed($this->getFeesOwed());
         $copyObj->setEmailList($this->getEmailList());
         $copyObj->setReminder($this->getReminder());
+        $copyObj->setFirstTime($this->getFirstTime());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3190,6 +3255,7 @@ abstract class Members implements ActiveRecordInterface
         $this->fees_owed = null;
         $this->email_list = null;
         $this->reminder = null;
+        $this->first_time = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();

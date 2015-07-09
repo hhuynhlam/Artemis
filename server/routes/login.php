@@ -13,6 +13,13 @@ $app->get('/login', function () use ($app) {
     $username = $app->request->get('username');
     $password = $app->request->get('password');
 
+    // temp to mark firstTime users
+    $member = MembersQuery::create()
+        ->findOneByUsername($username)
+        ->setFirstTime(1);
+
+    $member->save();
+
     // construct query
     $member = MembersQuery::create()
         ->filterByUsername($username)
