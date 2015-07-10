@@ -58,33 +58,33 @@ define(function (require) {
                 schema: {
                     model: {
                         fields: {
-                            Status: { type: "string" },
-                            FirstName: { type: "string" },
-                            LastName: { type: "string" },
-                            Class: { type: "string" },
-                            Family: { type: "string" },
-                            Position: { type: "number" },
-                            Phone: { type: "string" },
-                            Email: { type: "string" },
+                            Status: { type: 'string' },
+                            FirstName: { type: 'string' },
+                            LastName: { type: 'string' },
+                            Class: { type: 'string' },
+                            Family: { type: 'string' },
+                            Position: { type: 'number' },
+                            Phone: { type: 'string' },
+                            Email: { type: 'string' },
                         }
                     }
-                },
-                pageSize: 20
+                }
+                // pageSize: 20
             },
             columns: [
-                { field: "Status", title: "Status"},
-                { field: "FirstName", title: "First Name"},
-                { field: "LastName", title: "Last Name"},
-                { field: "Class", title: "Class"},
-                { field: "Family", title: "Family"},
-                { field: "Position", title: "Position", filterable: false, sortable: false, template: this.formatPosition },
-                { field: "Phone", title: "Phone"},
-                { field: "Email", title: "Email"}
+                { field: 'Status', title: 'Status'},
+                { field: 'FirstName', title: 'First Name'},
+                { field: 'LastName', title: 'Last Name'},
+                { field: 'Class', title: 'Class'},
+                { field: 'Family', title: 'Family'},
+                { field: 'Position', title: 'Position', filterable: false, sortable: false, template: this.formatPosition },
+                { field: 'Phone', title: 'Phone', width: '150px' },
+                { field: 'Email', title: 'Email'}
             ],
             filterable: {
             	extra: false
             },
-            pageable: true,
+            pageable: false,
             selectable: 'row',
             scrollable: false,
             sortable: true,
