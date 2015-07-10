@@ -12,6 +12,7 @@ define(function (require) {
         forEach: _.forEach,
         forIn: _.forIn,
         template: _.template,
+        trim: _.trim,
 
         nlToBr: function (str, is_xhtml) {   
             var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    

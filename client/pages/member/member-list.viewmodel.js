@@ -10,25 +10,28 @@ define(function (require) {
 	var MemberListViewModel = function () {
 		this.$selector = $('#RosterGrid'); 
 
-		this.actives = ko.observableArray([]);
-		this.alumni = ko.observableArray([]);
-		this.affiliates = ko.observableArray([]);
-		this.view = ko.observable('Active');
+		this.members = ko.observableArray([]);
 
 		// init events
 		this.getMembers()
 		.then(function (members) {
 			members.forEach(function (m) {
-				if( (m.Position & sandbox.constant.role.ACTIVE) ||              // if is an active,
-                    ((m.Position & sandbox.constant.role.PROBATIONARY) &&       // of if on probation
-                        !(m.Position & sandbox.constant.role.ALUMNUS) &&        // and not an alumnus
-                        !(m.Position & sandbox.constant.role.AFFILIATE))        // nor an affiliate
-                ) { this.actives.push(m); }
-				else if(m.Position & sandbox.constant.role.ALUMNUS) { this.alumni.push(m); }
-				else if(m.Position & sandbox.constant.role.AFFILIATE) { this.affiliates.push(m); }
-			}, this);
+                if(m.Position & sandbox.constant.role.ACTIVE || m.Position & sandbox.constant.role.PROBATIONARY) {
+                    m.Status = 'Active';
+                    this.trimWhiteSpace(m);
+                    this.members.push(m);
+                } else if (m.Position & sandbox.constant.role.ALUMNUS) {
+                    m.Status = 'Alumni';
+                    this.trimWhiteSpace(m);
+                    this.members.push(m);
+                } else if (m.Position & sandbox.constant.role.AFFILIATE) {
+                    m.Status = 'Affiliate';
+                    this.trimWhiteSpace(m);
+                    this.members.push(m);
+                }        
+            }, this);
 
-			this.setupGrid();
+            this.setupGrid();
 		}.bind(this))
 		.catch(function (err) {
 			console.error('Error: Cannot get members (', err, ')');
@@ -51,10 +54,11 @@ define(function (require) {
 	MemberListViewModel.prototype.setupGrid = function () {
 		this.$selector.kendoGrid({
 			dataSource: {
-                data: this.actives(),
+                data: this.members(),
                 schema: {
                     model: {
                         fields: {
+                            Status: { type: "string" },
                             FirstName: { type: "string" },
                             LastName: { type: "string" },
                             Class: { type: "string" },
@@ -68,11 +72,12 @@ define(function (require) {
                 pageSize: 20
             },
             columns: [
+                { field: "Status", title: "Status"},
                 { field: "FirstName", title: "First Name"},
                 { field: "LastName", title: "Last Name"},
                 { field: "Class", title: "Class"},
                 { field: "Family", title: "Family"},
-                { field: "Position", title: "Position", template: this.formatPosition },
+                { field: "Position", title: "Position", filterable: false, sortable: false, template: this.formatPosition },
                 { field: "Phone", title: "Phone"},
                 { field: "Email", title: "Email"}
             ],
@@ -97,21 +102,6 @@ define(function (require) {
 		$grid.refresh();
 	};
 
-	MemberListViewModel.prototype.switchToActives = function () {
-		this.view('Active');
-		this.refreshGrid(this.actives());
-	};
-
-	MemberListViewModel.prototype.switchToAlumni = function () {
-		this.view('Alumnus');
-		this.refreshGrid(this.alumni());
-	};
-
-	MemberListViewModel.prototype.switchToAffiliates = function () {
-		this.view('Affiliate');
-		this.refreshGrid(this.affiliates());
-	};
-
     MemberListViewModel.prototype.formatPosition = function (dataItem) {
         var roles = role.getPositionRoles(dataItem.Position);
         return roles.join(", ");
@@ -123,6 +113,11 @@ define(function (require) {
                 this.$selector.data('kendoGrid').resize();
             }
         }.bind(this));
+    };
+
+    MemberListViewModel.prototype.trimWhiteSpace = function (m) {
+        m.FirstName = sandbox.util.trim(m.FirstName);
+        m.LastName = sandbox.util.trim(m.LastName);
     };
 
 	return MemberListViewModel;
