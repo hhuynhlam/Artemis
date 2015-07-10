@@ -100,15 +100,35 @@ define(function (require) {
         describe('storage', function () {
             it('can store', function () {
                 expect(sandbox.storage).toBeDefined();
+                expect(sandbox.storage.cookie).toBeDefined();
                 expect(sandbox.storage.local).toBeDefined();
                 expect(sandbox.storage.session).toBeDefined();
+
                 expect(sandbox.storage.local.read).toBeDefined();
                 expect(sandbox.storage.local.remove).toBeDefined();
                 expect(sandbox.storage.local.set).toBeDefined();
+
                 expect(sandbox.storage.session.read).toBeDefined();
                 expect(sandbox.storage.session.remove).toBeDefined();
                 expect(sandbox.storage.session.set).toBeDefined();
             });
+
+            it('can set a new cookie value', function () {
+                sandbox.storage.cookie.set('newCookie', 'newValue');
+                expect(document.cookie).toBeTruthy();
+            });
+
+            it('can read a new cookie value', function () {
+                sandbox.storage.cookie.set('newCookie', 'newValue');
+                expect(sandbox.storage.cookie.read('newCookie')).toBe('newValue');
+            });
+
+            // @TODO: test storage.cookie.remove
+            // it('can remove a cookie value', function () {
+            //     sandbox.storage.cookie.set('newCookie2', 'newValue');
+            //     sandbox.storage.cookie.remove('newCookie2');
+            //     expect(sandbox.storage.cookie.read('newCookie2')).toBeNull();
+            // });
 
             it('can set a new local value', function () {
                 sandbox.storage.local.set('newCookie', 'newValue');

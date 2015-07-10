@@ -45,6 +45,7 @@ require.config({
 
         // Vendor
         'bootstrap'                     : 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
+        'cookie'                        : 'vendor/bower_components/js-cookie/src/js.cookie',
         'fullcalendar'                  : 'vendor/bower_components/fullcalendar/dist/fullcalendar.min',
         'jquery'                        : 'vendor/bower_components/jquery/dist/jquery.min',
         'k'                             : 'vendor/bower_components/kendo/js',
