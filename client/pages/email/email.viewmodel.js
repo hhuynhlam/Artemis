@@ -98,10 +98,10 @@ define(function (require) {
 
         sandbox.http.post(url, data)
         .then(function () {
-            console.log('Mail sent successfully');
+            sandbox.notification.success('SendEmailSuccess', 'Sent email successfully.');
         }.bind(this))
-        .catch(function (err) {
-            console.error('Error: Cannot send email (', err, ')');
+        .catch(function () {
+            sandbox.notification.error('SendEmailError', 'There was a problem sending email.');
         })
         .done();
     };
