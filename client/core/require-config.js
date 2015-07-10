@@ -14,6 +14,9 @@ require.config({
         'about.viewmodel'               : 'pages/about/about.viewmodel',
         'about.router'                  : 'pages/about/about.router',
 
+        'email.viewmodel'                : 'pages/email/email.viewmodel',
+        'email.router'                   : 'pages/email/email.router',
+
         'event-action.viewmodel'        : 'pages/event/event-action.viewmodel',
         'event-calendar.viewmodel'      : 'pages/event/event-calendar.viewmodel',
         'event-detail.viewmodel'        : 'pages/event/event-detail.viewmodel',

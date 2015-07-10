@@ -1,0 +1,19 @@
+extends ../_layout.jade
+
+block content
+    section#Email
+        ol.breadcrumb
+            li
+                a(href="#/") Home
+            li.active Send Email
+
+        .container
+            h2 Send Email
+
+            .well.col-xs-12
+                //- label.control-label To
+                #ToAddresses(data-placeholder="To: (Required)")
+
+                input.form-control.top-space(type='text', name='subject', placeholder="Subject: (Required)")
+
+                #MessageBody.top-space

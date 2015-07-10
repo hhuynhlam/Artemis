@@ -21,6 +21,7 @@ define(function (require) {
 	// -- Routes -- //
 	require('admin.router')(app);
 	require('about.router')(app);
+	require('email.router')(app);
 	require('event.router')(app);
 	require('home.router')(app);
 	require('login.router')(app);

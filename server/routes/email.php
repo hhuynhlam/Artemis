@@ -16,9 +16,14 @@ $app->post('/email', function () use ($app) {
 
     $headers = "From: APO Rho Rho <webmaster@no-reply.com>";
 
-    $result = mail($to, $subject, $message, $headers);
+    if(is_array($to)) { $to = implode(",", $to); }
+
+    echo $to;
+    // // send email
+    // $result = mail($to, $subject, $message, $headers);
     
-    if($result) { $app->status(200); }
-    else { $app->status(500); }
+    // // check status
+    // if($result) { $app->status(200); }
+    // else { $app->status(500); }
 
 });
