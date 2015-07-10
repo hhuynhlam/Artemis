@@ -5,10 +5,9 @@ define(function (require) {
     var auth = require('auth');
     var ko = require('knockout');
     var sandbox = require('sandbox');
+    var dropdown = require('dropdown');
     var editor = require('editor');
     var multiSelect = require('multi-select');
-
-    require('k/kendo.dropdownlist.min');
 
 	var EmailViewModel = function () {
         this.currentUser = auth.currentUser();
@@ -47,6 +46,24 @@ define(function (require) {
         .done();
 	};
 
+    EmailViewModel.prototype.getExcommContacts = function () {
+        var data, url;
+
+        url = window.env.SERVER_HOST + '/contact/excomm';
+        data = { apiKey: window.env.API_KEY };
+
+        return sandbox.http.get(url, data)
+        .then(function (contactInfos) {
+            contactInfos.forEach(function (info) {
+                if(info.position & this.currentUser.Position) {
+                    this.sendAs.push(info);
+                }
+            }, this);
+
+            this.setUpDropDownList();
+        }.bind(this));
+    };
+
     EmailViewModel.prototype.getMembers = function () {
         var data, url;
 
@@ -64,24 +81,6 @@ define(function (require) {
             }, this);
 
             return members;
-        }.bind(this));
-    };
-
-    EmailViewModel.prototype.getExcommContacts = function () {
-        var data, url;
-
-        url = window.env.SERVER_HOST + '/contact/excomm';
-        data = { apiKey: window.env.API_KEY };
-
-        return sandbox.http.get(url, data)
-        .then(function (contactInfos) {
-            contactInfos.forEach(function (info) {
-                if(info.position & this.currentUser.Position) {
-                    this.sendAs.push(info);
-                }
-            }, this);
-
-            this.setUpDropDownList();
         }.bind(this));
     };
 
@@ -108,13 +107,13 @@ define(function (require) {
     };
 
     EmailViewModel.prototype.setUpDropDownList = function () {        
-        var $selector = $('.sendAs');
-        $selector.kendoDropDownList({
-            dataTextField: 'address',
-            dataValueField: 'address',
+        dropdown({
+            selector: '.sendAs',
+            textField: 'address',
+            valueField: 'address',
             dataSource: this.sendAs,
             optionLabel: 'Self',
-            change: function (e) {
+            onChange: function (e) {
                 this.from( (e.sender.value()) ? e.sender.value() : this.currentUser.Email);
             }.bind(this)
         });
