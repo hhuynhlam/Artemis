@@ -135,11 +135,14 @@ nav#Navbar
               a
                 span Fellowship Hours: &nbsp;
                 span(data-bind='text: currentUser.TotalFellowship')
+            
             li.divider
             li
               a(href='#/profile') Profile
-            //- li
-            //-   a Send Email
+            li
+              a(href='#/email') Send Email
+
+            li.divider
             li(data-bind='visible: loggedIn, click: logout')
               a Logout
 
