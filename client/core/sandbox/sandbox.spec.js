@@ -100,25 +100,46 @@ define(function (require) {
         describe('storage', function () {
             it('can store', function () {
                 expect(sandbox.storage).toBeDefined();
-                expect(sandbox.storage.read).toBeDefined();
-                expect(sandbox.storage.remove).toBeDefined();
-                expect(sandbox.storage.set).toBeDefined();
+                expect(sandbox.storage.local).toBeDefined();
+                expect(sandbox.storage.session).toBeDefined();
+                expect(sandbox.storage.local.read).toBeDefined();
+                expect(sandbox.storage.local.remove).toBeDefined();
+                expect(sandbox.storage.local.set).toBeDefined();
+                expect(sandbox.storage.session.read).toBeDefined();
+                expect(sandbox.storage.session.remove).toBeDefined();
+                expect(sandbox.storage.session.set).toBeDefined();
+            });
+
+            it('can set a new local value', function () {
+                sandbox.storage.local.set('newCookie', 'newValue');
+                expect(window.localStorage.newCookie).toBe('newValue');
+            });
+
+            it('can read a new local value', function () {
+                sandbox.storage.local.set('newCookie', 'newValue');
+                expect(sandbox.storage.local.read('newCookie')).toBe('newValue');
+            });
+
+            it('can remove a local value', function () {
+                sandbox.storage.local.set('newCookie', 'newValue');
+                sandbox.storage.local.remove('newCookie');
+                expect(sandbox.storage.local.read('newCookie')).toBeNull();
             });
 
             it('can set a new session value', function () {
-                sandbox.storage.set('newCookie', 'newValue');
+                sandbox.storage.session.set('newCookie', 'newValue');
                 expect(window.sessionStorage.newCookie).toBe('newValue');
             });
 
             it('can read a new session value', function () {
-                sandbox.storage.set('newCookie', 'newValue');
-                expect(sandbox.storage.read('newCookie')).toBe('newValue');
+                sandbox.storage.session.set('newCookie', 'newValue');
+                expect(sandbox.storage.session.read('newCookie')).toBe('newValue');
             });
 
             it('can remove a session value', function () {
-                sandbox.storage.set('newCookie', 'newValue');
-                sandbox.storage.remove('newCookie')
-                expect(sandbox.storage.read('newCookie')).toBeNull();
+                sandbox.storage.session.set('newCookie', 'newValue');
+                sandbox.storage.session.remove('newCookie');
+                expect(sandbox.storage.session.read('newCookie')).toBeNull();
             });
         });
         
