@@ -11,12 +11,21 @@ block content
             h2 Send Email
 
             .well.col-xs-12
-                //- label.control-label To
+
                 #ToAddresses(data-placeholder="To:")
 
                 input.form-control.top-space(type='text', placeholder="Subject:", data-bind="value: subject;")
 
                 #MessageBody.top-space
 
-                .col-lg-12.top-space              
-                    button.btn.btn-primary.pull-right(data-bind="click: sendEmail")  Send 
+                .hidden-xs.pull-left.top-space              
+                    span.right-space Send email as: 
+                    .sendAs
+                .visible-xs-block.top-space              
+                    span.right-space Send email as: 
+                    .sendAs
+
+                .hidden-xs.pull-right.top-space              
+                    button.btn.btn-primary(data-bind="click: sendEmail, enable: isEmailFormComplete")  Send
+                .visible-xs-block.top-space              
+                    button.btn-block.btn.btn-primary(data-bind="click: sendEmail, enable: isEmailFormComplete")  Send  

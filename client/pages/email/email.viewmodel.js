@@ -2,14 +2,21 @@
 
 define(function (require) {
     var $ = require('jquery');
+    var auth = require('auth');
     var ko = require('knockout');
     var sandbox = require('sandbox');
     var editor = require('editor');
     var multiSelect = require('multi-select');
 
+    require('k/kendo.dropdownlist.min');
+
 	var EmailViewModel = function () {
+        this.currentUser = auth.currentUser();
         this.emails = ko.observable({});
         this.selectedMembers = ko.observableArray([]);
+        this.isEmailFormComplete = ko.computed(function() { 
+            return this.selectedMembers().length && this.subject() && this.message(); 
+        }, this);
 
         // Email Form Observables
         this.to = ko.computed(function () {
@@ -22,8 +29,10 @@ define(function (require) {
 
         this.subject = ko.observable('');
         this.message = ko.observable('');
+        this.from = ko.observable(this.currentUser.Email);
 
         // init
+        this.setUpDropDownList();
         this.setUpEditor();
 
         this.getMembers()
@@ -64,7 +73,8 @@ define(function (require) {
             apiKey: window.env.API_KEY,
             to: this.to(),
             subject: this.subject(),
-            message: this.message()
+            message: this.message(),
+            from: this.from()
         };
 
         sandbox.http.post(url, data)
@@ -75,6 +85,26 @@ define(function (require) {
             console.error('Error: Cannot send email (', err, ')');
         })
         .done();
+    };
+
+    EmailViewModel.prototype.setUpDropDownList = function () {
+        var data = [{
+            name: 'President',
+            value: 'aporhorho@gmail.com'
+        }, {
+            name: 'Service VP',
+            value: 'aposvp@gmail.com'
+        }, {
+            name: 'Fellowship VP',
+            value: 'apofvp@gmail.com'
+        }];
+        
+        $('.sendAs').kendoDropDownList({
+            dataTextField: 'name',
+            dataValueField: 'value',
+            dataSource: data,
+            optionLabel: 'Self'
+        });
     };
 
     EmailViewModel.prototype.setUpEditor = function () {
