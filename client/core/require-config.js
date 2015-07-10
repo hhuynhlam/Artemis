@@ -52,7 +52,6 @@ require.config({
         'moment'                        : 'vendor/bower_components/moment/min/moment.min',
         'Q'                             : 'vendor/bower_components/q/q',
         'sammy'                         : 'vendor/bower_components/sammy/lib/min/sammy-0.7.6.min',
-        'store'                         : 'vendor/bower_components/store/store.min',
 
         // RequireJS Plugins
         'async'                         : 'vendor/bower_components/requirejs-plugins/src/async',
