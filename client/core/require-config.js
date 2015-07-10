@@ -47,7 +47,7 @@ require.config({
         'k'                             : 'vendor/bower_components/kendo/js',
         'knockout'                      : 'vendor/bower_components/knockout/dist/knockout',
         'knockout-postbox'              : 'vendor/bower_components/knockout-postbox/build/knockout-postbox.min',
-        'lodash'                        : 'vendor/bower_components/lodash/dist/lodash.min',
+        'lodash'                        : 'vendor/bower_components/lodash/lodash.min',
         'md5'                           : 'vendor/bower_components/blueimp-md5/js/md5.min',
         'moment'                        : 'vendor/bower_components/moment/min/moment.min',
         'Q'                             : 'vendor/bower_components/q/q',
