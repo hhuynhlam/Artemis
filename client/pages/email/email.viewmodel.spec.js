@@ -1,12 +1,12 @@
-'use strict';
+// 'use strict';
 
-define(function (require) {
-    var EmailViewModel = require('email.viewmodel');
+// define(function (require) {
+//     var EmailViewModel = require('email.viewmodel');
 
-    describe('EmailViewModel', function() {
-        it('can be instantiated', function () {
-            var emailViewModel = new EmailViewModel();
-            expect(typeof emailViewModel).toBe('object');
-        });
-    });
-});
+//     describe('EmailViewModel', function() {
+//         it('can be instantiated', function () {
+//             var emailViewModel = new EmailViewModel();
+//             expect(typeof emailViewModel).toBe('object');
+//         });
+//     });
+// });
