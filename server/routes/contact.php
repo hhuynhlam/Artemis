@@ -1,7 +1,7 @@
 <?php
 use Propel\Runtime\Propel;
 
-$app->get('/excomm/contact', function () use ($app) {
+$app->get('/contact/excomm', function () use ($app) {
 
     // authenticate before do anything
     if ( !authenticate($app->request->params('apiKey')) ) {

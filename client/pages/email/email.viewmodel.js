@@ -18,6 +18,8 @@ define(function (require) {
             return this.selectedMembers().length && this.subject() && this.message(); 
         }, this);
 
+        this.sendAs = [];
+
         // Email Form Observables
         this.to = ko.computed(function () {
             var result = [];
@@ -32,7 +34,7 @@ define(function (require) {
         this.from = ko.observable(this.currentUser.Email);
 
         // init
-        this.setUpDropDownList();
+        this.getExcommContacts();
         this.setUpEditor();
 
         this.getMembers()
@@ -65,6 +67,24 @@ define(function (require) {
         }.bind(this));
     };
 
+    EmailViewModel.prototype.getExcommContacts = function () {
+        var data, url;
+
+        url = window.env.SERVER_HOST + '/contact/excomm';
+        data = { apiKey: window.env.API_KEY };
+
+        return sandbox.http.get(url, data)
+        .then(function (contactInfos) {
+            contactInfos.forEach(function (info) {
+                if(info.position & this.currentUser.Position) {
+                    this.sendAs.push(info);
+                }
+            }, this);
+
+            this.setUpDropDownList();
+        }.bind(this));
+    };
+
     EmailViewModel.prototype.sendEmail = function () {
         var data, url;
 
@@ -87,23 +107,16 @@ define(function (require) {
         .done();
     };
 
-    EmailViewModel.prototype.setUpDropDownList = function () {
-        var data = [{
-            name: 'President',
-            value: 'aporhorho@gmail.com'
-        }, {
-            name: 'Service VP',
-            value: 'aposvp@gmail.com'
-        }, {
-            name: 'Fellowship VP',
-            value: 'apofvp@gmail.com'
-        }];
-        
-        $('.sendAs').kendoDropDownList({
-            dataTextField: 'name',
-            dataValueField: 'value',
-            dataSource: data,
-            optionLabel: 'Self'
+    EmailViewModel.prototype.setUpDropDownList = function () {        
+        var $selector = $('.sendAs');
+        $selector.kendoDropDownList({
+            dataTextField: 'address',
+            dataValueField: 'address',
+            dataSource: this.sendAs,
+            optionLabel: 'Self',
+            change: function (e) {
+                this.from( (e.sender.value()) ? e.sender.value() : this.currentUser.Email);
+            }.bind(this)
         });
     };
 
