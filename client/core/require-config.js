@@ -6,6 +6,7 @@ require.config({
         'admin.dashboard.viewmodel'     : 'admin/dashboard/dashboard.viewmodel',
 
         // Components
+        'editor'                        : 'components/editor/editor',
         'modal'                         : 'components/modal/modal',
         'multi-select'                  : 'components/multi-select/multi-select',
         'navbar.viewmodel'              : 'components/navbar/navbar.viewmodel',

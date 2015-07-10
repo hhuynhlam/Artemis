@@ -12,8 +12,11 @@ block content
 
             .well.col-xs-12
                 //- label.control-label To
-                #ToAddresses(data-placeholder="To: (Required)")
+                #ToAddresses(data-placeholder="To:")
 
-                input.form-control.top-space(type='text', name='subject', placeholder="Subject: (Required)")
+                input.form-control.top-space(type='text', placeholder="Subject:", data-bind="value: subject;")
 
                 #MessageBody.top-space
+
+                .col-lg-12.top-space              
+                    button.btn.btn-primary.pull-right(data-bind="click: sendEmail")  Send 
