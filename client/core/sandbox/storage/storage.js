@@ -7,15 +7,7 @@ define(function (require) {
 
         cookie: {
             read: function (name) { return cookie.get(name); },
-            remove: function (name, options) { 
-                if (!options) { options = {}; }
-                
-                cookie.remove(name, {
-                    path: options.path,
-                    domain: options.domain,
-                    secure: options.secure 
-                }); 
-            },
+            remove: function (name) { cookie.remove(name, { path: window.env.ROOT_DIR }); },
             set: function (name, val, options) { 
                 var _expires;
                 
