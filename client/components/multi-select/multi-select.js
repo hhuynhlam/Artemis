@@ -11,7 +11,8 @@ define(function (require) {
             dataTextField: options.textField,
             dataValueField: options.valueField,
             dataSource: options.data,
-            change: options.onChange
+            change: options.onChange,
+            value: options.value
         });
     };
 

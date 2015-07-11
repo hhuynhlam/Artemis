@@ -3393,6 +3393,10 @@ ul {
   border-color: #ab4433;
   color: #fff;
 }
+#RosterToolbar {
+  position: fixed;
+  bottom: 0;
+}
 .well {
   background-image: none;
   border: none;

@@ -6,11 +6,36 @@ define(function (require) {
     var role = require('role');
 	var sandbox = require('sandbox');
 	require('k/kendo.grid.min');
+    require('k/kendo.toolbar.min');
 
 	var MemberListViewModel = function () {
 		this.$selector = $('#RosterGrid'); 
+        this.$toolbar = $('#RosterToolbar');
 
+        // Grid Observables
 		this.members = ko.observableArray([]);
+        this.selectedMembers = ko.observableArray([]);
+        
+        // Toolbar Observables
+        this.enableViewProfile = ko.computed(function () { 
+            var enable = this.selectedMembers().length === 1,
+                $kendoToolbar = this.$toolbar.data('kendoToolBar');
+
+            if (enable && $kendoToolbar) { $kendoToolbar.enable('#ViewProfileButton'); }
+            else if ($kendoToolbar) { $kendoToolbar.enable('#ViewProfileButton', false); }
+            
+            return enable; 
+        }, this);
+        this.enableEmailSelected = ko.computed(function () { 
+            var enable = this.selectedMembers().length > 0,
+                $kendoToolbar = this.$toolbar.data('kendoToolBar');
+
+            if (enable && $kendoToolbar) { $kendoToolbar.enable('#EmailSelectedButton'); }
+            else if ($kendoToolbar) { $kendoToolbar.enable('#EmailSelectedButton', false); }
+            
+            return enable;  
+        }, this);
+        this.showToolbar = ko.computed(function () { return this.enableEmailSelected() || this.enableViewProfile(); }, this);
 
 		// init events
 		this.getMembers()
@@ -37,15 +62,18 @@ define(function (require) {
 			console.error('Error: Cannot get members (', err, ')');
 		})
 		.done();
+
+        this.setupToolbar();
 	};
 
+    // Grid
 	MemberListViewModel.prototype.getMembers = function () {
 		var data, url;
 
         url = window.env.SERVER_HOST + '/member/list';
         data = { 
             apiKey: window.env.API_KEY, 
-            select: ['FirstName', 'LastName', 'Position', 'Class', 'Family', 'Email', 'Phone']
+            select: ['Id', 'FirstName', 'LastName', 'Position', 'Class', 'Family', 'Email', 'Phone']
         };
 
         return sandbox.http.get(url, data);
@@ -58,6 +86,7 @@ define(function (require) {
                 schema: {
                     model: {
                         fields: {
+                            Id: { type: 'number' },
                             Status: { type: 'string' },
                             FirstName: { type: 'string' },
                             LastName: { type: 'string' },
@@ -85,12 +114,10 @@ define(function (require) {
             	extra: false
             },
             pageable: false,
-            selectable: 'row',
+            selectable: 'multiple row',
             scrollable: false,
             sortable: true,
-            change: function () {
-            	// do something when selected
-            }
+            change: this.onChangeGrid.bind(this)
 		});
         
         this.makeGridResponsive();
@@ -102,13 +129,58 @@ define(function (require) {
 		$grid.refresh();
 	};
 
+    MemberListViewModel.prototype.onChangeGrid = function (e) {
+        var selected = e.sender.select(),
+            dataItems = [];
+
+        sandbox.util.forEach(selected, function (s) {
+            dataItems.push(e.sender.dataItem(s));
+        }, this);
+
+        this.selectedMembers(dataItems);
+    };
+
+    // Toolbar
+    MemberListViewModel.prototype.setupToolbar = function () {
+        this.$toolbar.kendoToolBar({
+            items: [{ 
+                type: 'button',
+                id: 'ViewProfileButton', 
+                text: 'View Profile', 
+                attributes: { 'class': 'btn btn-danger' },
+                click: this.viewProfile.bind(this) 
+            }, { 
+                type: 'button', 
+                id: 'EmailSelectedButton',
+                text: 'Email Selected', 
+                attributes: { 'class': 'btn btn-info' },
+                click: this.emailSelected.bind(this)
+            }],
+            resizable: false
+        });
+    };
+
+    MemberListViewModel.prototype.viewProfile = function () {
+        debugger;
+    };
+
+    MemberListViewModel.prototype.emailSelected = function () {
+        var emailString = this.selectedMembers().map(function (el) {
+            return el.Id;
+        }, this)
+        . join('&');
+
+        window.location.href = window.env.CLIENT_HOST + '/email/' + emailString;
+    };
+    
+    // Util
     MemberListViewModel.prototype.formatPosition = function (dataItem) {
         var roles = role.getPositionRoles(dataItem.Position);
-        return roles.join(", ");
+        return roles.join(', ');
     };
 
     MemberListViewModel.prototype.makeGridResponsive = function () {
-        $(window).on("resize", function() {
+        $(window).on('resize', function() {
             if ($(window).width() < 992) {
                 this.$selector.data('kendoGrid').resize();
             }

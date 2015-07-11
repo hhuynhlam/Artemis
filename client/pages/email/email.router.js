@@ -20,6 +20,17 @@ define(function (require) {
             });
         });
 
+        app.get('/#/email/:emails', function (context) {
+            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
+            require(['text!pages/email/email.html'], function (template) {
+                context.swap(sandbox.util.template(template));
+
+                // apply ko bindings
+                ko.applyBindings(new NavbarViewModel(), document.getElementById('Navbar'));
+                ko.applyBindings(new EmailViewModel(this.params.emails), document.getElementById('Email'));
+            }.bind(this));
+        });
+
     };
 
     return emailRouter;

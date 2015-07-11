@@ -3,6 +3,8 @@
 define(function (require) {
     var auth = require('auth');
     var sandbox = require('sandbox');
+    
+    window.env = { ROOT_DIR: '/' };
 
     describe('Auth', function() {
         it('can auth', function () {
@@ -14,8 +16,6 @@ define(function (require) {
         });
 
         // @TODO: test auth.login
-        
-        // @TODO: test auth.logout
         // it('can logout', function () {
         //     sandbox.storage.cookie.set('apo_user', {});    
         //     auth.logout();

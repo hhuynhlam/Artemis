@@ -9,8 +9,10 @@ define(function (require) {
     var editor = require('editor');
     var multiSelect = require('multi-select');
 
-	var EmailViewModel = function () {
+	var EmailViewModel = function (emails) {
         this.currentUser = auth.currentUser();
+        this.queryEmails = (emails) ? emails.split('&') : '';
+
         this.emails = ko.observable({});
         this.selectedMembers = ko.observableArray([]);
         this.isEmailFormComplete = ko.computed(function() { 
@@ -80,6 +82,7 @@ define(function (require) {
                 this.emails[m.Id] = m.Email;
             }, this);
 
+            if(this.queryEmails) { this.selectedMembers(this.queryEmails); }
             return members;
         }.bind(this));
     };
@@ -135,6 +138,7 @@ define(function (require) {
             textField: 'Name',
             valueField: 'Id',
             data: members,
+            value: this.queryEmails,
             onChange: function () {
                 var selected = $('#ToAddresses').data('kendoMultiSelect').value();
                 this.selectedMembers(selected);
