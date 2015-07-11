@@ -161,7 +161,7 @@ define(function (require) {
     };
 
     MemberListViewModel.prototype.viewProfile = function () {
-        debugger;
+        // debugger;
     };
 
     MemberListViewModel.prototype.emailSelected = function () {
