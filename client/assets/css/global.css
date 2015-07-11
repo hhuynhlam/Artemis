@@ -3395,6 +3395,7 @@ ul {
 }
 #RosterToolbar {
   position: fixed;
+  left: calc(50% - 116.5px);
   bottom: 0;
 }
 .well {
