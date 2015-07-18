@@ -1,16 +1,19 @@
 require.config({
     baseUrl: '',
     paths: {
+        // -------------------------------- GENERATOR --------------------------------------
         // Admin
         'admin.router'                  : 'admin/admin.router',
         'admin.dashboard.viewmodel'     : 'admin/dashboard/dashboard.viewmodel',
-
+        // -- End Admin -- //
+        
         // Components
         'dropdown'                      : 'components/dropdown/dropdown',
         'editor'                        : 'components/editor/editor',
         'modal'                         : 'components/modal/modal',
         'multi-select'                  : 'components/multi-select/multi-select',
         'navbar.viewmodel'              : 'components/navbar/navbar.viewmodel',
+        // -- End Components -- //
         
         // Pages
         'about.viewmodel'               : 'pages/about/about.viewmodel',
@@ -37,13 +40,16 @@ require.config({
 
         'profile.viewmodel'             : 'pages/profile/profile.viewmodel',
         'profile.router'                : 'pages/profile/profile.router',
-
-        // Core
-        'sandbox'                       : 'core/sandbox/sandbox',
-
+        // -- End Pages -- //
+        
         // Services
         'auth'                          : 'services/auth/auth',
         'role'                          : 'services/role/role',
+        // -- End Services -- //
+        
+        // --------------------------------- PLATFORM --------------------------------------
+        // Core
+        'sandbox'                       : 'core/sandbox/sandbox',
 
         // Vendor
         'bootstrap'                     : 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
