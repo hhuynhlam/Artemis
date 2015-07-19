@@ -124,9 +124,6 @@ $app->post('/shift/user/signups/add', function () use ($app) {
         ->addAsColumn('LastName', 'members.last_name')
         ->select(array('Driver', 'User'));
 
-    // email notification
-    sendEmail('hhuynhlam@gmail.com', null, 'Successfully added.', 'Yippe! Everything\'s working.');
-    
     // execute and return
     returnDataJSON($signups->find()->toJSON(), 'Signupss');
 });
