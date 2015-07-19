@@ -28,7 +28,14 @@ define(function (require) {
             select: function (e) {
                 if(phCallback) { phCallback(e); }
                 if(options.onSelect) { options.onSelect(e); }
-            }
+            },
+            tools: [
+                'bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript',
+                'fontName', 'fontSize', 'foreColor', 'backColor',
+                'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull',
+                'insertUnorderedList', 'insertOrderedList', 'indent', 'outdent',
+                'createLink', 'unlink', 'insertImage','formatting'
+            ]
         });
 
         // init placeholder text
