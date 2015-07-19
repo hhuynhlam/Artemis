@@ -147,7 +147,7 @@ define(function (require) {
                 type: 'button',
                 id: 'ViewProfileButton', 
                 text: 'View Profile', 
-                attributes: { 'class': 'btn btn-danger' },
+                attributes: { 'class': 'btn btn-success' },
                 click: this.viewProfile.bind(this) 
             }, { 
                 type: 'button', 

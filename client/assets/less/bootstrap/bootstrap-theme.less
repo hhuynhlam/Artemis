@@ -25,24 +25,25 @@
 }
 
 // Mixin for generating new styles
-.btn-styles(@btn-color: #555) {
-  background-color: @btn-color;
+.btn-styles(@text-color: #fff, @btn-color: #555) {
+  background-color: @btn-color !important;
+  color: @text-color !important;
 
   &:hover,
   &:focus  {
-    background-color: darken(@btn-color, 12%);
+    background-color: darken(@btn-color, 12%) !important;
     background-position: 0 -15px;
   }
 
   &:active,
   &.active {
-    background-color: darken(@btn-color, 12%);
+    background-color: darken(@btn-color, 12%) !important;
     border-color: darken(@btn-color, 14%);
   }
 
   &:disabled,
   &[disabled] {
-    background-color: darken(@btn-color, 12%);
+    background-color: darken(@btn-color, 12%) !important;
     background-image: none;
   }
 }
@@ -52,17 +53,17 @@
   // Remove the gradient for the pressed/active state
   &:active,
   &.active {
-    background-image: none;
+    background-image: none !important;
   }
 }
 
 // Apply the mixin to the buttons
-.btn-default { .btn-styles(@btn-default-bg); text-shadow: 0 1px 0 #fff; border-color: #ccc; }
-.btn-primary { .btn-styles(@btn-primary-bg); }
-.btn-success { .btn-styles(@btn-success-bg); }
-.btn-info    { .btn-styles(@btn-info-bg); }
-.btn-warning { .btn-styles(@btn-warning-bg); }
-.btn-danger  { .btn-styles(@btn-danger-bg); }
+.btn-default { .btn-styles(@btn-default-color, @btn-default-bg); text-shadow: 0 1px 0 #fff; border-color: #ccc; }
+.btn-primary { .btn-styles(@btn-primary-color, @btn-primary-bg); }
+.btn-success { .btn-styles(@btn-success-color, @btn-success-bg); }
+.btn-info    { .btn-styles(@btn-info-color, @btn-info-bg); }
+.btn-warning { .btn-styles(@btn-warning-color, @btn-warning-bg); }
+.btn-danger  { .btn-styles(@btn-danger-color, @btn-danger-bg); }
 
 
 //
