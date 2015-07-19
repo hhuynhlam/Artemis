@@ -84,7 +84,7 @@ gulp.task('clean', function() {
 // Copy
 //======================================
 
-gulp.task('copy', function() {
+gulp.task('copy-release', function() {
     
     // concat/minify css
     gulp.src([
@@ -189,7 +189,8 @@ gulp.task('serve', ['less', 'jade'], shell.task([ 'node ./server.js' ]));
 // Primary Tasks
 //======================================
 gulp.task('default', ['jshint', 'less', 'jade']);
-gulp.task('build', ['copy', 'rjs']);
+gulp.task('build', ['copy-release', 'rjs']);
+gulp.task('build-stage', ['copy-stage', 'rjs']);
 gulp.task('test', ['jshint']);
 
 
