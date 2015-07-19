@@ -26,18 +26,8 @@ $app->post('/email', function () use ($app) {
     $subject = $app->request->post('subject');
     $message = $app->request->post('message');
 
-    // Always set content-type when sending HTML email
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-
-    // More headers
-    $headers .= "From: " . $from . "\r\n";
-    // $headers .= 'Cc: myboss@example.com' . '\r\n';
-
-    if(is_array($to)) { $to = implode(', ', $to); }
-
     // send email
-    $result = mail($to, $subject, $message, $headers);
+    $result = sendEmail($to, $from, $subject, $message);
 
     // check status
     if($result) { 
