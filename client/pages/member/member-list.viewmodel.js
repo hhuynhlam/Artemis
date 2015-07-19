@@ -41,19 +41,23 @@ define(function (require) {
 		this.getMembers()
 		.then(function (members) {
 			members.forEach(function (m) {
+                
+                // set status
                 if(m.Position & sandbox.constant.role.ACTIVE || m.Position & sandbox.constant.role.PROBATIONARY) {
                     m.Status = 'Active';
-                    this.trimWhiteSpace(m);
-                    this.members.push(m);
                 } else if (m.Position & sandbox.constant.role.ALUMNUS) {
                     m.Status = 'Alumni';
-                    this.trimWhiteSpace(m);
-                    this.members.push(m);
                 } else if (m.Position & sandbox.constant.role.AFFILIATE) {
                     m.Status = 'Affiliate';
+                }
+
+                // add to list if has status
+                if(m.Status) {
                     this.trimWhiteSpace(m);
-                    this.members.push(m);
-                }        
+                    m.Name = m.FirstName + ' ' + m.LastName;
+                    this.members.push(m); 
+                }
+                     
             }, this);
 
             this.setupGrid();
@@ -102,8 +106,7 @@ define(function (require) {
             },
             columns: [
                 { field: 'Status', title: 'Status'},
-                { field: 'FirstName', title: 'First Name'},
-                { field: 'LastName', title: 'Last Name'},
+                { field: 'Name', title: 'Name'},
                 { field: 'Class', title: 'Class'},
                 { field: 'Family', title: 'Family'},
                 { field: 'Position', title: 'Position', filterable: false, sortable: false, template: this.formatPosition },
