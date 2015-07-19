@@ -122,13 +122,17 @@ block content
                         div Please leave blank if you would not like to receive SMS notifications.
                   .form-group
                       label.col-lg-3.control-label Provider
-                      .col-lg-9
+                      .col-lg-6
                         select.form-control(name='provider', data-bind="value: formViewModel.provider")
                           option(value='') 
                           option(value='@txt.att.net') AT&T
                           option(value='@tmomail.net') T-Mobile
                           option(value='@pm.sprint.com') Sprint
                           option(value='@vtext.com') Verizon
+                      .col-lg-3.visible-lg-inline-block
+                         button.btn.btn-primary(data-bind="click: testSMS, enable: formViewModel.provider() && formViewModel.phone()")  Send SMS Test 
+                      .col-lg-3.top-space.hidden-lg
+                         button.btn.btn-primary(data-bind="click: testSMS, enable: formViewModel.provider() && formViewModel.phone()")  Send SMS Test 
                   hr
                   .form-group
                     .col-lg-12.text-center
