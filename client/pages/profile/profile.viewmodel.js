@@ -198,5 +198,20 @@ define(function (require) {
 		return events;
 	};
 
+	// SMS Settings
+	ProfileViewModel.prototype.testSMS = function () {
+		var url = window.env.SERVER_HOST + '/sms/test',
+			phone = this.formViewModel.phone().match(/\d+/g).join(''),
+			address = phone + this.formViewModel.provider();
+
+		sandbox.http.post(url, { 
+			apiKey: window.env.API_KEY,
+			to: address 
+		})
+		.then(function () { sandbox.notification.success('SMSTestSuccess', 'SMS Sent.'); })
+		.catch(function () { sandbox.notification.error('SMSTestError', 'Could not send SMS, please try again later.'); })
+		.done();
+	};
+
 	return ProfileViewModel;
 });
