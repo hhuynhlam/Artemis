@@ -21,8 +21,8 @@ define(function (require) {
             var enable = this.selectedMembers().length === 1,
                 $kendoToolbar = this.$toolbar.data('kendoToolBar');
 
-            if (enable && $kendoToolbar) { $kendoToolbar.enable('#ViewProfileButton'); }
-            else if ($kendoToolbar) { $kendoToolbar.enable('#ViewProfileButton', false); }
+            if (enable && $kendoToolbar) { $('#ViewProfileButton').removeAttr('disabled'); }
+            else if ($kendoToolbar) { $('#ViewProfileButton').attr('disabled', 'disabled'); }
             
             return enable; 
         }, this);
@@ -30,9 +30,9 @@ define(function (require) {
             var enable = this.selectedMembers().length > 0,
                 $kendoToolbar = this.$toolbar.data('kendoToolBar');
 
-            if (enable && $kendoToolbar) { $kendoToolbar.enable('#EmailSelectedButton'); }
-            else if ($kendoToolbar) { $kendoToolbar.enable('#EmailSelectedButton', false); }
-            
+            if (enable && $kendoToolbar) { $('#EmailSelectedButton').removeAttr('disabled'); }
+            else if ($kendoToolbar) { $('#EmailSelectedButton').attr('disabled', 'disabled'); }
+
             return enable;  
         }, this);
         this.showToolbar = ko.computed(function () { return this.enableEmailSelected() || this.enableViewProfile(); }, this);
