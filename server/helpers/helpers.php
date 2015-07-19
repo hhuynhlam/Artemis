@@ -17,12 +17,13 @@ function returnDataJSON($result, $name) {
 function sendEmail($to, $from, $subject, $message) {
     if(is_null($from)){ $from = 'APO Rho Rho<no-reply@aporhorho.com>'; }
 
+    // IMPORTANT: headers must be enclosed in ". ' breaks it.
     // Always set content-type when sending HTML email
-    // $headers = 'MIME-Version: 1.0' . '\r\n';
-    // $headers .= 'Content-type:text/html;charset=UTF-8' . '\r\n';
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
     // More headers
-    $headers .= 'From: ' . $from . '\r\n';
+    $headers .= "From: " . $from . "\r\n";
 
     if(is_array($to)) { $to = implode(', ', $to); }
 
