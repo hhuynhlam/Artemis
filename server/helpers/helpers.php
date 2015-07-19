@@ -15,7 +15,11 @@ function returnDataJSON($result, $name) {
 }
 
 function sendEmail($to, $from, $subject, $message) {
-    if(is_null($from)){ $from = 'APO Rho Rho<no-reply@aporhorho.com>'; }
+    if(is_null($from)){ 
+        $from = 'APO Rho Rho<no-reply@aporhorho.com>'; 
+        $message .= '<br><br><b>This message was automatically 
+                    generated. Please do not reply.</b>';
+    }
 
     // IMPORTANT: headers must be enclosed in ". ' breaks it.
     // Always set content-type when sending HTML email
