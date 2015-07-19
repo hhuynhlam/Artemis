@@ -14,6 +14,7 @@ define(function (require) {
 
 		this.formViewModel = {
 			phone: ko.observable(this.currentUser.Phone),
+			provider: ko.observable(this.currentUser.Provider || ''),
 			email: ko.observable(this.currentUser.Email),
 			shirtSize: ko.observable(this.currentUser.ShirtSize),
 			schoolAddress: ko.observable(this.currentUser.TempAddress),
@@ -50,6 +51,7 @@ define(function (require) {
 	// Edit Profile
 	ProfileViewModel.prototype.reset = function () {
 		this.formViewModel.phone(this.currentUser.Phone);
+		this.formViewModel.provider(this.currentUser.Provider || '');
 		this.formViewModel.email(this.currentUser.Email);
 		this.formViewModel.shirtSize(this.currentUser.ShirtSize);
 		this.formViewModel.schoolAddress(this.currentUser.TempAddress);
@@ -111,6 +113,7 @@ define(function (require) {
 			apiKey: window.env.API_KEY,
 			_id: this.currentUser.Id,
 			phone: this.formViewModel.phone(),
+			provider: this.formViewModel.provider(),
 			email: this.formViewModel.email(),
 			shirtSize: this.formViewModel.shirtSize(),
 			tempAddress: this.formViewModel.schoolAddress(),

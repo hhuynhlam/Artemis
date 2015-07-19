@@ -115,6 +115,21 @@ block content
                     label.col-lg-3.control-label.text-primary Confirm Password
                     .col-lg-9
                       input.form-control(type='password', name='confirm_password', data-bind="value: formViewModel.confirmPassword")
+                  hr
+                  .form-group
+                      .col-lg-9.col-lg-offset-3.text-primary
+                        div To receive SMS notifications, please select your mobile provider. 
+                        div Please leave blank if you would not like to receive SMS notifications.
+                  .form-group
+                      label.col-lg-3.control-label Provider
+                      .col-lg-9
+                        select.form-control(name='provider', data-bind="value: formViewModel.provider")
+                          option(value='') 
+                          option(value='@txt.att.net') AT&T
+                          option(value='@tmomail.net') T-Mobile
+                          option(value='@pm.sprint.com') Sprint
+                          option(value='@vtext.com') Verizon
+                  hr
                   .form-group
                     .col-lg-12.text-center
                       button.btn.btn-default(type='reset', data-bind="click: reset") Cancel
