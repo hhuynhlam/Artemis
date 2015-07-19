@@ -105,6 +105,7 @@ define(function (require) {
                 // pageSize: 20
             },
             columns: [
+                { hidden: true, field: 'Id', attributes: { 'data-id': 'memberId' } },
                 { field: 'Status', title: 'Status'},
                 { field: 'Name', title: 'Name'},
                 { field: 'Class', title: 'Class'},
@@ -117,10 +118,10 @@ define(function (require) {
             	extra: false
             },
             pageable: false,
-            selectable: 'multiple row',
+            selectable: false,
             scrollable: false,
             sortable: true,
-            change: this.onChangeGrid.bind(this)
+            dataBound: this.onDataBound.bind(this)
 		});
         
         this.makeGridResponsive();
@@ -132,14 +133,28 @@ define(function (require) {
 		$grid.refresh();
 	};
 
-    MemberListViewModel.prototype.onChangeGrid = function (e) {
-        var selected = e.sender.select(),
+    MemberListViewModel.prototype.onDataBound = function () {
+
+        // on row click
+        this.$selector.find('tbody > tr').on('click', function (e) {
+            $(e.currentTarget).toggleClass('k-state-selected');
+            this.updateGridSelected();   
+        }.bind(this));
+    };
+
+    MemberListViewModel.prototype.updateGridSelected = function () {
+        var selected = this.$selector.find('tbody > tr.k-state-selected'),
+            data = this.$selector.data('kendoGrid').dataSource.data(),
             dataItems = [];
 
+        // foreach selected, find data for it
         sandbox.util.forEach(selected, function (s) {
-            dataItems.push(e.sender.dataItem(s));
+            var id = $(s).find('td[data-id="memberId"]').html(),
+                dataItem = sandbox.util.find(data, function (d) { return d.Id === parseInt(id); }); 
+            dataItems.push(dataItem);
         }, this);
 
+        // update selectedMembers data
         this.selectedMembers(dataItems);
     };
 
