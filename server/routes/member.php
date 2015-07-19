@@ -43,6 +43,7 @@ $app->post('/member/update', function () use ($app) {
     // get request parameters
     $userId = $app->request->post('_id');
     $phone = $app->request->post('phone');
+    $provider = $app->request->post('provider');
     $email = $app->request->post('email');
     $shirtSize = $app->request->post('shirtSize');
     $tempAddress = $app->request->post('tempAddress');
@@ -52,6 +53,7 @@ $app->post('/member/update', function () use ($app) {
     // construct query
     $member = MembersQuery::create()->findPk($userId);
     if(!is_null($phone)) { $member->setPhone($phone); }
+    if(!is_null($provider)) { $member->setProvider($provider); }
     if(!is_null($email)) { $member->setEmail($email); }
     if(!is_null($shirtSize)) { $member->setShirtSize($shirtSize); }
     if(!is_null($tempAddress)) { $member->setTempAddress($tempAddress); }

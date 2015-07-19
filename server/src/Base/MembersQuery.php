@@ -47,6 +47,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildMembersQuery orderByEmailList($order = Criteria::ASC) Order by the email_list column
  * @method     ChildMembersQuery orderByReminder($order = Criteria::ASC) Order by the reminder column
  * @method     ChildMembersQuery orderByFirstTime($order = Criteria::ASC) Order by the first_time column
+ * @method     ChildMembersQuery orderByProvider($order = Criteria::ASC) Order by the provider column
  *
  * @method     ChildMembersQuery groupById() Group by the id column
  * @method     ChildMembersQuery groupByFirstName() Group by the first_name column
@@ -75,6 +76,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildMembersQuery groupByEmailList() Group by the email_list column
  * @method     ChildMembersQuery groupByReminder() Group by the reminder column
  * @method     ChildMembersQuery groupByFirstTime() Group by the first_time column
+ * @method     ChildMembersQuery groupByProvider() Group by the provider column
  *
  * @method     ChildMembersQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildMembersQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -119,7 +121,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildMembers findOneByFeesOwed(double $fees_owed) Return the first ChildMembers filtered by the fees_owed column
  * @method     ChildMembers findOneByEmailList(boolean $email_list) Return the first ChildMembers filtered by the email_list column
  * @method     ChildMembers findOneByReminder(int $reminder) Return the first ChildMembers filtered by the reminder column
- * @method     ChildMembers findOneByFirstTime(int $first_time) Return the first ChildMembers filtered by the first_time column *
+ * @method     ChildMembers findOneByFirstTime(int $first_time) Return the first ChildMembers filtered by the first_time column
+ * @method     ChildMembers findOneByProvider(string $provider) Return the first ChildMembers filtered by the provider column *
 
  * @method     ChildMembers requirePk($key, ConnectionInterface $con = null) Return the ChildMembers by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildMembers requireOne(ConnectionInterface $con = null) Return the first ChildMembers matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -151,6 +154,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildMembers requireOneByEmailList(boolean $email_list) Return the first ChildMembers filtered by the email_list column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildMembers requireOneByReminder(int $reminder) Return the first ChildMembers filtered by the reminder column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildMembers requireOneByFirstTime(int $first_time) Return the first ChildMembers filtered by the first_time column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildMembers requireOneByProvider(string $provider) Return the first ChildMembers filtered by the provider column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildMembers[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildMembers objects based on current ModelCriteria
  * @method     ChildMembers[]|ObjectCollection findById(int $id) Return ChildMembers objects filtered by the id column
@@ -180,6 +184,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildMembers[]|ObjectCollection findByEmailList(boolean $email_list) Return ChildMembers objects filtered by the email_list column
  * @method     ChildMembers[]|ObjectCollection findByReminder(int $reminder) Return ChildMembers objects filtered by the reminder column
  * @method     ChildMembers[]|ObjectCollection findByFirstTime(int $first_time) Return ChildMembers objects filtered by the first_time column
+ * @method     ChildMembers[]|ObjectCollection findByProvider(string $provider) Return ChildMembers objects filtered by the provider column
  * @method     ChildMembers[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -272,7 +277,7 @@ abstract class MembersQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT `id`, `first_name`, `middle_name`, `last_name`, `position`, `mail_list`, `email`, `aim`, `website`, `phone`, `perm_address`, `temp_address`, `avatar`, `signature`, `class`, `username`, `password`, `family`, `birthday`, `shirt_size`, `total_service`, `total_fellowship`, `notes`, `fees_owed`, `email_list`, `reminder`, `first_time` FROM `members` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `first_name`, `middle_name`, `last_name`, `position`, `mail_list`, `email`, `aim`, `website`, `phone`, `perm_address`, `temp_address`, `avatar`, `signature`, `class`, `username`, `password`, `family`, `birthday`, `shirt_size`, `total_service`, `total_fellowship`, `notes`, `fees_owed`, `email_list`, `reminder`, `first_time`, `provider` FROM `members` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1235,6 +1240,35 @@ abstract class MembersQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(MembersTableMap::COL_FIRST_TIME, $firstTime, $comparison);
+    }
+
+    /**
+     * Filter the query on the provider column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProvider('fooValue');   // WHERE provider = 'fooValue'
+     * $query->filterByProvider('%fooValue%'); // WHERE provider LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $provider The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildMembersQuery The current query, for fluid interface
+     */
+    public function filterByProvider($provider = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($provider)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $provider)) {
+                $provider = str_replace('*', '%', $provider);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(MembersTableMap::COL_PROVIDER, $provider, $comparison);
     }
 
     /**
