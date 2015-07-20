@@ -34,7 +34,7 @@ define(function (require) {
                 'fontName', 'fontSize', 'foreColor', 'backColor',
                 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull',
                 'insertUnorderedList', 'insertOrderedList', 'indent', 'outdent',
-                'createLink', 'unlink', 'insertImage','formatting'
+                'createLink', 'unlink', 'insertImage'
             ]
         });
 

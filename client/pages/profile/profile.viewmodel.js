@@ -5,10 +5,13 @@ define(function (require) {
 	var auth = require('auth');
 	var ko = require('knockout');
 	var modal = require('modal');
+	var role = require('role');
 	var sandbox = require('sandbox');
 
 	var ProfileViewModel = function () {
 		this.currentUser = auth.currentUser();
+		this.currentUser.Status = role.getStatus(this.currentUser.Position);
+
 		this.upcomingEvents = ko.observableArray([]);
 		this.waitlistedEvents = ko.observableArray([]);
 
