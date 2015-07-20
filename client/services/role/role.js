@@ -63,6 +63,17 @@ define(function (require) {
             if (position & roleType.ALUMNI_CHAIR) { roles.push('Alumni Chair'); }
 
             return roles;
+        },
+
+        getStatus: function (position) {
+            var roleType = sandbox.constant.role;
+            if (position & roleType.PROBATIONARY) { return 'Probationary'; }
+            else if (position & roleType.ADVISOR) { return 'Advisor'; }
+            else if (position & roleType.ASSOCIATE) { return 'Associate'; }
+            else if (position & roleType.AFFILIATE) { return 'Affiliate'; }
+            else if (position & roleType.ACTIVE) { return 'Active'; }
+            else if (position & roleType.PLEDGE) { return 'Pledge'; }
+            else if (position & roleType.ALUMNUS) { return 'Alumnus'; }
         }
     };
 

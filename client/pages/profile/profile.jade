@@ -10,7 +10,13 @@ block content
     .container
       .col-md-12
         
-        h3(data-bind="text: currentUser.FirstName + ' ' + currentUser.LastName")
+        div
+          h3(data-bind="text: currentUser.FirstName + ' ' + currentUser.LastName")
+          div 
+            | Status: &nbsp; 
+            span(data-bind= "text: currentUser.Status, \
+                            css: {  'text-danger': currentUser.Status === 'Probationary', \
+                                    'text-primary': currentUser.Status !== 'Probationary' }")
         hr 
         
         .row
