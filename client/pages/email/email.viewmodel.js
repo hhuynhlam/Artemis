@@ -27,9 +27,21 @@ define(function (require) {
         // show/hide to addresses
         this.showToAddress = ko.observable(true);
         this.showToAddress.subscribe(function (val) {
-            var $to = $('#ToAddresses').data('kendoMultiSelect');
-            if (!$to) { return; }
-            $to.enable(val);
+            var multiselect = $('#ToAddresses').data('kendoMultiSelect');
+            if (!multiselect) { return; }
+            
+            // update placeholder
+            if (!val) { 
+                multiselect.setOptions({ placeholder: 'Disabled.' });
+                multiselect._placeholder();
+            }
+            else { 
+                multiselect.setOptions({ placeholder: 'To:' });
+                multiselect._placeholder();
+            }
+
+            // reset value
+            multiselect.value(null);
         });
 
         // Email Form Observables
@@ -52,7 +64,7 @@ define(function (require) {
 
         this.getMembers()
         .then(function (members) {
-            this.setUpMultiSelect(members);
+            this.setUpChooseAddress(members);
         }.bind(this))
         .catch(function (err) {
             console.error('Error: Cannot get members (', err, ')');
@@ -134,11 +146,6 @@ define(function (require) {
         .done();
     };
 
-    EmailViewModel.prototype.sendToActives = function () {
-        this.showToAddress(false);
-        this.selectedMembers(this.activeEmails());
-    };
-
     EmailViewModel.prototype.setUpSendAsList = function () {        
         dropdown({
             selector: '.sendAs',
@@ -154,9 +161,9 @@ define(function (require) {
 
     EmailViewModel.prototype.setUpSendToGroup = function () {
         var _dataSource = [
-            { title: 'Actives', value: 'active' },
-            { title: 'Alumni', value: 'alumni' },
-            { title: 'Affiliates', value: 'affiliate' }
+            { title: 'Actives', value: 'activeEmails' },
+            { title: 'Alumni', value: 'alumniEmails' },
+            { title: 'Affiliates', value: 'affiliateEmails' }
         ];
 
         dropdown({
@@ -166,7 +173,14 @@ define(function (require) {
             dataSource: _dataSource,
             optionLabel: ' ',
             onChange: function (e) {
-                // this.from( (e.sender.value()) ? e.sender.value() : this.currentUser.Email);
+                var selected = e.sender.value();
+                if (selected) { 
+                    this.showToAddress(false);
+                    this.selectedMembers(this[selected]()); 
+                } else {
+                    this.showToAddress(true);
+                    this.selectedMembers([]);
+                }
             }.bind(this)
         });
     };
@@ -181,7 +195,7 @@ define(function (require) {
         });
     };
 
-    EmailViewModel.prototype.setUpMultiSelect = function (members) {
+    EmailViewModel.prototype.setUpChooseAddress = function (members) {
         multiSelect({
             selector: '#ToAddresses',
             textField: 'Name',

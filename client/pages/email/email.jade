@@ -13,8 +13,9 @@ block content
                 .well.col-xs-12
                     
                     .row
-                        .col-sm-7        
-                            #ToAddresses(data-placeholder="Individual:", data-bind="visible: showToAddress")
+                        .col-sm-7
+                            div(data-bind="css: { disable: showToAddress() === false }")        
+                                #ToAddresses(data-placeholder="To:")
                         
                         .hidden-xs.col-sm-5.text-right
                             span.right-space Send to all

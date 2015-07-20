@@ -3271,6 +3271,9 @@ div.k-window-content.km-widget.km-scroll-wrapper {
   border-bottom-right-radius: 0;
   -webkit-appearance: none;
 }
+.disable .k-multiselect {
+  pointer-events: none;
+}
 .navbar {
   border-radius: 0;
   border-top-left-radius: 0;
