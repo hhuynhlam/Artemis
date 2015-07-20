@@ -13,13 +13,24 @@ define(function (require) {
         this.currentUser = auth.currentUser();
         this.queryEmails = (emails) ? emails.split('&') : '';
 
+        // email lists
+        this.activeEmails = ko.observableArray([]);
+        this.alumniEmails = ko.observableArray([]);
+        this.affiliateEmails = ko.observableArray([]);
+
         this.emails = ko.observable({});
         this.selectedMembers = ko.observableArray([]);
         this.isEmailFormComplete = ko.computed(function() { 
             return this.selectedMembers().length && this.subject() && this.message(); 
         }, this);
 
-        this.sendAs = [];
+        // show/hide to addresses
+        this.showToAddress = ko.observable(true);
+        this.showToAddress.subscribe(function (val) {
+            var $to = $('#ToAddresses').data('kendoMultiSelect');
+            if (!$to) { return; }
+            $to.enable(val);
+        });
 
         // Email Form Observables
         this.to = ko.computed(function () {
@@ -50,7 +61,9 @@ define(function (require) {
 
     EmailViewModel.prototype.getExcommContacts = function () {
         var data, url;
-
+        
+        this.sendAs = [];
+        
         url = window.env.SERVER_HOST + '/contact/excomm';
         data = { apiKey: window.env.API_KEY };
 
@@ -62,7 +75,7 @@ define(function (require) {
                 }
             }, this);
 
-            this.setUpDropDownList();
+            this.setUpSendAsList();
         }.bind(this));
     };
 
@@ -72,12 +85,23 @@ define(function (require) {
         url = window.env.SERVER_HOST + '/member/list';
         data = { 
             apiKey: window.env.API_KEY, 
-            select: ['Id', 'FirstName', 'LastName','Email']
+            select: ['Id', 'FirstName', 'LastName','Email', 'Position', 'EmailList']
         };
 
         return sandbox.http.get(url, data)
         .then(function (members) {
             members.forEach(function (m) {
+
+                // populate mailing list
+                if( (m.Position & sandbox.constant.role.ACTIVE || m.Position & sandbox.constant.role.PROBATIONARY) && m.EmailList ) {
+                    this.activeEmails.push(m.Id);
+                } else if ( (m.Position & sandbox.constant.role.ALUMNUS) && m.EmailList ) {
+                    this.alumniEmails.push(m.Id);
+                } else if ( (m.Position & sandbox.constant.role.AFFILIATE) && m.EmailList ) {
+                    this.affiliateEmails.push(m.Id);
+                }
+
+                // construct name and fill out email lookup table
                 m.Name = m.FirstName + ' ' + m.LastName;
                 this.emails[m.Id] = m.Email;
             }, this);
@@ -109,7 +133,12 @@ define(function (require) {
         .done();
     };
 
-    EmailViewModel.prototype.setUpDropDownList = function () {        
+    EmailViewModel.prototype.sendToActives = function () {
+        this.showToAddress(false);
+        this.selectedMembers(this.activeEmails());
+    };
+
+    EmailViewModel.prototype.setUpSendAsList = function () {        
         dropdown({
             selector: '.sendAs',
             textField: 'address',
@@ -145,7 +174,6 @@ define(function (require) {
             }.bind(this)
         });
     };
-
 
 	return EmailViewModel;
 });

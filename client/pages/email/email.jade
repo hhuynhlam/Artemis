@@ -12,7 +12,10 @@ block content
 
             .well.col-xs-12
 
-                #ToAddresses(data-placeholder="To:")
+                input#ToActives 
+                | Send to all Actives
+
+                #ToAddresses(data-placeholder="Individual:", data-bind="visible: showToAddress")
 
                 input.form-control.top-space(type='text', placeholder="Subject:", data-bind="value: subject;")
 
