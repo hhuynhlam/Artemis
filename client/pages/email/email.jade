@@ -9,26 +9,45 @@ block content
 
         .container
             h2 Send Email
+            .row
+                .well.col-xs-12
+                    
+                    .row
+                        .col-sm-7        
+                            #ToAddresses(data-placeholder="Individual:", data-bind="visible: showToAddress")
+                        
+                        .hidden-xs.col-sm-5.text-right
+                            span.right-space Send to all
+                            .toGroup.text-left
+                        
+                        .visible-xs-block.col-sm-5.top-space  
+                            span.right-space Send to all
+                            .toGroup
 
-            .well.col-xs-12
+                    .row
+                        .col-sm-12  
+                            input.form-control.top-space(type='text', placeholder="Subject:", data-bind="value: subject;")
+                    
+                    .row
+                        .col-sm-12  
+                            #MessageBody.top-space
+                    
+                    .row
+                        .col-sm-12  
+                            .hidden-xs.pull-left.top-space              
+                                span.right-space Send email as: 
+                                .sendAs
+                    
+                    .row
+                        .col-sm-12
+                            .visible-xs-block.top-space              
+                                span.right-space Send email as: 
+                                .sendAs
 
-                input#ToActives 
-                | Send to all Actives
-
-                #ToAddresses(data-placeholder="Individual:", data-bind="visible: showToAddress")
-
-                input.form-control.top-space(type='text', placeholder="Subject:", data-bind="value: subject;")
-
-                #MessageBody.top-space
-
-                .hidden-xs.pull-left.top-space              
-                    span.right-space Send email as: 
-                    .sendAs
-                .visible-xs-block.top-space              
-                    span.right-space Send email as: 
-                    .sendAs
-
-                .hidden-xs.pull-right.top-space              
-                    button.btn.btn-primary(data-bind="click: sendEmail, enable: isEmailFormComplete")  Send
-                .visible-xs-block.top-space              
-                    button.btn-block.btn.btn-primary(data-bind="click: sendEmail, enable: isEmailFormComplete")  Send  
+                    
+                    .row
+                        .col-sm-12
+                            .hidden-xs.pull-right.top-space              
+                                button.btn.btn-primary(data-bind="click: sendEmail, enable: isEmailFormComplete")  Send
+                            .visible-xs-block.top-space              
+                                button.btn-block.btn.btn-primary(data-bind="click: sendEmail, enable: isEmailFormComplete")  Send  

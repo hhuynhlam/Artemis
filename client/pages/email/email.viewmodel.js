@@ -48,6 +48,7 @@ define(function (require) {
         // init
         this.getExcommContacts();
         this.setUpEditor();
+        this.setUpSendToGroup();
 
         this.getMembers()
         .then(function (members) {
@@ -147,6 +148,25 @@ define(function (require) {
             optionLabel: 'Self',
             onChange: function (e) {
                 this.from( (e.sender.value()) ? e.sender.value() : this.currentUser.Email);
+            }.bind(this)
+        });
+    };
+
+    EmailViewModel.prototype.setUpSendToGroup = function () {
+        var _dataSource = [
+            { title: 'Actives', value: 'active' },
+            { title: 'Alumni', value: 'alumni' },
+            { title: 'Affiliates', value: 'affiliate' }
+        ];
+
+        dropdown({
+            selector: '.toGroup',
+            textField: 'title',
+            valueField: 'value',
+            dataSource: _dataSource,
+            optionLabel: ' ',
+            onChange: function (e) {
+                // this.from( (e.sender.value()) ? e.sender.value() : this.currentUser.Email);
             }.bind(this)
         });
     };
