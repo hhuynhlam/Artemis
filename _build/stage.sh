@@ -1,3 +1,15 @@
+# check for params
+if [ -z "$DEVHOST" ];
+then
+    echo "error: DEVHOST not defined"
+    exit 1
+fi
+if [ -z "$DEVUSER" ];
+then
+    echo "error: DEVUSER not defined"
+    exit 1
+fi
+
 # clean and build local_dist
 pushd ../client
 gulp jade && gulp less-production
@@ -13,10 +25,10 @@ tar -zcf package.tar ./_dist
 gzip package.tar 
 
 # copy to host
-scp -C package.tar.gz hhuynhlam@208.113.211.21:~/
+scp -C package.tar.gz $DEVUSER@$DEVHOST:~/
 
 # host commands
-ssh -t -t hhuynhlam@ps446130.dreamhostps.com << 'EOF'
+ssh -t -t $DEVUSER@$DEVHOST << 'EOF'
 
     sudo mv package.tar.gz ./www
     cd www
