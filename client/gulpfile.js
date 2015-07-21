@@ -131,6 +131,75 @@ gulp.task('copy-release', function() {
         '!vendor/**', 
         '!index.html',
         '!index.release.html',
+        '!index.stage.html',
+        '!_dist/**'])
+    .pipe(minifyHtml())
+    .pipe(gulp.dest('_dist'));
+
+    // copy json
+    gulp.src([
+        '**/*.json', 
+        '!node_modules/**', 
+        '!vendor/**', 
+        '!_dist/**'])
+    .pipe(minifyJson())
+    .pipe(gulp.dest('_dist'));
+
+    // copy .htaccess
+    gulp.src([
+        '.htaccess'
+    ])
+    .pipe(gulp.dest('_dist'));
+});
+
+gulp.task('copy-stage', function() {
+    
+    // concat/minify css
+    gulp.src([
+        'vendor/bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'vendor/bower_components/font-awesome/css/font-awesome.min.css',
+        'vendor/bower_components/fullcalendar/dist/fullcalendar.min.css',
+        'vendor/bower_components/kendo/styles/kendo.common-bootstrap.min.css',
+        'assets/css/global.css'])
+    .pipe(concat('main.css'))
+    .pipe(minifyCss())
+    .pipe(gulp.dest('_dist'));
+
+    // copy over images
+    gulp.src([
+        'assets/img/**'
+    ])
+    .pipe(gulp.dest('_dist/assets/img'));
+
+    // copy over fonts
+    gulp.src([
+        'assets/font/**'
+    ])
+    .pipe(gulp.dest('_dist/assets/font'));
+
+    // copy vendor/require.js
+    gulp.src([
+        'vendor/bower_components/requirejs/require.js'
+    ])
+    .pipe(uglify())
+    .pipe(gulp.dest('_dist'));
+
+    // copy index.html
+    gulp.src([
+        'index.stage.html'
+    ])
+    .pipe(rename('index.html'))
+    .pipe(minifyHtml())
+    .pipe(gulp.dest('_dist'));
+    
+    // copy html
+    gulp.src([
+        '**/*.html', 
+        '!node_modules/**', 
+        '!vendor/**', 
+        '!index.html',
+        '!index.release.html',
+        '!index.stage.html',
         '!_dist/**'])
     .pipe(minifyHtml())
     .pipe(gulp.dest('_dist'));

@@ -1,0 +1,35 @@
+section.container-fluid
+    
+    h3.text-center <%= Name || 'N/A' %>
+    table.table.table-striped.top-space
+        tbody
+            tr
+                td Status
+                td <%= Status || 'N/A' %>
+            tr
+                td Class
+                td <%= Class || 'N/A' %>
+            tr
+                td Family
+                td <%= Family || 'N/A' %>
+            tr
+                td Birthday
+                td <%= Birthday || 'N/A' %>
+            tr
+                td Email
+                td <%= Email || 'N/A' %>
+            tr
+                td Phone
+                td <%= Phone || 'N/A' %>
+            tr
+                td School Address
+                td <%= TempAddress || 'N/A' %>
+            tr
+                td Permanent Address
+                td <%= PermAddress || 'N/A' %>
+            tr
+                td Shirt Size
+                td <%= ShirtSize || 'N/A' %>
+    
+    .pull-right.top-space
+        button.btn.btn-primary.cancel Done

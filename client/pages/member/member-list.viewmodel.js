@@ -3,6 +3,7 @@
 define(function (require) {
 	var $ = require('jquery');
 	var ko = require('knockout');
+    var modal = require('modal');
     var role = require('role');
 	var sandbox = require('sandbox');
 	require('k/kendo.grid.min');
@@ -40,26 +41,7 @@ define(function (require) {
 		// init events
 		this.getMembers()
 		.then(function (members) {
-			members.forEach(function (m) {
-                
-                // set status
-                if(m.Position & sandbox.constant.role.ACTIVE || m.Position & sandbox.constant.role.PROBATIONARY) {
-                    m.Status = 'Active';
-                } else if (m.Position & sandbox.constant.role.ALUMNUS) {
-                    m.Status = 'Alumni';
-                } else if (m.Position & sandbox.constant.role.AFFILIATE) {
-                    m.Status = 'Affiliate';
-                }
-
-                // add to list if has status
-                if(m.Status) {
-                    this.trimWhiteSpace(m);
-                    m.Name = m.FirstName + ' ' + m.LastName;
-                    this.members.push(m); 
-                }
-                     
-            }, this);
-
+			members.forEach(function (m) { this.formatMemberData(m); }, this);
             this.setupGrid();
 		}.bind(this))
 		.catch(function (err) {
@@ -77,7 +59,20 @@ define(function (require) {
         url = window.env.SERVER_HOST + '/member/list';
         data = { 
             apiKey: window.env.API_KEY, 
-            select: ['Id', 'FirstName', 'LastName', 'Position', 'Class', 'Family', 'Email', 'Phone']
+            select: [
+                'Id', 
+                'FirstName', 
+                'LastName',
+                'Birthday', 
+                'Position', 
+                'Class', 
+                'Family', 
+                'Email', 
+                'Phone',
+                'ShirtSize',
+                'TempAddress',
+                'PermAddress'
+            ]
         };
 
         return sandbox.http.get(url, data);
@@ -94,11 +89,15 @@ define(function (require) {
                             Status: { type: 'string' },
                             FirstName: { type: 'string' },
                             LastName: { type: 'string' },
+                            Birthday: { type: 'string' },
                             Class: { type: 'string' },
                             Family: { type: 'string' },
                             Position: { type: 'number' },
                             Phone: { type: 'string' },
                             Email: { type: 'string' },
+                            ShirtSize: { type: 'string' },
+                            TempAddress: { type: 'string' },
+                            PermAddress: { type: 'string' }
                         }
                     }
                 }
@@ -179,7 +178,20 @@ define(function (require) {
     };
 
     MemberListViewModel.prototype.viewProfile = function () {
-        // debugger;
+        var id = 'ProfileModal',
+            selector = '#' + id,
+            $kendoWindow = $(selector).data('kendoWindow');
+            
+        if ($kendoWindow) { 
+            $kendoWindow.destroy(); 
+            $('#MemberList .container').append('<div id="' + id + '"></div>');
+        } 
+
+        modal('profileView', {
+            selector: selector,
+            cancel: true,
+            data: this.selectedMembers()[0]
+        });
     };
 
     MemberListViewModel.prototype.emailSelected = function () {
@@ -192,6 +204,30 @@ define(function (require) {
     };
     
     // Util
+    MemberListViewModel.prototype.formatMemberData = function (member) {
+        
+        // set status
+        if(member.Position & sandbox.constant.role.ACTIVE || member.Position & sandbox.constant.role.PROBATIONARY) {
+            member.Status = 'Active';
+        } else if (member.Position & sandbox.constant.role.ALUMNUS) {
+            member.Status = 'Alumni';
+        } else if (member.Position & sandbox.constant.role.AFFILIATE) {
+            member.Status = 'Affiliate';
+        }
+
+        // parse birthday
+        if(member.Birthday) {
+            member.Birthday = sandbox.date.parseUnix(member.Birthday).format('MMM D, YYYY');
+        }
+
+        // add to list if has status
+        if(member.Status) {
+            this.trimWhiteSpace(member);
+            member.Name = member.FirstName + ' ' + member.LastName;
+            this.members.push(member); 
+        }
+    };
+
     MemberListViewModel.prototype.formatPosition = function (dataItem) {
         var roles = role.getPositionRoles(dataItem.Position);
         return roles.join(', ');
