@@ -1,13 +1,11 @@
 section
     
-    table.table.table-hover.table-striped
+    h3.text-center <%= Name || 'N/A' %>
+    table.table.table-striped.top-space
         tbody
             tr
                 td Status
                 td <%= Status || 'N/A' %>
-            tr
-                td Name
-                td <%= Name || 'N/A' %>
             tr
                 td Class
                 td <%= Class || 'N/A' %>
