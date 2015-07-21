@@ -1,12 +1,12 @@
 # check for params
-if [ -z "$DEVHOST" ];
+if [ -z "$HOST" ];
 then
-    echo "error: DEVHOST not defined"
+    echo "error: HOST not defined"
     exit 1
 fi
-if [ -z "$DEVUSER" ];
+if [ -z "$USER" ];
 then
-    echo "error: DEVUSER not defined"
+    echo "error: USER not defined"
     exit 1
 fi
 
@@ -25,10 +25,10 @@ tar -zcf package.tar ./_dist
 gzip package.tar 
 
 # copy to host
-scp -C package.tar.gz $DEVUSER@$DEVHOST:~/
+scp -C package.tar.gz $USER@$HOST:~/
 
 # host commands
-ssh -t -t $DEVUSER@$DEVHOST << 'EOF'
+ssh -t -t $USER@$HOST << 'EOF'
 
     sudo mv package.tar.gz ./www
     cd www
