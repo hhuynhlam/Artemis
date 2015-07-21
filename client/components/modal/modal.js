@@ -2,20 +2,25 @@
 
 define(function (require) {
     var $ = require('jquery');
+    var sandbox = require('sandbox');
     require('k/kendo.window.min');
 
     var templates = {
-        signupDriver: require('text!components/modal/templates/signup-driver.html'),
         logoutConfirm: require('text!components/modal/templates/logout-confirm.html'),
-        saveConfirm: require('text!components/modal/templates/save-confirm.html')
+        profileView: require('text!components/modal/templates/profile-view.html'),
+        saveConfirm: require('text!components/modal/templates/save-confirm.html'),
+        signupDriver: require('text!components/modal/templates/signup-driver.html')
     };
 
     var Modal = function (templateName, options) {
         var $modal = $(options.selector || '#Modal'),
-            $kendoWindow, $cancel, $confirm;
-            
+            $kendoWindow, $cancel, $confirm, innerHtml;
+        
+        if(options.data) { innerHtml = fillData(options.data, templates[templateName]); }
+        else { innerHtml = templates[templateName]; }
+
         // init modal
-        $modal.html(templates[templateName]);
+        $modal.html(innerHtml);
         $modal.kendoWindow({ title: false, modal: true });
         $kendoWindow = $modal.data('kendoWindow');
 
@@ -41,6 +46,11 @@ define(function (require) {
         }
         
         $kendoWindow.center();
+    };
+
+    var fillData = function (data, template) {
+        var interpolate = sandbox.util.template(template);
+        return interpolate(data);
     };
 
     return Modal;
