@@ -3260,6 +3260,12 @@ div.k-window-content {
 div.k-window-content.km-widget.km-scroll-wrapper {
   padding-bottom: 15px;
 }
+@media all and (max-width: 768px) {
+  div.k-window-content table.table tr td:first-child {
+    max-width: 70px;
+    text-align: right;
+  }
+}
 .k-multiselect,
 .k-multiselect.k-state-border-down,
 .k-multiselect-wrap,
