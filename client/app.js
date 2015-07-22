@@ -27,8 +27,9 @@ define(function (require) {
 	require('login.router')(app);
 	require('member.router')(app);
 	require('profile.router')(app);
-	// -- End Routes -- //
-
+    require('dashboard.router')(app);
+    // -- End Routes -- //
+    
 	// 404 Error
 	app.notFound = function () {
 		window.location.replace( window.env.CLIENT_HOST + '/' );
