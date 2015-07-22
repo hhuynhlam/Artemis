@@ -9,6 +9,7 @@ $app->response->headers->set('Content-Type', 'application/json');
 
 // // Define API routes
 require_once('routes/contact.php');
+require_once('routes/content.php');
 require_once('routes/email.php');
 require_once('routes/event.php');
 require_once('routes/login.php');
