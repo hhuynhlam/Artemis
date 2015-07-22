@@ -10,7 +10,7 @@ define(function (require) {
     var emailRouter = function (app) {   
         
         app.get('/#/email', function (context) {
-            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
+            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); return; }
             require(['text!pages/email/email.html'], function (template) {
                 context.swap(sandbox.util.template(template));
 
@@ -21,7 +21,7 @@ define(function (require) {
         });
 
         app.get('/#/email/:emails', function (context) {
-            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
+            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); return; }
             require(['text!pages/email/email.html'], function (template) {
                 context.swap(sandbox.util.template(template));
 

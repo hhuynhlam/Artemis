@@ -10,7 +10,7 @@ define(function (require) {
     var profileRouter = function (app) {   
         
         app.get('/#/profile', function (context) {
-            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
+            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); return; }
             else {
                 require(['text!pages/profile/profile.html'], function (template) {
                     context.swap(sandbox.util.template(template));
