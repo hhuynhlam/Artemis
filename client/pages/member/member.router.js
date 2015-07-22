@@ -10,7 +10,7 @@ define(function (require) {
     var memberRouter = function (app) {   
         
         app.get('/#/member/roster', function (context) {
-            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); }
+            if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); return; }
             else {
                 require(['text!pages/member/member-list.html'], function (template) {
                     context.swap(sandbox.util.template(template));
