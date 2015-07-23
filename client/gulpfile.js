@@ -92,6 +92,7 @@ gulp.task('copy-release', function() {
         'vendor/bower_components/font-awesome/css/font-awesome.min.css',
         'vendor/bower_components/fullcalendar/dist/fullcalendar.min.css',
         'vendor/bower_components/kendo/styles/kendo.common-bootstrap.min.css',
+        'vendor/bower_components/hopscotch/dist/css/hopscotch.min.css',
         'assets/css/global.css'])
     .pipe(concat('main.css'))
     .pipe(minifyCss())
@@ -160,6 +161,7 @@ gulp.task('copy-stage', function() {
         'vendor/bower_components/font-awesome/css/font-awesome.min.css',
         'vendor/bower_components/fullcalendar/dist/fullcalendar.min.css',
         'vendor/bower_components/kendo/styles/kendo.common-bootstrap.min.css',
+        'vendor/bower_components/hopscotch/dist/css/hopscotch.min.css',
         'assets/css/global.css'])
     .pipe(concat('main.css'))
     .pipe(minifyCss())
