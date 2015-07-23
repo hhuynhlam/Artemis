@@ -7,8 +7,10 @@ define(function (require) {
 	var modal = require('modal');
 	var role = require('role');
 	var sandbox = require('sandbox');
+	var tour = require('tour');
 
 	var ProfileViewModel = function () {
+		tour.start('profile');
 		this.currentUser = auth.currentUser();
 		this.currentUser.Status = role.getStatus(this.currentUser.Position);
 

@@ -45,6 +45,7 @@ require.config({
         // Services
         'auth'                          : 'services/auth/auth',
         'role'                          : 'services/role/role',
+        'tour'                          : 'services/tour/tour',
         // -- End Services -- //
         
         // --------------------------------- PLATFORM --------------------------------------
@@ -55,6 +56,7 @@ require.config({
         'bootstrap'                     : 'vendor/bower_components/bootstrap/dist/js/bootstrap.min',
         'cookie'                        : 'vendor/bower_components/js-cookie/src/js.cookie',
         'fullcalendar'                  : 'vendor/bower_components/fullcalendar/dist/fullcalendar.min',
+        'hopscotch'                     : 'vendor/bower_components/hopscotch/dist/js/hopscotch.min',
         'jquery'                        : 'vendor/bower_components/jquery/dist/jquery.min',
         'k'                             : 'vendor/bower_components/kendo/js',
         'knockout'                      : 'vendor/bower_components/knockout/dist/knockout',

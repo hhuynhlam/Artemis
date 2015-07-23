@@ -3312,10 +3312,14 @@ div.k-window-content.km-widget.km-scroll-wrapper {
 .navbar-inverse .open > a:focus {
   border-color: inherit;
 }
-.navbar-nav a.border {
+.navbar-nav > li a.border {
   border: 2px solid;
   padding: 10px;
   margin: 3px;
+  margin-right: 15px;
+}
+.navbar-nav > li a.navbar-icon {
+  color: #888888;
   margin-right: 15px;
 }
 #Navbar {
