@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../vendor/fpdf/fpdf.php');
+require_once(__DIR__ . '/../helpers/html2pdf.php');
 use Propel\Runtime\Propel;
 
 $app->get('/pdf/signin', function () use ($app) {
@@ -82,6 +82,17 @@ $app->get('/pdf/signin', function () use ($app) {
         }
     }
 
-    // echo json_encode($result);
-    var_dump($signups);
+    // // echo json_encode($result);
+    // var_dump($signups);
+
+
+    $pdf=new PDF_HTML();
+    $pdf->SetFont('Arial','',12);
+    $pdf->AddPage();
+    $text='<html><head></head><body>Hello <b>There!</b></body></html>';
+    if(ini_get('magic_quotes_gpc')=='1')
+        $text=stripslashes($text);
+    $pdf->WriteHTML($text);
+    $pdf->Output();
+    exit;
 });
