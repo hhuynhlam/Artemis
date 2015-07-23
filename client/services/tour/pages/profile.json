@@ -1,0 +1,19 @@
+{
+  "id": "profile_tour",
+  "showPrevButton": true,
+  "steps": [{
+    "target": "Help",
+    "placement": "left",
+    "title": "Welcome to your Profile!",
+    "content": "Take a tour to get familiar with this page. You may also access this tour anytime from this <em>Help</em>.",
+    "xOffset": "0",
+    "yOffset": "0"
+  }, {
+    "target": "UpcomingShifts",
+    "placement": "top",
+    "title": "Upcoming Shifts",
+    "content": "This shows all upcoming events you have successfully signed up for. Shift conflicts will be display in red.",
+    "xOffset": "50",
+    "yOffset": "10"
+  }]
+}

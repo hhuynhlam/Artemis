@@ -21,7 +21,7 @@ block content
         
         .row
           //- Upcoming Shifts
-          .col-md-6
+          #UpcomingShifts.col-md-6
             .panel.panel-info
               .panel-heading 
                 h1.panel-title Upcoming Shifts
@@ -46,7 +46,7 @@ block content
                       td.hidden-xs(data-bind="text: EndTime")
 
           //- Waitlisted
-          .col-md-6
+          #Waitlisted.col-md-6
             .panel.panel-warning
               .panel-heading 
                 h1.panel-title Waitlisted
@@ -72,14 +72,14 @@ block content
 
         .row
           //- Notes
-          .col-md-3
+          #Notes.col-md-3
             .alert.alert-warning 
               strong Notes
               hr
               div(data-bind="html: currentUser.Notes")
 
           //- Edit Profile
-          .col-md-9
+          #EditProfile.col-md-9
             form.form-horizontal(data-bind="submit: save")
               fieldset.panel.panel-primary
                 .panel-heading 
@@ -126,7 +126,7 @@ block content
                       .col-lg-9.col-lg-offset-3.text-primary
                         div To receive SMS notifications, please select your mobile provider. 
                         div Please leave blank if you would not like to receive SMS notifications.
-                  .form-group
+                  #SmsNotifications.form-group
                       label.col-lg-3.control-label Provider
                       .col-lg-6
                         select.form-control(name='provider', data-bind="value: formViewModel.provider")

@@ -13,7 +13,6 @@
     "commit": "aab421ebc55584e3f87b64ae2a77702c2f043280"
   },
   "_source": "git://github.com/js-cookie/js-cookie.git",
-  "_target": "~2.0.2",
-  "_originalSource": "js-cookie",
-  "_direct": true
+  "_target": "2.0.2",
+  "_originalSource": "js-cookie"
 }
