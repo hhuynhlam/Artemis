@@ -14,6 +14,7 @@ require_once('routes/email.php');
 require_once('routes/event.php');
 require_once('routes/login.php');
 require_once('routes/member.php');
+require_once('routes/pdf.php');
 require_once('routes/shift.php');
 require_once('routes/signup.php');
 require_once('routes/waitlist.php');

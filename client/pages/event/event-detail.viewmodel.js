@@ -9,6 +9,9 @@ define(function (require) {
         this.shiftViewModel = ko.observable(new ShiftViewModel(eventId));
         this.event = ko.observable({});
 
+        // prepare sign-in sheet
+        this.getSignupSheet(eventId);
+
         // init event
         this.getEvent(eventId)
         .then(function (_event) {
@@ -32,6 +35,16 @@ define(function (require) {
         };
         return sandbox.http.get(url, data);
     };
+
+    EventDetailViewModel.prototype.getSignupSheet = function (eventId) {
+        var data, url;
+        url = window.env.SERVER_HOST + '/pdf/signin';
+        data = {
+            apiKey: window.env.API_KEY,
+            id: eventId
+        };
+        return sandbox.http.get(url, data);
+    }; 
 
     EventDetailViewModel.prototype.formatEventType = function (code) {
         return sandbox.constant.eventType.toString(code);
