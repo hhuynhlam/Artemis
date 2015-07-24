@@ -12,8 +12,36 @@
     "target": "UpcomingShifts",
     "placement": "top",
     "title": "Upcoming Shifts",
-    "content": "This shows all upcoming events you have successfully signed up for. Shift conflicts will be display in red.",
+    "content": "These are upcoming shifts you have successfully signed up for. Shift conflicts will be display in <span class='text-danger'>red</span>.",
     "xOffset": "50",
     "yOffset": "10"
+  }, {
+    "target": "Waitlisted",
+    "placement": "top",
+    "title": "Waitlisted",
+    "content": "These are upcoming shifts you have successfully waitlisted for. Waitlist conflicts will be display in <span class='text-danger'>red</span>.",
+    "xOffset": "50",
+    "yOffset": "10"
+  }, {
+    "target": "Notes",
+    "placement": "right",
+    "title": "Notes",
+    "content": "These are ExComm's notes on your profile.",
+    "xOffset": "0",
+    "yOffset": "0"
+  }, {
+    "target": "EditProfile",
+    "placement": "left",
+    "title": "Edit Profile",
+    "content": "You may edit your contact information here.",
+    "xOffset": "0",
+    "yOffset": "0"
+  }, {
+    "target": "SmsNotifications",
+    "placement": "top",
+    "title": "SMS Notifications",
+    "content": "To register for SMS notifications, select a provider. You must also have a phone number. Select or leave blank if you do not want to receive SMS notifications.",
+    "xOffset": "center",
+    "yOffset": "0"
   }]
 }
