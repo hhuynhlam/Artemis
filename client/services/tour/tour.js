@@ -6,8 +6,8 @@ define(function (require) {
     var hopscotch = require('hopscotch');
 
     var pages = {
-        memberList: require('json!services/tour/pages/memberList.json'),
-        profile: require('json!services/tour/pages/profile.json')
+        'member/roster': require('json!services/tour/pages/member-roster.json'),
+        'profile': require('json!services/tour/pages/profile.json')
     };
 
     var visitedPages = {
@@ -18,18 +18,18 @@ define(function (require) {
          *      email               00001000
          *      eventDetail         00010000
          *      eventList           00100000
-         *      memberList          01000000
+         *      member/roster       01000000
          *      profile             10000000
          */
     
-         about: 1,
-         calendar: 2,
-         dashboard: 4,
-         email: 8,
-         eventDetail: 16,
-         eventList: 32,
-         memberList: 64,
-         profile: 128
+         'about': 1,
+         'calendar': 2,
+         'dashboard': 4,
+         'email': 8,
+         'eventDetail': 16,
+         'eventList': 32,
+         'member/roster': 64,
+         'profile': 128
     };
 
     var tour = {

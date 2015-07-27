@@ -121,7 +121,7 @@ nav#Navbar
         //-       a(href='#/member/roster') Roster
         
         li#Help
-          a.navbar-icon Help
+          a.navbar-icon(data-bind="click: help") Help
 
         li.dropdown(data-bind='visible: loggedIn')
           a.border.dropdown-toggle(href='#', data-toggle='dropdown')

@@ -51,7 +51,7 @@ define(function (require) {
 		.done();
 
         this.setupToolbar();
-        tour.start('memberList');
+        tour.start('member/roster');
 	};
 
     // Grid

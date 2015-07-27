@@ -3,10 +3,12 @@
 define(function (require) {
     var auth = require('auth');
     var modal = require('modal');
+    var tour = require('tour');
 
 	var NavbarViewModel = function () {
 		this.currentUser = auth.currentUser() || {};
         this.loggedIn = auth.isLoggedIn();
+        this.helpTarget = window.location.hash.substr(2);
     };
 
     NavbarViewModel.prototype.logout = function () {
@@ -25,6 +27,10 @@ define(function (require) {
                 }
             });
         }
+    };
+
+    NavbarViewModel.prototype.help = function () {
+        tour.start(this.helpTarget);
     };
 
 	return NavbarViewModel;
