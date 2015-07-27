@@ -6,6 +6,7 @@ define(function (require) {
     var modal = require('modal');
     var role = require('role');
 	var sandbox = require('sandbox');
+    var tour = require('tour');
 	require('k/kendo.grid.min');
     require('k/kendo.toolbar.min');
 
@@ -50,6 +51,7 @@ define(function (require) {
 		.done();
 
         this.setupToolbar();
+        tour.start('memberList');
 	};
 
     // Grid
