@@ -10,10 +10,14 @@ define(function (require) {
 	var tour = require('tour');
 
 	var ProfileViewModel = function () {
-		tour.start('profile');
 		this.currentUser = auth.currentUser();
 		this.currentUser.Status = role.getStatus(this.currentUser.Position);
 
+		// start tour and set to finished
+		if ( !(this.currentUser.FirstTime & tour.visitedPages.EDIT_PROFILE) ) {
+			tour.start('profile');
+		}
+		
 		this.upcomingEvents = ko.observableArray([]);
 		this.waitlistedEvents = ko.observableArray([]);
 
