@@ -287,7 +287,7 @@ class MembersTableMap extends TableMap
         $this->addColumn('fees_owed', 'FeesOwed', 'FLOAT', true, null, 0);
         $this->addColumn('email_list', 'EmailList', 'BOOLEAN', true, 1, true);
         $this->addColumn('reminder', 'Reminder', 'TINYINT', true, null, 1);
-        $this->addColumn('first_time', 'FirstTime', 'TINYINT', true, null, 0);
+        $this->addColumn('first_time', 'FirstTime', 'INTEGER', true, null, 0);
         $this->addColumn('provider', 'Provider', 'VARCHAR', false, 20, null);
     } // initialize()
 

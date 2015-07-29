@@ -14,11 +14,11 @@ $app->get('/login', function () use ($app) {
     $password = $app->request->get('password');
 
     // temp to mark firstTime users
-    $member = MembersQuery::create()
-        ->findOneByUsername($username)
-        ->setFirstTime(1);
-
-    $member->save();
+    // $member = MembersQuery::create()
+    //     ->findOneByUsername($username)
+    //     ->setFirstTime(1);
+    //
+    // $member->save();
 
     // construct query
     $member = MembersQuery::create()

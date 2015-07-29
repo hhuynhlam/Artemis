@@ -8,7 +8,9 @@ define(function (require) {
 	var NavbarViewModel = function () {
 		this.currentUser = auth.currentUser() || {};
         this.loggedIn = auth.isLoggedIn();
+
         this.helpTarget = window.location.hash.substr(2);
+        this.showHelp = tour.hasTour(this.helpTarget);
     };
 
     NavbarViewModel.prototype.logout = function () {
@@ -30,7 +32,7 @@ define(function (require) {
     };
 
     NavbarViewModel.prototype.help = function () {
-        tour.start(this.helpTarget);
+        tour.start(this.helpTarget, true);
     };
 
 	return NavbarViewModel;

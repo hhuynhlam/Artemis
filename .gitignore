@@ -3,5 +3,7 @@
 node_modules
 _dist
 config.php
+*.html
+*.css
 client/assets/img/faces/
 
