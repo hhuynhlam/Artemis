@@ -6,10 +6,10 @@ define(function (require) {
     require('k/kendo.window.min');
 
     var templates = {
-        logoutConfirm: require('text!components/modal/templates/logout-confirm.html'),
-        profileView: require('text!components/modal/templates/profile-view.html'),
-        saveConfirm: require('text!components/modal/templates/save-confirm.html'),
-        signupDriver: require('text!components/modal/templates/signup-driver.html')
+        logoutConfirm: require('text!core/widgets/modal/templates/logout-confirm.html'),
+        profileView: require('text!core/widgets/modal/templates/profile-view.html'),
+        saveConfirm: require('text!core/widgets/modal/templates/save-confirm.html'),
+        signupDriver: require('text!core/widgets/modal/templates/signup-driver.html')
     };
 
     var Modal = function (templateName, options) {

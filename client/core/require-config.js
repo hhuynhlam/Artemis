@@ -8,11 +8,11 @@ require.config({
         // -- End Admin -- //
         
         // Components
-        'dropdown'                      : 'components/dropdown/dropdown',
-        'editor'                        : 'components/editor/editor',
-        'modal'                         : 'components/modal/modal',
-        'multi-select'                  : 'components/multi-select/multi-select',
-        'navbar.viewmodel'              : 'components/navbar/navbar.viewmodel',
+        'dropdown'                      : 'core/widgets/dropdown/dropdown',
+        'editor'                        : 'core/widgets/editor/editor',
+        'modal'                         : 'core/widgets/modal/modal',
+        'multi-select'                  : 'core/widgets/multi-select/multi-select',
+        'navbar.viewmodel'              : 'core/widgets/navbar/navbar.viewmodel',
         // -- End Components -- //
         
         // Pages
@@ -46,9 +46,9 @@ require.config({
         // -- End Pages -- //
             
         // Services
-        'auth'                          : 'services/auth/auth',
-        'role'                          : 'services/role/role',
-        'tour'                          : 'services/tour/tour',
+        'auth'                          : 'core/services/auth/auth',
+        'role'                          : 'core/services/role/role',
+        'tour'                          : 'core/services/tour/tour',
         // -- End Services -- //
         
         // --------------------------------- PLATFORM --------------------------------------
