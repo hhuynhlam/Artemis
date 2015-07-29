@@ -1,7 +1,7 @@
 'use strict';
 
 define(function (require) {
-    var auth = require('auth');
+    // var auth = require('auth');
     var ko = require('knockout');
     var sandbox = require('sandbox');
     var HomeViewModel = require('home.viewmodel');
