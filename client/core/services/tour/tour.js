@@ -6,8 +6,8 @@ define(function (require) {
     var hopscotch = require('hopscotch');
 
     var pages = {
-        'member/roster': require('json!services/tour/pages/member-roster.json'),
-        'profile': require('json!services/tour/pages/profile.json')
+        'member/roster': require('json!core/services/tour/pages/member-roster.json'),
+        'profile': require('json!core/services/tour/pages/profile.json')
     };
 
     var visitedPages = {    
