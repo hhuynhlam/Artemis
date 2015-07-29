@@ -1,0 +1,26 @@
+{
+  "id": "member_list_tour",
+  "showPrevButton": true,
+  "steps": [{
+    "target": "Help",
+    "placement": "left",
+    "title": "Roster List",
+    "content": "Take a tour to get familiar with this page. You may also access this tour anytime from this <em>Help</em>.",
+    "xOffset": "0",
+    "yOffset": "0"
+  }, {
+    "target": "Title",
+    "placement": "bottom",
+    "title": "Sorting and Filtering",
+    "content": "<br/><p><strong>Sorting</strong>: Click on table headers to sort the columns. Sorting can be combined.</p><p><strong>Filtering</strong>: Click on the filter icons to filter columns.</p>",
+    "xOffset": "50",
+    "yOffset": "50"
+  }, {
+    "target": "Title",
+    "placement": "bottom",
+    "title": "Profile and Emails",
+    "content": "<br/><p>Select <strong>one</strong> member to view his/her profile.</p><p>Select <strong>one</strong> or <strong>multiple</strong> member(s) to send email(s).</p>",
+    "xOffset": "100",
+    "yOffset": "100"
+  }]
+}

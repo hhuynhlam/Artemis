@@ -2,24 +2,46 @@
 
 define(function (require) {
     var $ = require('jquery');
+    var auth = require('auth');
     var hopscotch = require('hopscotch');
 
     var pages = {
-        profile: require('json!services/tour/pages/profile.json')
+        'member/roster': require('json!services/tour/pages/member-roster.json'),
+        'profile': require('json!services/tour/pages/profile.json')
     };
 
-    var tutorial = {
-        start: function (page) {
-            var tour = pages[page];
-            tour.onShow = function () {
-                $('.hopscotch-next').addClass('btn').addClass('btn-success');
-                $('.hopscotch-prev').addClass('btn').addClass('btn-default');
-            };
-            tour.onEnd = function () { hopscotch.endTour(); };
-
-            hopscotch.startTour(pages[page], 0);
-        }
+    var visitedPages = {    
+         // 'about': 1,
+         // 'calendar': 2,
+         // 'dashboard': 4,
+         // 'email': 8,
+         // 'eventDetail': 16,
+         // 'eventList': 32,
+         'member/roster': 64,
+         'profile': 128
     };
 
-    return tutorial;
+    var tour = {
+
+        start: function (page, singleRun) {
+            var _tour = pages[page],
+                user = auth.currentUser();
+
+            if ( !(user.FirstTime & visitedPages[page]) || singleRun ) {
+                _tour.onShow = function () {
+                    $('.hopscotch-next').addClass('btn').addClass('btn-success');
+                    $('.hopscotch-prev').addClass('btn').addClass('btn-default');
+                };
+                _tour.onEnd = function () { hopscotch.endTour(); };
+
+                hopscotch.startTour(_tour, 0);
+            }
+
+        },
+
+        hasTour: function (page) { return visitedPages[page]; }
+
+    };
+
+    return tour;
 });

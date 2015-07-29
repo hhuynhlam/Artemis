@@ -13,7 +13,7 @@ define(function (require) {
 		tour.start('profile');
 		this.currentUser = auth.currentUser();
 		this.currentUser.Status = role.getStatus(this.currentUser.Position);
-
+		
 		this.upcomingEvents = ko.observableArray([]);
 		this.waitlistedEvents = ko.observableArray([]);
 
@@ -51,6 +51,7 @@ define(function (require) {
 		// get upcoming events
 		this.getUpcomingEvents();
 		this.getWaitlistedEvents();
+		tour.start('profile');
 	};
 
 	// Edit Profile

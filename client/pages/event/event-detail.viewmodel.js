@@ -6,6 +6,7 @@ define(function (require) {
     var ShiftViewModel = require('event-shift.viewmodel');
 
     var EventDetailViewModel = function (eventId) {
+        this.eventId = eventId;
         this.shiftViewModel = ko.observable(new ShiftViewModel(eventId));
         this.event = ko.observable({});
 
@@ -32,6 +33,13 @@ define(function (require) {
         };
         return sandbox.http.get(url, data);
     };
+
+    EventDetailViewModel.prototype.printSignupSheet = function () {
+        var url = window.env.SERVER_HOST + '/pdf/signin?id=' + this.eventId + '&apiKey=' + window.env.API_KEY,
+            windowFeatures = 'height=600,menubar=no,toolbar=no,width=800';
+
+        window.open(url, '_blank', windowFeatures);
+    }; 
 
     EventDetailViewModel.prototype.formatEventType = function (code) {
         return sandbox.constant.eventType.toString(code);

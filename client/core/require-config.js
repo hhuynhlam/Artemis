@@ -19,8 +19,8 @@ require.config({
         'about.viewmodel'               : 'pages/about/about.viewmodel',
         'about.router'                  : 'pages/about/about.router',
 
-        'email.viewmodel'                : 'pages/email/email.viewmodel',
-        'email.router'                   : 'pages/email/email.router',
+        'email.viewmodel'               : 'pages/email/email.viewmodel',
+        'email.router'                  : 'pages/email/email.router',
 
         'event-action.viewmodel'        : 'pages/event/event-action.viewmodel',
         'event-calendar.viewmodel'      : 'pages/event/event-calendar.viewmodel',
@@ -40,8 +40,11 @@ require.config({
 
         'profile.viewmodel'             : 'pages/profile/profile.viewmodel',
         'profile.router'                : 'pages/profile/profile.router',
+
+        'dashboard.viewmodel'           : 'pages/dashboard/dashboard.viewmodel',
+        'dashboard.router'              : 'pages/dashboard/dashboard.router',
         // -- End Pages -- //
-        
+            
         // Services
         'auth'                          : 'services/auth/auth',
         'role'                          : 'services/role/role',

@@ -1,0 +1,46 @@
+extends ../_layout.jade
+
+block content
+    section#Dashboard
+        ol.breadcrumb
+            li
+                a(href="#/") Home
+            li.active Dashboard
+
+        .container
+            h2 Dashboard
+
+            //- Announcements
+            .row
+                .col-md-12
+                    .panel.panel-primary
+                        .panel-heading 
+                            h1.panel-title Announcements
+                        .panel-body 
+                            div(data-bind="html: content().announcements")
+            
+            .row
+                //- Brother of the Week
+                .col-md-6
+                    .panel.panel-success
+                        .panel-heading 
+                            h1.panel-title Brother of the Week
+                        .panel-body 
+                            span No Brother selected at the moment
+
+                //- Featured Video
+                .col-md-6
+                    .panel.panel-info
+                        .panel-heading 
+                            h1.panel-title Featured Video
+                        .panel-body
+                            .video-wrapper 
+                                iframe(width="560" height="315" src="https://www.youtube-nocookie.com/embed/wu9tezZURt8?list=UUEJ0S9yrN_i0wa7WGNtk2Eg&amp;showinfo=0" frameborder="0" allowfullscreen)
+
+            .row
+                //- Committee Times
+                .col-md-12
+                    .panel.panel-warning
+                        .panel-heading 
+                            h1.panel-title Committee Meetings
+                        .panel-body(data-bind="html: content().committeeTimes") 

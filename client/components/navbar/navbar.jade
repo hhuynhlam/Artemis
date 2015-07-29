@@ -121,7 +121,7 @@ nav#Navbar
         //-       a(href='#/member/roster') Roster
         
         li#Help
-          a.navbar-icon Help
+          a.navbar-icon(data-bind="visible: showHelp, click: help") Help
 
         li.dropdown(data-bind='visible: loggedIn')
           a.border.dropdown-toggle(href='#', data-toggle='dropdown')
@@ -131,14 +131,18 @@ nav#Navbar
           ul.dropdown-menu
             li
               a
-                span Service Hours: &nbsp;
+                span Service: &nbsp;
                 span(data-bind='text: currentUser.TotalService')
+                span &nbsp; hrs
             li
               a
-                span Fellowship Hours: &nbsp;
+                span Fellowship: &nbsp;
                 span(data-bind='text: currentUser.TotalFellowship')
+                span &nbsp; hrs
             
             li.divider
+            li
+              //- a(href='#/dashboard') Dashboard
             li
               a(href='#/profile') Profile
             li

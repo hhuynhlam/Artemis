@@ -6,6 +6,7 @@ define(function (require) {
     var utils = {
 
         assign: _.assign,
+        escape: _.escape,
         clone: _.clone,
         find: _.find,
         findIndex: _.findIndex,
@@ -13,6 +14,7 @@ define(function (require) {
         forIn: _.forIn,
         template: _.template,
         trim: _.trim,
+        unescape: _.unescape,
 
         nlToBr: function (str, is_xhtml) {   
             var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
