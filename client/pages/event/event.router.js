@@ -13,7 +13,7 @@ define(function (require) {
         
         app.get('/#/event', function (context) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); return; }
-            require(['text!pages/event/event-list.html'], function (template) {
+            require(['text!pages/event/event-list/event-list.html'], function (template) {
                 context.swap(sandbox.util.template(template));
 
                 // apply ko bindings
@@ -24,7 +24,7 @@ define(function (require) {
         
         app.get('/#/event/calendar', function (context) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); return; }
-            require(['text!pages/event/event-calendar.html'], function (template) {
+            require(['text!pages/event/event-calendar/event-calendar.html'], function (template) {
                 context.swap(sandbox.util.template(template));
 
                 // apply ko bindings
@@ -35,7 +35,7 @@ define(function (require) {
 
         app.get('/#/event/:id', function (context) {
             if(!auth.isLoggedIn()) { window.location.replace(window.env.CLIENT_HOST + '/login'); return; }
-            require(['text!pages/event/event-detail.html'], function (template) {
+            require(['text!pages/event/event-detail/event-detail.html'], function (template) {
                 context.swap(sandbox.util.template(template));
 
                 // apply ko bindings

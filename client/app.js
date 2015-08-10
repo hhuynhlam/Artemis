@@ -41,6 +41,9 @@ define(function (require) {
     // Override swap function for post-actions and transitions
 	app.swap = function(content, callback) {
 		
+		// reset all pub/sub
+		sandbox.msg.reset();
+
 		// replace html
 		app.$element().html(content);
 

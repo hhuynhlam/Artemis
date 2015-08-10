@@ -22,11 +22,11 @@ require.config({
         'email.viewmodel'               : 'pages/email/email.viewmodel',
         'email.router'                  : 'pages/email/email.router',
 
-        'event-action.viewmodel'        : 'pages/event/event-action.viewmodel',
-        'event-calendar.viewmodel'      : 'pages/event/event-calendar.viewmodel',
-        'event-detail.viewmodel'        : 'pages/event/event-detail.viewmodel',
-        'event-list.viewmodel'          : 'pages/event/event-list.viewmodel',
-        'event-shift.viewmodel'         : 'pages/event/event-shift.viewmodel',
+        'event-action.viewmodel'        : 'pages/event/event-detail/event-action.viewmodel',
+        'event-calendar.viewmodel'      : 'pages/event/event-calendar/event-calendar.viewmodel',
+        'event-detail.viewmodel'        : 'pages/event/event-detail/event-detail.viewmodel',
+        'event-list.viewmodel'          : 'pages/event/event-list/event-list.viewmodel',
+        'event-shift.viewmodel'         : 'pages/event/event-detail/event-shift.viewmodel',
         'event.router'                  : 'pages/event/event.router',
 
         'home.viewmodel'                : 'pages/home/home.viewmodel',
@@ -35,7 +35,8 @@ require.config({
         'login.viewmodel'               : 'pages/login/login.viewmodel',
         'login.router'                  : 'pages/login/login.router',
 
-        'member-list.viewmodel'         : 'pages/member/member-list.viewmodel',
+        'member-docs.viewmodel'         : 'pages/member/member-docs/member-docs.viewmodel',
+        'member-list.viewmodel'         : 'pages/member/member-list/member-list.viewmodel',
         'member.router'                 : 'pages/member/member.router',
 
         'profile.viewmodel'             : 'pages/profile/profile.viewmodel',

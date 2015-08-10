@@ -13,7 +13,9 @@ define(function (require) {
             subs.forEach(function (sub) {
                 sub.dispose();
             });
-        }
+        },
+
+        reset: ko.postbox.reset
     };
 
     return msg;
