@@ -6,14 +6,18 @@ define(function (require) {
     var sandbox = require('sandbox');
     require('k/kendo.grid.min');
 
+    // chapter docs
+    var documents = require('json!static/document.json');
+
     var MemberDocsViewModel = function () {
         this.minutes = ko.observableArray([]);
         this.newsletters = ko.observableArray([]);
 
         this.$minutesGrid = $('#MinutesGrid');
         this.$newslettersGrid = $('#NewslettersGrid');
+        this.$documentsGrid = $('#DocumentsGrid');
 
-        this.getDocs()
+        this.getDbDocs()
         .then(function () { 
             this.setupGrids(); 
         }.bind(this))
@@ -23,7 +27,7 @@ define(function (require) {
         .done();
     };
 
-    MemberDocsViewModel.prototype.getDocs = function () {
+    MemberDocsViewModel.prototype.getDbDocs = function () {
         var url = window.env.SERVER_HOST + '/document',
             data = { apiKey: window.env.API_KEY };
 
@@ -37,7 +41,10 @@ define(function (require) {
     };
 
     MemberDocsViewModel.prototype.setupGrids = function () {
-        
+        var formatDate = function (column) { 
+            return sandbox.date.parseUnix(column.Date).format('MM/DD/YYYY');
+        };
+
         // Minutes
         this.$minutesGrid.kendoGrid({
             dataSource: {
@@ -58,15 +65,13 @@ define(function (require) {
             },
             columns: [
                 { field: 'Name', title: 'Description'},
-                { field: 'File', title: 'File'},
-                { field: 'Date', title: 'Date'}
+                { field: 'Date', title: 'Date', template: formatDate }
             ],
-            filterable: {
-                extra: false
-            },
+            filterable: false,
             pageable: true,
+            scrollable: false,
             selectable: false,
-            scrollable: false
+            sortable: true
         });
 
         // Newsletters
@@ -89,16 +94,45 @@ define(function (require) {
             },
             columns: [
                 { field: 'Name', title: 'Description'},
-                { field: 'File', title: 'File'},
-                { field: 'Date', title: 'Date'}
+                { field: 'Date', title: 'Date', template: formatDate}
             ],
-            filterable: {
-                extra: false
-            },
+            filterable: false,
             pageable: true,
+            scrollable: false,
             selectable: false,
-            scrollable: false
+            sortable: true
         });
+
+        // Chapter Documents
+        this.$documentsGrid.kendoGrid({
+            dataSource: {
+                data: documents,
+                schema: {
+                    model: {
+                        fields: {
+                            Type: { type: 'string' },
+                            Name: { type: 'string' },
+                            'Date': { type: 'number' },
+                            File: { type: 'string' }
+                        }
+                    }
+                },
+                pageSize: 25
+            },
+            columns: [
+                { field: 'Type', title: 'Type'},
+                { field: 'Name', title: 'Description'}
+            ],
+            filterable: false,
+            pageable: true,
+            scrollable: false,
+            selectable: false,
+            sortable: true
+        });
+
+
+
+
     };
 
     return MemberDocsViewModel;
