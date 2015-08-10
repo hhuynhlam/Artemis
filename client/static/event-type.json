@@ -1,0 +1,20 @@
+{
+      "FAMILY_EVENT": 4096,
+      "FELLOWSHIP": 2,
+      "OTHER": 4,
+      "SERVICE": 1,
+
+      "CAMPUS": 16,
+      "COMMUNITY": 8,
+      "FRATERNITY": 32,
+      "FUNDRAISER": 128,
+      "GENERAL": 8192,
+      "NATION": 64,
+
+      "COOL_FELLOWSHIP": 2048,
+      "CRAZY_FELLOWSHIP": 512,
+      "INTERCHAPTER_AWAY": 32768,
+      "INTERCHAPTER_HOME": 256,
+      "MEETING": 16384,
+      "SEXY_FELLOWSHIP": 1024
+}
