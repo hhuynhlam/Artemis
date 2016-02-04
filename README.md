@@ -1,5 +1,5 @@
 # Artemis
 
-##### Project Status : In Development
+##### Project Status : Complete
 
-<br/>TBA
+<br/>A community service oriented event registration web application
